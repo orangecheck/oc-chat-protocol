@@ -1,0 +1,73 @@
+{
+  "description": "seal-til-block (kind=chat-seal): content_key wrapped to a NAMED beacon device, not the recipient. seal{unlock_block,anchor,beacon_id,beacon_url,confirmations} is committed in the envelope id. Beacon-enforced policy, NOT consensus — see SECURITY.md.",
+  "inputs": {
+    "payload": "{\"body\":\"the documents are at ...\",\"conversation_id\":\"c-embargo-77\",\"seq\":1,\"parent_id\":null}",
+    "content_key": "f29a67a1e8e13c517b0d3c0afcfad4430904095c3aa870c2bd966fd9864f76ac",
+    "nonce_ct": "ae10ec394b2122f9f5006130",
+    "sender": {
+      "address": "bc1qalice0000000000000000000000000000000"
+    },
+    "seal": {
+      "unlock_block": 900000,
+      "anchor": "beacon",
+      "beacon_id": "drand:quicknet",
+      "beacon_url": "https://api.drand.sh/52db9ba70e0cc0f6eaf7803dd07447a1f5477735fd3f661792ba94600c84e971",
+      "redundant_beacon": null,
+      "confirmations": 6
+    },
+    "beacon_recipient": {
+      "address": "beacon",
+      "device_id": "oc-chat-beacon",
+      "device_pk": "263449cde640673a161e696d1be31450a632d0660735ac35fb3fb68bcfabca0a",
+      "device_sk": "7c31e88c797afeb1e3a0704f9617de6d3e20b9163f64d21ea9726d662d384a1e",
+      "eph_sk": "fb4bfb69546b17945814d7a404c69fcba72cdbd812a1427bdbcca254a248bf87",
+      "nonce_kek": "b35b284839456aecad26c3e6"
+    }
+  },
+  "expected": {
+    "envelope": {
+      "v": 2,
+      "kind": "chat-seal",
+      "id": "21fcec920fa11b6c2bd2c68363f34600368c2456bc61ea33ec02ae556cc55a89",
+      "alg": {
+        "kem": "x25519",
+        "aead": "aes-256-gcm",
+        "kdf": "hkdf-sha256"
+      },
+      "from": {
+        "address": "bc1qalice0000000000000000000000000000000"
+      },
+      "recipients": [
+        {
+          "address": "beacon",
+          "device_id": "oc-chat-beacon",
+          "device_pk": "263449cde640673a161e696d1be31450a632d0660735ac35fb3fb68bcfabca0a",
+          "eph_pk": "5bc5d58458db2b43f19c16f2e0722e8676e7c7b5d50a96ee4afd7ed8c8cc0423",
+          "wrapped_key": "wgEkA40dHhrXnK5s3gk6Ikfd9aAqOfzblaKECwrjChlRqtFHZDEXSHL0dSOhnHPV",
+          "nonce_kek": "b35b284839456aecad26c3e6"
+        }
+      ],
+      "ciphertext": "SDRubGUlQIKSlBfFPS7wDgMc5rIQfYeA4A6gFXTGrRa0-G4WMItjSIReTk2ftNc9Pf7RfcSD9tPuEXeoaNfCesgXC6164nQQFb3Zbkj1eO_emYgTHUF9tp1vtujGLN8gmd2sPdWG8Sc5sNxueQ",
+      "nonce_ct": "ae10ec394b2122f9f5006130",
+      "created_at": "2026-06-05T00:00:00.000Z",
+      "expires_at": null,
+      "payment": null,
+      "seal": {
+        "unlock_block": 900000,
+        "anchor": "beacon",
+        "beacon_id": "drand:quicknet",
+        "beacon_url": "https://api.drand.sh/52db9ba70e0cc0f6eaf7803dd07447a1f5477735fd3f661792ba94600c84e971",
+        "redundant_beacon": null,
+        "confirmations": 6
+      },
+      "sig": {
+        "alg": "bip322",
+        "pubkey": "bc1qalice0000000000000000000000000000000",
+        "value": "ZmFrZS1iaXAzMjItc2ln"
+      }
+    },
+    "aad_id": "58aa09463f8fb26173d66d84f8ba6265790714f96e058ff4d07775f5a85eaadb",
+    "id": "21fcec920fa11b6c2bd2c68363f34600368c2456bc61ea33ec02ae556cc55a89"
+  },
+  "notes": "The id commits to the seal predicate; changing unlock_block or beacon_url changes the id and breaks the sender signature."
+}

@@ -1,0 +1,60 @@
+{
+  "description": "speak-now (kind=chat): single recipient; threading (conversation_id/seq/parent_id) carried INSIDE the encrypted payload, never in the plaintext envelope. Round-trips.",
+  "inputs": {
+    "payload": "{\"body\":\"gm\",\"conversation_id\":\"c-aliciabob-0001\",\"seq\":1,\"parent_id\":null}",
+    "content_key": "86a37fa945af8d47dc7c569d8d12b31f3bac8eb6138afc314b06ed94aa5a5a48",
+    "nonce_ct": "5304aea00107f1b5833bbc81",
+    "sender": {
+      "address": "bc1qalice0000000000000000000000000000000"
+    },
+    "recipients": [
+      {
+        "address": "bc1qbob000000000000000000000000000000000",
+        "device_id": "bob-laptop",
+        "device_pk": "abd5c03b14d458675ee19c6da072374fddd7a77c09cf083197f018aa58613f17",
+        "device_sk": "d98bf78f799855af755cdc6f284059a4d1954d2a5f987bfdf91fe3a05649c85f",
+        "eph_sk": "10beb98f0bb6f446e461639990bf89ddccf1a5f80780e9a8769baf6354494e41",
+        "nonce_kek": "03fcda9a52e8cd22c90e7d4d"
+      }
+    ]
+  },
+  "expected": {
+    "envelope": {
+      "v": 2,
+      "kind": "chat",
+      "id": "d4276549691c046029ed55633635493230459398c6dcc6c883a95a37a45e179c",
+      "alg": {
+        "kem": "x25519",
+        "aead": "aes-256-gcm",
+        "kdf": "hkdf-sha256"
+      },
+      "from": {
+        "address": "bc1qalice0000000000000000000000000000000"
+      },
+      "recipients": [
+        {
+          "address": "bc1qbob000000000000000000000000000000000",
+          "device_id": "bob-laptop",
+          "device_pk": "abd5c03b14d458675ee19c6da072374fddd7a77c09cf083197f018aa58613f17",
+          "eph_pk": "fc5eceb49ff2f226a282a435df15f0f0c2fa67585f7a5120ddb44a3113140352",
+          "wrapped_key": "jj5IocpsylexcwRGVLjK-2tYE4eu3xkg1OxDBb1PNOj1Rh1NfLl8VBVupvjxnTdN",
+          "nonce_kek": "03fcda9a52e8cd22c90e7d4d"
+        }
+      ],
+      "ciphertext": "-ReeROu66x31UpNe_ssEzQ3NOE_NSe1T6857ayFR6t4giV54dnIWtOh70q1AuR8Djmt0V9zlZ0upVuI06J9NzugWE9N73eliXsYo6tlMgnBP-NjX8bylLcFTVw",
+      "nonce_ct": "5304aea00107f1b5833bbc81",
+      "created_at": "2026-06-05T00:00:00.000Z",
+      "expires_at": null,
+      "payment": null,
+      "sig": {
+        "alg": "bip322",
+        "pubkey": "bc1qalice0000000000000000000000000000000",
+        "value": "ZmFrZS1iaXAzMjItc2ln"
+      }
+    },
+    "aad_id": "aeb799b7240cb20f500ba764fa1477c12f4862a8746f94f8f2166bedb7b91199",
+    "canonical": "{\"alg\":{\"aead\":\"aes-256-gcm\",\"kdf\":\"hkdf-sha256\",\"kem\":\"x25519\"},\"ciphertext\":\"-ReeROu66x31UpNe_ssEzQ3NOE_NSe1T6857ayFR6t4giV54dnIWtOh70q1AuR8Djmt0V9zlZ0upVuI06J9NzugWE9N73eliXsYo6tlMgnBP-NjX8bylLcFTVw\",\"created_at\":\"2026-06-05T00:00:00.000Z\",\"expires_at\":null,\"from\":{\"address\":\"bc1qalice0000000000000000000000000000000\"},\"id\":\"\",\"kind\":\"chat\",\"nonce_ct\":\"5304aea00107f1b5833bbc81\",\"payment\":null,\"recipients\":[],\"sig\":{\"alg\":\"bip322\",\"pubkey\":\"bc1qalice0000000000000000000000000000000\",\"value\":\"\"},\"v\":2}\n",
+    "id": "d4276549691c046029ed55633635493230459398c6dcc6c883a95a37a45e179c"
+  },
+  "notes": "id and AAD exclude recipients[] (delivery routing); decrypted payload JSON carries the thread fields."
+}

@@ -1,0 +1,76 @@
+{
+  "description": "pay-to-reach (kind=chat + postage): a stranger embeds a Lightning preimage proving they paid the recipient. sha256(preimage)==payment_hash is verifiable OFFLINE. payment_hash + nonce + amount are committed in the id (replay-binding); the recipient is bound so the preimage cannot be replayed to a third party.",
+  "inputs": {
+    "payload": "{\"body\":\"hi — paid postage to reach you\",\"conversation_id\":\"c-stranger-1\",\"seq\":1,\"parent_id\":null}",
+    "content_key": "62b38467981bc059145a6cfd516817ed02fb311e5ae18fe70722745197553989",
+    "nonce_ct": "2311c1b9357c7220287ea76c",
+    "sender": {
+      "address": "bc1qalice0000000000000000000000000000000"
+    },
+    "postage": {
+      "floor_sats": 100,
+      "amount_sats": 100,
+      "payment_hash": "410acbbafc5a3c6ac333ce80f4c2ef06fc32680762d0c6da1f38a4e76183b453",
+      "preimage": "b21abaa20c3d425d804bd537f86787e831694bd715676d6d75dfdc320616b26e",
+      "nonce": "0ee9f537400d9d2510ee3285b797b7e3",
+      "recipient": "bc1qbob000000000000000000000000000000000"
+    },
+    "recipients": [
+      {
+        "address": "bc1qbob000000000000000000000000000000000",
+        "device_id": "bob-laptop",
+        "device_pk": "abd5c03b14d458675ee19c6da072374fddd7a77c09cf083197f018aa58613f17",
+        "device_sk": "d98bf78f799855af755cdc6f284059a4d1954d2a5f987bfdf91fe3a05649c85f",
+        "eph_sk": "48e32783bf76792f750f8c58c40c0aa8b9d0319fe8ef128849c9cf79bd005cf1",
+        "nonce_kek": "f0dc04898fa6a15713a759db"
+      }
+    ]
+  },
+  "expected": {
+    "envelope": {
+      "v": 2,
+      "kind": "chat",
+      "id": "b5133e5a2189731ace9cbc214f7b2fe1c51f11cf5df9fd931e142ce57aa17761",
+      "alg": {
+        "kem": "x25519",
+        "aead": "aes-256-gcm",
+        "kdf": "hkdf-sha256"
+      },
+      "from": {
+        "address": "bc1qalice0000000000000000000000000000000"
+      },
+      "recipients": [
+        {
+          "address": "bc1qbob000000000000000000000000000000000",
+          "device_id": "bob-laptop",
+          "device_pk": "abd5c03b14d458675ee19c6da072374fddd7a77c09cf083197f018aa58613f17",
+          "eph_pk": "e3ade00c7fa258ca54fc3c5118d9c75cea0095c1ed40849d345e4edf7a0dee1a",
+          "wrapped_key": "bRyD0KTkDo92lZAzactoR2wv4WrcHgMZT7jZ20zY7zKisCoI02JKuuvFGuJ6IYjG",
+          "nonce_kek": "f0dc04898fa6a15713a759db"
+        }
+      ],
+      "ciphertext": "mowSCLOqTUZ2BQnNTZ3-EJzRBVMhDNbhkBdb7yDR9NX06twA5C4CMxz_3ZDYPA5y8o0BTG7dz5vTiSCexCBPFtUZAwwAItBMCvsRvWCVRRRPYh3CCwQD41i6YqpDFke8wlpCls61Af4sa6xWql3a1FKLjolM",
+      "nonce_ct": "2311c1b9357c7220287ea76c",
+      "created_at": "2026-06-05T00:00:00.000Z",
+      "expires_at": null,
+      "payment": null,
+      "postage": {
+        "floor_sats": 100,
+        "amount_sats": 100,
+        "payment_hash": "410acbbafc5a3c6ac333ce80f4c2ef06fc32680762d0c6da1f38a4e76183b453",
+        "preimage": "b21abaa20c3d425d804bd537f86787e831694bd715676d6d75dfdc320616b26e",
+        "nonce": "0ee9f537400d9d2510ee3285b797b7e3",
+        "recipient": "bc1qbob000000000000000000000000000000000"
+      },
+      "sig": {
+        "alg": "bip322",
+        "pubkey": "bc1qalice0000000000000000000000000000000",
+        "value": "ZmFrZS1iaXAzMjItc2ln"
+      }
+    },
+    "aad_id": "acb9b6b4be2454c13450428b9acedbbffa25b8d2c08e9de3f5a9e575aae5b0dc",
+    "id": "b5133e5a2189731ace9cbc214f7b2fe1c51f11cf5df9fd931e142ce57aa17761",
+    "preimage_verifies": true
+  },
+  "notes": "OC is never in the invoice path; this only proves settlement, verified offline by the recipient or any observer."
+}

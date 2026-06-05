@@ -1,0 +1,35 @@
+{
+  "description": "CRITICAL: post-release re-wrap preserves the content-addressed id AND the ciphertext GCM tag. The beacon swaps recipients[] from the beacon device to the recipient device; because chat-kind id and AAD EXCLUDE recipients[], idAfter==idBefore and the ciphertext still authenticates. Without this fix (audit Critical #1), the re-wrap would mutate the AAD/id and break both the tag and the BIP-322 signature.",
+  "inputs": {
+    "sealed_envelope_id": "21fcec920fa11b6c2bd2c68363f34600368c2456bc61ea33ec02ae556cc55a89",
+    "beacon": {
+      "device_id": "oc-chat-beacon",
+      "device_sk": "7c31e88c797afeb1e3a0704f9617de6d3e20b9163f64d21ea9726d662d384a1e"
+    },
+    "recipient": {
+      "address": "bc1qbob000000000000000000000000000000000",
+      "device_id": "bob-laptop",
+      "device_pk": "abd5c03b14d458675ee19c6da072374fddd7a77c09cf083197f018aa58613f17",
+      "device_sk": "d98bf78f799855af755cdc6f284059a4d1954d2a5f987bfdf91fe3a05649c85f",
+      "eph_sk": "10bd15455e6b789ae5944e199907c04c46fd98712050b715052e001280f1957f",
+      "nonce_kek": "9e04c850495a167590ee38df"
+    }
+  },
+  "expected": {
+    "id_before": "21fcec920fa11b6c2bd2c68363f34600368c2456bc61ea33ec02ae556cc55a89",
+    "id_after": "21fcec920fa11b6c2bd2c68363f34600368c2456bc61ea33ec02ae556cc55a89",
+    "id_stable": true,
+    "aad_stable": true,
+    "ciphertext_tag_verifies": true,
+    "recovered_payload": "{\"body\":\"the documents are at ...\",\"conversation_id\":\"c-embargo-77\",\"seq\":1,\"parent_id\":null}",
+    "released_recipient_entry": {
+      "address": "bc1qbob000000000000000000000000000000000",
+      "device_id": "bob-laptop",
+      "device_pk": "abd5c03b14d458675ee19c6da072374fddd7a77c09cf083197f018aa58613f17",
+      "eph_pk": "88f7f43e30fbe44d511e3aeebde4fe417af4502030151e70a3f71918d37bf353",
+      "wrapped_key": "DVowhx9-xWh3Jbdz0pfwue7hv0mV63cyFSbDA80VNk8GM5z1rVdFz9M4fFhsxJ9E",
+      "nonce_kek": "9e04c850495a167590ee38df"
+    }
+  },
+  "notes": "released_recipient_entry is the DETACHED recipients[] entry a client merges locally WITHOUT recomputing the signed id."
+}

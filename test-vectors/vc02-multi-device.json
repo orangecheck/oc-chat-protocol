@@ -1,0 +1,75 @@
+{
+  "description": "multi-device fan-out (kind=chat): one content_key wrapped to two device keys of the same Bitcoin address; recipients[] sorted by device_id in canonical form (irrelevant to id, which excludes recipients).",
+  "inputs": {
+    "payload": "{\"body\":\"meet at block 900000\",\"conversation_id\":\"c-aliciabob-0001\",\"seq\":2,\"parent_id\":\"<vc01-id>\"}",
+    "content_key": "e9af0e9dcad83f042947bba6d9c9bd6e4da4a680983f2a6904ccc9ffb2809175",
+    "nonce_ct": "76cc84b2140e8b614f70e2bd",
+    "sender": {
+      "address": "bc1qalice0000000000000000000000000000000"
+    },
+    "recipients": [
+      {
+        "address": "bc1qbob000000000000000000000000000000000",
+        "device_id": "bob-laptop",
+        "device_pk": "abd5c03b14d458675ee19c6da072374fddd7a77c09cf083197f018aa58613f17",
+        "device_sk": "d98bf78f799855af755cdc6f284059a4d1954d2a5f987bfdf91fe3a05649c85f",
+        "eph_sk": "8daa43dc8f8951ef222b846dcc95889e789a584efd93c275a5e6cefa9477c5ae",
+        "nonce_kek": "90f3a1e3368ce8c11cb95ddc"
+      },
+      {
+        "address": "bc1qbob000000000000000000000000000000000",
+        "device_id": "bob-phone",
+        "device_pk": "3752686d0cc6f102eeefc3ec298586016762d15ec55c83f7ee90b604bbc12615",
+        "device_sk": "d98ba27b6d6d54223a3ca30c7e77222b289221e38218ff9ba0980f9fe9323844",
+        "eph_sk": "fd1702ccfed6e95a86557b510bd6901a93a042eeece1662ea2ad0cd3c6e6af8d",
+        "nonce_kek": "e597a3abab73f7e74cc80bb0"
+      }
+    ]
+  },
+  "expected": {
+    "envelope": {
+      "v": 2,
+      "kind": "chat",
+      "id": "7a4e89fb80e04d3e10f066d77db539e97b29280a1d260fd30899c2324792215a",
+      "alg": {
+        "kem": "x25519",
+        "aead": "aes-256-gcm",
+        "kdf": "hkdf-sha256"
+      },
+      "from": {
+        "address": "bc1qalice0000000000000000000000000000000"
+      },
+      "recipients": [
+        {
+          "address": "bc1qbob000000000000000000000000000000000",
+          "device_id": "bob-laptop",
+          "device_pk": "abd5c03b14d458675ee19c6da072374fddd7a77c09cf083197f018aa58613f17",
+          "eph_pk": "8a9f1d8cabf5be4cb333e3e1aa90edc79d24e6608b95d6e0576076db3637be2a",
+          "wrapped_key": "ru5SL2Oc_PsZscIhocGMaaf3SvOLCfkFzAsmm-398exUj3v3kNGWWUg-ZDkK5C8p",
+          "nonce_kek": "90f3a1e3368ce8c11cb95ddc"
+        },
+        {
+          "address": "bc1qbob000000000000000000000000000000000",
+          "device_id": "bob-phone",
+          "device_pk": "3752686d0cc6f102eeefc3ec298586016762d15ec55c83f7ee90b604bbc12615",
+          "eph_pk": "cec0a9d034f48e2c2b03c8746dca9d9500c83883999ec4e2261973be68b8ef51",
+          "wrapped_key": "iSaFDyPzdcQhKsqZb7xQUWlEOAV2EuQiY7qCZLe0EoLuOvLKhwWHaaZ2FzH43ctj",
+          "nonce_kek": "e597a3abab73f7e74cc80bb0"
+        }
+      ],
+      "ciphertext": "IzH3Kry8z_wgsrDTTm5cHroFnghyV9N2VMy-Hk1CSOkkrVuMhzx1zTUxkjM7Ws67iMfVMzHbTUpRjA477KWdax-ePM6QmOBi40bY6t7kGz5fjZ-6W5bakxya7igMMoTvll1to30RTij1MIkF5dq4TPqhT4U",
+      "nonce_ct": "76cc84b2140e8b614f70e2bd",
+      "created_at": "2026-06-05T00:00:00.000Z",
+      "expires_at": null,
+      "payment": null,
+      "sig": {
+        "alg": "bip322",
+        "pubkey": "bc1qalice0000000000000000000000000000000",
+        "value": "ZmFrZS1iaXAzMjItc2ln"
+      }
+    },
+    "aad_id": "aab38fb7945b818eb03a5bb348462a1407dbfbd56134e2c827f9ecfbf62141e6",
+    "id": "7a4e89fb80e04d3e10f066d77db539e97b29280a1d260fd30899c2324792215a"
+  },
+  "notes": "parent_id placeholder <vc01-id> in payload illustrates the hash-chain rule: a real client sets parent_id = the content-addressed id of vc01."
+}
