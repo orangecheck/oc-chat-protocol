@@ -12,7 +12,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - **`PROTOCOL.md`** — narrative walkthrough: five flows (speak-now, multi-device, pay-to-reach, seal-til-block + release, standing-delivery).
 - **`SECURITY.md`** — threat model + ≥10 attack scenarios, including the SEAL's beacon-trust posture, the OR-double-seal early-release asymmetry, and the seal-metadata leak.
 - **`WHY.md`** — hypothesis-by-hypothesis rationale, including the Ed25519 substitution test run out loud on the seal.
-- **`test-vectors/`** — five reproducible fixtures, including `vc04` proving re-wrap `id`/tag stability.
+- **`test-vectors/`** — six reproducible fixtures, including `vc04` proving re-wrap `id`/tag stability and `vc06` proving per-conversation queue-id unlinkability.
+- **`SPEC.md §8.1`** — durable-inbox routing made normative: opaque per-conversation `queue_id = base64url(HMAC-SHA256(HKDF-SHA256(device_sk), conversation_id))`, a derivable first-contact `bootstrap_id`, the in-payload `recv_queue` handshake (§5), and four operator obligations (ciphertext-only, route-on-opaque-id, hold-no-keys, availability-not-authority). Closes the S6/S10 gap where the inbox routing key was named but unspecified — without it a store-and-forward operator could link a recipient's conversations. Free-tier floor; the paid tier extends only retention/multi-device/history.
 
 ### Honesty notes (normative posture, not marketing)
 - The `seal-til-block` unlock is **beacon-enforced policy, not consensus**. The v0 beacon is **drand quicknet tlock** (named, not OC-controlled). The word "trustless" MUST NOT appear on any v0 seal surface. A Bitcoin-consensus-enforced seal (CLTV-witness) is a structurally pre-wired upgrade path (`seal.cltv_outpoint`), not shipped.

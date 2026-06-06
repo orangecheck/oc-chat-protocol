@@ -82,11 +82,13 @@ Thread state is **inside the encrypted payload**, never the plaintext envelope (
   "body": "<message text or a typed structure>",
   "conversation_id": "<stable thread label>",
   "seq": <integer, monotonic per sender within the thread>,
-  "parent_id": "<chat_envelope_id of the parent message, or null for the first>"
+  "parent_id": "<chat_envelope_id of the parent message, or null for the first>",
+  "recv_queue": "<optional; base64url; my durable-inbox queue_id (§8.1) for this conversation — deposit future messages to me here>"
 }
 ```
 
 - `conversation_id` is a stable label. The RECOMMENDED default is `SHA-256` of the two Bitcoin addresses sorted ascending and joined with `:` — a deterministic 1:1 thread id requiring no negotiation.
+- `recv_queue` is the optional durable-inbox handshake (§8.1.3): the sender advertises its own per-conversation `queue_id` so the peer routes durable deposits to it instead of the bootstrap queue. It is carried inside the AEAD-sealed payload so the inbox operator never learns the mapping. A client that omits it simply keeps using the bootstrap queue.
 - **`parent_id` MUST equal the `chat_envelope_id` of the message it replies to** (or `null` for the first in a thread). This makes each thread a verifiable hash-chain: a client MUST order and validate by the `parent_id` chain, and MUST NOT trust `created_at` (which is plaintext and untrusted) for ordering. A missing parent is a detectable gap.
 
 This gives per-thread tamper-evidence. It is NOT a transport-layer anti-replay or anti-reorder guarantee: a relay can still withhold or delay delivery (§SECURITY).
@@ -156,7 +158,51 @@ If `redundant_beacon` is set, `content_key` is escrowed independently to BOTH be
 
 ## 8. Transport
 
-OC Chat uses OC Lock's gift-wrap unchanged: the canonical chat envelope is the opaque inner blob of a NIP-59 gift-wrap (Nostr kind-1059) signed by an ephemeral, discarded Schnorr key, `created_at` rounded to the minute, with the recipient inbox pubkey in the `p` tag and an advisory `ct` tag `oc-chat/v1`. The recipient's chat inbox pubkey is `HKDF(device_sk)` (so publishing a device record IS creating an inbox; no second ceremony). A relay sees an ephemeral pubkey, an inbox pubkey, and an opaque blob — no sender, no real timestamp, no content. Durable delivery (store-and-forward beyond relay retention) is an implementation concern, not protocol; see PROTOCOL.md.
+OC Chat uses OC Lock's gift-wrap unchanged: the canonical chat envelope is the opaque inner blob of a NIP-59 gift-wrap (Nostr kind-1059) signed by an ephemeral, discarded Schnorr key, `created_at` rounded to the minute, with the recipient inbox pubkey in the `p` tag and an advisory `ct` tag `oc-chat/v1`. The recipient's chat inbox pubkey is `HKDF(device_sk)` (so publishing a device record IS creating an inbox; no second ceremony). A relay sees an ephemeral pubkey, an inbox pubkey, and an opaque blob — no sender, no real timestamp, no content. Durable delivery (store-and-forward beyond relay retention) is specified in §8.1.
+
+## 8.1 Durable inbox routing — per-conversation queue IDs — NORMATIVE
+
+§8's gift-wrap rendezvous is best-effort: a relay MAY garbage-collect an event before an offline recipient connects (SECURITY S10), so an offline recipient plus a swept relay event is a lost message. A conforming deployment therefore SHOULD provide a **store-and-forward inbox** — an operator-run queue that retains the *opaque* gift-wrap inner blob (the canonical chat envelope, §3) until the recipient drains it. This is the free-tier floor (PROTOCOL Flow 1), **not** a paid feature; a paid tier extends only the retention horizon, multi-device fan-out, and history depth — durability of basic delivery is never the paywall.
+
+The inbox operator MUST be unable to (a) read any message — it holds ciphertext only (the envelope's GCM-sealed `ciphertext`), never a key; or (b) **link** two conversations of one recipient, or link a queue to a Bitcoin identity. The published device inbox pubkey (§8) is a single value per device; routing every conversation to it would let an operator that *retains* enumerate a recipient's whole correspondence — the relay leak of SECURITY S6, made worse by persistence. Durable routing therefore uses an **opaque per-conversation queue id** derived from a recipient secret, never the device pubkey.
+
+### 8.1.1 Derivation
+
+Let `device_sk` be the recipient device's 32-byte X25519 private key and `conversation_id` the stable thread label (§5). Define:
+
+```
+queue_seed   = HKDF-SHA256( ikm = device_sk, salt = "" , info = "oc-lock-chat/inbox-queue-seed/v1", L = 32 )
+queue_id(c)  = base64url( HMAC-SHA256( key = queue_seed, msg = utf8(conversation_id) ) )      // 43 chars, unpadded
+```
+
+- `queue_seed` is a per-device secret. It MUST NOT be published and MUST NOT leave the device unencrypted.
+- `queue_id(c)` is a 32-byte tag rendered base64url **without padding**. It is unguessable without `queue_seed`, and two conversations on the same device produce unrelated ids — so the operator sees N independent queues, not one recipient (test vector `vc06`).
+- A device recomputes `queue_id` for any conversation it participates in from `queue_seed` + `conversation_id`, holding **no stored queue↔conversation map**. Because the id binds to `device_sk`, each of a recipient's devices has its own per-conversation queue; the multi-device backfill (PROTOCOL Flow 2, SECURITY S8) carries history to a device added later.
+
+### 8.1.2 Bootstrap (first contact)
+
+A sender reaching a recipient for the first time cannot yet compute `queue_id(c)` (it derives from a secret the sender lacks). The first inbound message of a new conversation is deposited to the recipient's **bootstrap queue**, derivable by anyone holding the recipient's device record:
+
+```
+bootstrap_id = base64url( SHA-256( utf8( "oc-lock-chat/inbox-bootstrap/v1:" || inbox_pubkey_hex ) ) )
+```
+
+where `inbox_pubkey_hex` is the recipient's published §8 inbox pubkey (lowercase hex). The bootstrap queue carries the same recipient-linkability the relay `p` tag does (SECURITY S6) and MUST be disclosed as such; it is used only until a per-conversation queue is established.
+
+### 8.1.3 Handshake
+
+To migrate a conversation off the bootstrap queue, each party advertises **its own** receiving `queue_id` inside the encrypted payload (§5 `recv_queue`). A party that has learned its peer's `recv_queue` MUST deposit subsequent messages for that conversation there, and SHOULD stop using the peer's bootstrap queue. Because `recv_queue` travels inside the AEAD-sealed payload, the operator never learns the bootstrap↔per-conversation mapping and cannot link the two.
+
+### 8.1.4 Operator obligations — NORMATIVE
+
+A store-and-forward inbox operator MUST:
+
+1. Store the gift-wrap inner blob **byte-for-byte** — preserving the envelope `id`, `sig`, and ciphertext GCM tag, and preserving unknown fields (§13). A re-wrap fan-out (§3.3) is a detached `recipients[]` merge and MUST NOT recompute the signed `id`.
+2. Route **solely** on the opaque `queue_id` / `bootstrap_id`. It MUST NOT require, store, or index a Bitcoin address, a device pubkey, or any plaintext thread metadata.
+3. Hold **no** key material of any party.
+4. Treat the queue as **availability, not authority**: a draining recipient re-verifies authenticity from the artifact alone (BIP-322 device-record binding + `chat_envelope_id`), exactly as for a relay-delivered message. The operator endpoint is a NAMED trust anchor for *availability* and MUST be surfaced plainly.
+
+The Ed25519 substitution test passes by inheritance: the queue is an ordinary mailbox that asserts no Bitcoin claim of its own, but the authority of every message it holds derives from the BIP-322-rooted device record (§0), which collapses under substitution.
 
 ## 9. Errors
 
@@ -169,6 +215,7 @@ In addition to OC Lock SPEC §6 codes:
 | `E_NO_POSTAGE` | `pay-to-reach` envelope from a non-contact lacked valid postage for the recipient's floor. |
 | `E_BAD_POSTAGE` | `SHA-256(preimage) != payment_hash`, or the `nonce`/`recipient`/`amount` binding did not match. |
 | `E_THREAD_GAP` | `parent_id` does not resolve to a held parent envelope id. |
+| `E_QUEUE_ROUTE` | A durable-inbox deposit/drain referenced a `queue_id` the caller is not entitled to, or a malformed (non-base64url / wrong-length) queue id. |
 
 ## 10. Nostr kind registry
 
@@ -190,6 +237,7 @@ A client is OC Chat v0 compliant iff it:
 - [ ] Reuses OC Lock §4.2 wrapping verbatim for `content_key`.
 - [ ] Computes `chat_aad` and `chat_envelope_id` with `recipients=[]` for `kind ∈ {chat, chat-seal}` (§3) and reproduces the test vectors.
 - [ ] Carries `conversation_id`/`seq`/`parent_id` inside the encrypted payload and orders by the `parent_id` hash-chain, never by `created_at` (§5).
+- [ ] If it offers durable store-and-forward, derives `queue_id`/`bootstrap_id` per §8.1, routes the inbox solely on those opaque ids (no address/device-pubkey index), stores the blob byte-for-byte, and reproduces vector `vc06`.
 - [ ] Verifies `SHA-256(preimage) == payment_hash` and the `nonce`/`recipient`/`amount` binding for `pay-to-reach` (§6).
 - [ ] Wraps to the beacon and performs release re-wrap as a detached `recipients[]` merge for `seal-til-block` (§7), and NEVER labels a v0 beacon seal "trustless".
 - [ ] Surfaces every trust anchor (beacon id/url, relay, redundant beacon) and the early-release / brick risks at compose time.

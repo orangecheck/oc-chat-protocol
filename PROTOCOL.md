@@ -30,7 +30,7 @@ The recipient's inbox pubkey is derived from the device key, so *publishing a de
 4. The envelope is gift-wrapped (ephemeral Schnorr key, `created_at` minute-rounded) and published. The relay sees a throwaway pubkey, Bob's inbox pubkey, and an opaque blob.
 5. Bob's inbox subscription receives it, finds his `device_id`, unwraps `content_key`, decrypts, and chains it by `parent_id`. Total on-screen time: under a second.
 
-Durable delivery: relays are best-effort and may garbage-collect events. A conforming deployment SHOULD provide at least a best-effort store-and-forward so a message sent while Bob is offline still arrives — this is the free-tier floor, not a paid feature. A paid sealed inbox adds long-horizon, multi-device, per-conversation-queue-ID history (ciphertext only; the operator cannot read or link it).
+Durable delivery: relays are best-effort and may garbage-collect events. A conforming deployment SHOULD provide at least a best-effort store-and-forward so a message sent while Bob is offline still arrives — this is the free-tier floor, not a paid feature. It works by depositing the same opaque gift-wrap blob to an operator-run queue keyed by an **opaque per-conversation `queue_id`** (`HMAC(HKDF(device_sk), conversation_id)`, SPEC §8.1): the first message of a new conversation lands on Bob's derivable *bootstrap* queue, then both sides exchange per-conversation `queue_id`s inside the encrypted payload (`recv_queue`) and migrate off it, so the operator sees unlinkable queues of ciphertext it can neither read nor tie to a Bitcoin address. A paid sealed inbox adds only long-horizon retention, multi-device fan-out, and history depth on top of that same queue — durability of basic delivery is never the paywall.
 
 ## Flow 2 — multi-device
 

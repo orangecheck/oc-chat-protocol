@@ -1,0 +1,22 @@
+{
+  "description": "Durable-inbox routing (SPEC §8.1): per-conversation queue_id derivation. queue_seed = HKDF-SHA256(ikm=device_sk, salt='', info='oc-lock-chat/inbox-queue-seed/v1', L=32); queue_id(c) = base64url(HMAC-SHA256(queue_seed, utf8(conversation_id))) unpadded; bootstrap_id = base64url(SHA-256(utf8('oc-lock-chat/inbox-bootstrap/v1:'||inbox_pubkey_hex))). Proves: the id is recomputable from device_sk + conversation_id alone (no stored map), and two conversations on the SAME device yield UNLINKABLE queue ids — so a store-and-forward operator sees N independent queues, never a recipient pubkey or Bitcoin address. Reuses the vc04 recipient device for a coherent set.",
+  "inputs": {
+    "device_sk": "d98bf78f799855af755cdc6f284059a4d1954d2a5f987bfdf91fe3a05649c85f",
+    "inbox_pubkey_hex": "abd5c03b14d458675ee19c6da072374fddd7a77c09cf083197f018aa58613f17",
+    "conversation_id": "c-embargo-77",
+    "conversation_id_2": "c-standup-12",
+    "hkdf": { "hash": "sha256", "salt": "", "info": "oc-lock-chat/inbox-queue-seed/v1", "length": 32 },
+    "bootstrap_label": "oc-lock-chat/inbox-bootstrap/v1:"
+  },
+  "expected": {
+    "queue_seed": "ad66c5772b8dbaeed1646f6c0d31f789bfa6c981d70d5dec8f75735de29b89d3",
+    "queue_id": "pTIwfTSujvkE54L44dJvN0WYgf0kNw49MTcG95wR6d8",
+    "queue_id_len": 43,
+    "bootstrap_id": "vD2FfSjKlSgta25W542UzRakHBYHpSgt8CnY3skiYlk",
+    "bootstrap_id_len": 43,
+    "queue_id_2": "RW26LQRCSmJ93S6Mzwr3T9Iq6krovkcclyOeCvBOyCE",
+    "unlinkable": true,
+    "queue_id_equals_queue_id_2": false
+  },
+  "notes": "queue_seed MUST NOT be published and MUST NOT leave the device unencrypted. queue_id is base64url WITHOUT padding (43 chars for 32 bytes). The bootstrap queue carries the SPEC §8.1.2 / SECURITY S6 recipient-linkability and is used only for first contact; the per-conversation queue_id is exchanged inside the AEAD payload (§5 recv_queue) thereafter. Reproduce with: queue_seed=HKDF-SHA256(device_sk,'',info,32); queue_id=base64url(HMAC-SHA256(queue_seed,conversation_id))."
+}

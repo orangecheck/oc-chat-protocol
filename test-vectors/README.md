@@ -15,6 +15,7 @@ For OC Chat envelopes (`kind="chat"` and `kind="chat-seal"`), the content-addres
 | `vc03-seal-til-block.json` | `kind=chat-seal`; `content_key` wrapped to a NAMED beacon; `seal{}` predicate committed in the `id`. |
 | `vc04-seal-rewrap-stability.json` | **CRITICAL.** Post-release re-wrap (beacon → recipient) preserves `id` (`id_after == id_before`) AND the ciphertext GCM tag still authenticates. Proves the recipient-exclusion rule. |
 | `vc05-pay-to-reach.json` | `kind=chat` + `postage{}` with a real Lightning preimage; `sha256(preimage) == payment_hash` verifies OFFLINE; `payment_hash`/`nonce`/`amount` committed in the `id` (replay-binding). |
+| `vc06-inbox-queue-id.json` | Durable-inbox routing (SPEC §8.1): `queue_seed = HKDF(device_sk)`, `queue_id = base64url(HMAC(queue_seed, conversation_id))`, plus the derivable `bootstrap_id`. Proves two conversations on one device yield UNLINKABLE opaque queue ids — the operator sees N queues, never a recipient. |
 
 ## Conformance
 
@@ -25,5 +26,6 @@ Given a vector's `inputs`, a compliant implementation MUST:
 3. Compute `id` as `SHA-256(canonical(envelope | id="", sig.value="", recipients=[]))` for chat kinds.
 4. Reproduce `expected.id` (and for `vc04`, `id_after == id_before` with `ciphertext_tag_verifies == true`).
 5. For `vc05`, verify `SHA-256(preimage) == payment_hash`.
+6. For `vc06`, derive `queue_seed`/`queue_id`/`bootstrap_id` per SPEC §8.1 and reproduce `expected`, including `queue_id != queue_id_2` (unlinkability).
 
 Canonicalization is RFC 8785 plus the OC Lock constraint that `recipients[]` (when present in the canonical form) is sorted by `device_id` ascending — irrelevant to the chat `id`, which excludes `recipients[]`, but preserved for wire interop.
