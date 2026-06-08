@@ -1,0 +1,12 @@
+{
+  "description": "Directory listing d-tag derivation (SPEC §8.2.1). d-tag = 'oc-lock-chat-dir:' || base64url(SHA-256('oc-lock-chat-dir/v1:' || lower(handle))), unpadded. Salted-handle hash so the directory is lookup-by-known-handle, never enumerate-all — the d-tag reveals nothing about the handle to a relay that only stores it.",
+  "inputs": {
+    "handle": "alice",
+    "salt_label": "oc-lock-chat-dir/v1:"
+  },
+  "expected": {
+    "d_tag": "oc-lock-chat-dir:ZfLP2s-FrLVE152xghZld2DYd-YMs9P1Eu4qBv28mc4",
+    "d_tag_len": 60
+  },
+  "notes": "handle is lowercased before hashing. base64url is unpadded. Reproduce with: 'oc-lock-chat-dir:' + base64url(sha256(utf8('oc-lock-chat-dir/v1:'+handle)))."
+}

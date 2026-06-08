@@ -16,6 +16,8 @@ For OC Chat envelopes (`kind="chat"` and `kind="chat-seal"`), the content-addres
 | `vc04-seal-rewrap-stability.json` | **CRITICAL.** Post-release re-wrap (beacon → recipient) preserves `id` (`id_after == id_before`) AND the ciphertext GCM tag still authenticates. Proves the recipient-exclusion rule. |
 | `vc05-pay-to-reach.json` | `kind=chat` + `postage{}` with a real Lightning preimage; `sha256(preimage) == payment_hash` verifies OFFLINE; `payment_hash`/`nonce`/`amount` committed in the `id` (replay-binding). |
 | `vc06-inbox-queue-id.json` | Durable-inbox routing (SPEC §8.1): `queue_seed = HKDF(device_sk)`, `queue_id = base64url(HMAC(queue_seed, conversation_id))`, plus the derivable `bootstrap_id`. Proves two conversations on one device yield UNLINKABLE opaque queue ids — the operator sees N queues, never a recipient. |
+| `vc07-directory-dtag.json` | Directory listing d-tag (SPEC §8.2.1): `d-tag = "oc-lock-chat-dir:" + base64url(SHA-256("oc-lock-chat-dir/v1:" + lower(handle)))`. Salted-handle hash → lookup-by-known-handle, never enumerate-all. |
+| `vc08-directory-listing.json` | Directory listing content-addressing + tombstone (SPEC §8.2.1/§8.2.4): `listing_id = SHA-256(canonical(content))`; the tombstone (`opted_in:false`) shares the d-tag and supersedes the listing with a distinct id. |
 
 ## Conformance
 

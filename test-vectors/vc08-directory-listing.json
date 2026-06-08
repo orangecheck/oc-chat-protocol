@@ -1,0 +1,30 @@
+{
+  "description": "Directory listing content-addressing + tombstone supersession (SPEC §8.2.1/§8.2.4). listing_id = SHA-256(canonical(content)), where canonical is RFC 8785 (sorted keys, compact) LF-terminated per §0. A tombstone is the SAME d-tag with opted_in=false and optional fields stripped; being addressable (NIP-33) it replaces the prior record. Proves both the content-addressed id and that a tombstone is a distinct, verifiable artifact.",
+  "inputs": {
+    "listing": {
+      "v": 1,
+      "handle": "alice",
+      "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+      "inbox_pubkey": "abd5c03b14d458675ee19c6da072374fddd7a77c09cf083197f018aa58613f17",
+      "display_name": "Alice",
+      "bio": "bitcoiner",
+      "opted_in": true,
+      "created_at": 1733600000
+    },
+    "tombstone": {
+      "v": 1,
+      "handle": "alice",
+      "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+      "inbox_pubkey": "abd5c03b14d458675ee19c6da072374fddd7a77c09cf083197f018aa58613f17",
+      "opted_in": false,
+      "created_at": 1733686400
+    }
+  },
+  "expected": {
+    "listing_canonical": "{\"address\":\"bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8\",\"bio\":\"bitcoiner\",\"created_at\":1733600000,\"display_name\":\"Alice\",\"handle\":\"alice\",\"inbox_pubkey\":\"abd5c03b14d458675ee19c6da072374fddd7a77c09cf083197f018aa58613f17\",\"opted_in\":true,\"v\":1}",
+    "listing_id": "920d9909967bd734d145e5a12719b0e907430d12a3493430f8b0afcd7d3d0881",
+    "tombstone_id": "8f0d6f2294768d14fb4950f94df744e43d2785cd3731e68a49ae692d5715a1db",
+    "same_d_tag": true
+  },
+  "notes": "canonical = sorted-key compact JSON + a trailing LF (\\n), then SHA-256. The listing and the tombstone share the d-tag (vc07) so the tombstone supersedes the listing at conforming relays; they have DIFFERENT content-addressed ids."
+}

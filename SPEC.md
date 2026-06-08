@@ -204,6 +204,49 @@ A store-and-forward inbox operator MUST:
 
 The Ed25519 substitution test passes by inheritance: the queue is an ordinary mailbox that asserts no Bitcoin claim of its own, but the authority of every message it holds derives from the BIP-322-rooted device record (§0), which collapses under substitution.
 
+## 8.2 Discoverability directory (opt-in) — NORMATIVE
+
+§8 lets a sender who already knows your Bitcoin address reach you (your kind-30078 device record IS your inbox). The directory adds the missing half: being **found by a human-readable handle** without the searcher knowing your address — strictly opt-in, revocable, and graduated. **The default is invisible:** a conforming client publishes NO directory record unless the user explicitly opts in.
+
+### 8.2.1 The listing record
+
+A listing is an **addressable** (NIP-33-replaceable) Nostr event, **kind 30114**, signed by the user's **inbox key** (`deriveNostrKey(device_sk)` — the same key that signs gift-wraps, §8):
+
+```
+d-tag   = "oc-lock-chat-dir:" || base64url( SHA-256( "oc-lock-chat-dir/v1:" || lower(handle) ) )   // unpadded
+content = canonical JSON {
+  "v": 1, "handle": "<[a-z0-9_]{3,32}>", "address": "<bitcoin address the inbox key is bound to>",
+  "inbox_pubkey": "<hex; the §8.2 reachability pointer = the event pubkey>",
+  "display_name"?: "<=48 chars", "bio"?: "<=80 chars", "avatar"?: "<https url>",
+  "opted_in": true, "created_at": <unix seconds>
+}
+listing_id = SHA-256( canonical(content) )   // hex, content-addressed (invariant 4)
+```
+
+The `d`-tag is a **salted hash of the handle** — a conforming directory is **lookup-by-known-handle, never enumerate-all** (there is NO `GET /all` and no bulk-dump). It is keyed by the handle hash, not the raw address (a raw-address key would be deterministically enumerable). `canonical(x)` is §0's RFC 8785 + LF-terminator.
+
+### 8.2.2 The Bitcoin gate — NORMATIVE (this is what makes the directory belong to this family)
+
+A bare listing is **not** Bitcoin-load-bearing: *"address X, here is my inbox key, signed by X"* substitutes perfectly to an Ed25519 npub signed by an npub. A conforming resolver therefore MUST refuse to honor a handle unless **all three** hold:
+
+1. The kind-30114 event is signed by `inbox_pubkey`.
+2. `inbox_pubkey` is bound to `address` via a valid kind-30078 device record (the existing BIP-322 binding, OC Lock §3). **The directory inherits its Bitcoin proof from the device record — no second wallet ceremony.**
+3. **`address` clears the UTXO floor:** it controls at least one confirmed UTXO of age ≥ the deployment's `dir_utxo_floor`. This is the load-bearing hook — an Ed25519 keypair has **no analog to an aged, funded UTXO**, so a handle costs Bitcoin maturity to claim (Sybil-resistance doubling as anti-squat). UTXO state is **public chain data**, so the check preserves offline-verifiability (invariant 5). The floor is deployment-set; the RECOMMENDED v0 floor is *funded + ≥ 144 confirmations (~1 day)*, with the actual UTXO age surfaced as a graduated trust signal (older = more trusted).
+
+A handle whose claimant fails (2) or (3) MUST be treated as un-listed. Handle uniqueness is **first-writer-wins, best-effort across relays, explicitly NOT global consensus** — the address is the trust root; the handle is a non-authoritative display label. A `did:oc`-only identity (the session bridge, no Bitcoin address) MAY publish a bridge listing but MUST NOT claim a scarce handle under (3); a conforming client surfaces it with a muted "via ochk.io" tier and prompts attaching a Bitcoin address to graduate.
+
+### 8.2.3 The social-graph firewall — NORMATIVE
+
+The listing record MUST NOT contain, reference, or be co-indexed with any `queue_id`, `recv_queue` (§8.1.3), `conversation_id`, contact list, or message-routing metadata. **The directory reveals a NODE — "this identity is reachable" — and NEVER an EDGE — who messages whom.** The only reachability pointer it republishes is `inbox_pubkey`, which a sender who resolved your handle needs anyway and which the device record already exposes.
+
+### 8.2.4 Revocation
+
+Self-removal = publish a replacement kind-30114 event with the **same d-tag**, `opted_in: false` and the optional fields stripped, signed by the inbox key (reusing the OC Lock §3.5/§3.6 tombstone precedent). Because the event is NIP-33-addressable, the tombstone **replaces** the prior record at conforming relays. A conforming client MUST treat a tombstone — or an absent record — as not-discoverable, MUST refuse to resolve the handle, and MUST treat a tombstone seen on ANY relay as authoritative even if a stale live copy exists elsewhere; it SHOULD additionally fire a NIP-09 deletion request. **Revocation is forward-effective only** (NORMATIVE honesty, surfaced at opt-in time): a tombstone stops new resolution on conforming relays; it cannot retract copies on non-conforming relays, archives, or scrapers. The promise is "stop new discovery," never "delete yourself completely." Removal does not unsend or break existing conversations.
+
+### 8.2.5 Resolution
+
+To find a user, a client computes the `d`-tag from the queried handle, fetches the kind-30114 events for that `d`-tag across its relay set (freshest `created_at` wins; a tombstone wins over any live copy), verifies §8.2.2 (1)–(3), and on success surfaces `address` + profile + a trust tier so the user can start a thread. First-contact still passes the recipient's §4.1 anti-spam policy — **being listed is not a free-message bypass.** Privacy-sensitive resolution SHOULD query relays directly, NOT a third-party indexer (which would learn who-searches-for-whom). The relay/index operator is a NAMED availability anchor and MUST NOT be relied on as authority.
+
 ## 9. Errors
 
 In addition to OC Lock SPEC §6 codes:
@@ -216,6 +259,8 @@ In addition to OC Lock SPEC §6 codes:
 | `E_BAD_POSTAGE` | `SHA-256(preimage) != payment_hash`, or the `nonce`/`recipient`/`amount` binding did not match. |
 | `E_THREAD_GAP` | `parent_id` does not resolve to a held parent envelope id. |
 | `E_QUEUE_ROUTE` | A durable-inbox deposit/drain referenced a `queue_id` the caller is not entitled to, or a malformed (non-base64url / wrong-length) queue id. |
+| `E_DIR_UNVERIFIED` | A kind-30114 listing failed §8.2.2: bad signature, `inbox_pubkey` not bound to `address` via a kind-30078 record, or `address` did not clear the UTXO floor. The handle resolves as un-listed. |
+| `E_DIR_REVOKED` | The resolved listing is a tombstone (`opted_in: false`) or absent — the handle is not discoverable. |
 
 ## 10. Nostr kind registry
 
@@ -226,7 +271,9 @@ OC Chat claims a fresh block above OC Find's (unratified) 30094–30109 reservat
 | 30110 | thread / channel descriptor (addressable, NIP-33-replaceable) | `oc-lock-chat-ch:` | one active descriptor per `conversation_id`. |
 | 30111 | message envelope (when published addressably rather than gift-wrapped) | `oc-lock-chat-msg:` | gift-wrap (kind-1059) is the default DM transport; 30111 is for public/channel posts. |
 | 30112 | seal / block-height anchor descriptor | `oc-lock-chat-seal:` | references the sealed envelope id + `unlock_block` + beacon. |
-| 30113–30115 | reserved (group-key rotation, mailbox index, postage-policy record) | `oc-lock-chat-*:` | registry extensions; not canonical v0. |
+| 30113 | reserved (group-key rotation) | `oc-lock-chat-*:` | registry extension; not canonical v0. |
+| **30114** | **discoverability directory / reachability listing** (addressable, NIP-33-replaceable) | `oc-lock-chat-dir:` | §8.2. d-tag = salted handle hash; opt-in, UTXO-gated, revocable by tombstone. |
+| 30115 | reserved (postage-policy record) | `oc-lock-chat-*:` | registry extension; not canonical v0. |
 
 The transport gift-wrap remains Nostr kind-1059 (NIP-59, not an OC-allocated kind). Device records remain kind-30078 (OC Lock SPEC §11). Allocating these required widening the family range past 30099; the workspace `KINDS.md` and `oc-agent-protocol/SPEC.md §4` are the rolled-up source of truth.
 
@@ -238,6 +285,7 @@ A client is OC Chat v0 compliant iff it:
 - [ ] Computes `chat_aad` and `chat_envelope_id` with `recipients=[]` for `kind ∈ {chat, chat-seal}` (§3) and reproduces the test vectors.
 - [ ] Carries `conversation_id`/`seq`/`parent_id` inside the encrypted payload and orders by the `parent_id` hash-chain, never by `created_at` (§5).
 - [ ] If it offers durable store-and-forward, derives `queue_id`/`bootstrap_id` per §8.1, routes the inbox solely on those opaque ids (no address/device-pubkey index), stores the blob byte-for-byte, and reproduces vector `vc06`.
+- [ ] If it offers the directory (§8.2), publishes a kind-30114 listing ONLY on explicit opt-in (default invisible), derives the salted-handle `d`-tag (vector `vc07`), refuses to resolve a handle unless the §8.2.2 gate passes (signature + kind-30078 binding + UTXO floor), enforces the §8.2.3 social-graph firewall, honors tombstones (vector `vc08`), and never exposes a bulk-dump endpoint.
 - [ ] Verifies `SHA-256(preimage) == payment_hash` and the `nonce`/`recipient`/`amount` binding for `pay-to-reach` (§6).
 - [ ] Wraps to the beacon and performs release re-wrap as a detached `recipients[]` merge for `seal-til-block` (§7), and NEVER labels a v0 beacon seal "trustless".
 - [ ] Surfaces every trust anchor (beacon id/url, relay, redundant beacon) and the early-release / brick risks at compose time.
@@ -254,8 +302,9 @@ OC Chat versions with OC Lock's `envelope.v` (currently 2). New `kind` values an
 
 ## 14. IANA / external identifiers
 
-- Nostr kinds: **30110–30112** (addressable), d-tag namespace `oc-lock-chat-*` claimed by this spec; transport reuses kind-1059 (NIP-59).
+- Nostr kinds: **30110–30112** + **30114** (directory, §8.2), addressable, d-tag namespace `oc-lock-chat-*` claimed by this spec; transport reuses kind-1059 (NIP-59).
 - Advisory gift-wrap content tag: `ct = "oc-chat/v1"`.
+- Directory d-tag salt label: `"oc-lock-chat-dir/v1:"`.
 
 ## 15. Acknowledgements
 
