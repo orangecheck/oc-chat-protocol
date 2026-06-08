@@ -125,9 +125,10 @@ This was a blocking open item; v0 **specifies** a recipient-side, per-DM, non-re
 2. **Binding (re-derived by OC itself):** decode `bolt11`, read its description-hash (`h`) tag, and assert it equals `SHA-256( lnurl_metadata || urlDecode(payerdata) )`. The verifier MUST recompute this hash **itself** — wallets stopped enforcing the LNURL description-hash (lnurl PR #234, 2026-05) — and MUST hash the **verbatim** `lnurl_metadata` bytes (never `JSON.stringify(JSON.parse(x))`, which reorders and breaks the match).
 3. **Recipient:** the `lnurl_metadata` `text/identifier` equals the claimed `recipient`, resolved from an identity-signed endpoint (§6.1).
 4. **Amount:** the `bolt11` carries an explicit amount AND `amount_sats >= floor_sats` (reject amountless invoices).
-5. **Freshness:** `now <= invoice_timestamp + expiry` (default 3600s) at pay time.
-6. **Nonce:** the in-body `nonce` is the one committed in `payerdata`.
-7. **Anti-replay:** the `payment_hash` is not in the recipient's **local spent-ledger** (one-time use). On accept, record it.
+5. **Nonce:** the in-body `nonce` is the one committed in `payerdata`.
+6. **Anti-replay:** the `payment_hash` is not in the recipient's **local spent-ledger** (one-time use). On accept, record it.
+
+The recipient does **NOT** re-enforce the invoice's expiry: the preimage already proves the HTLC settled, and a short (e.g. 1h) invoice expiry would wrongly reject valid postage that took longer than that to *deliver*. Invoice freshness is the **sender's** pay-time concern (don't pay an expired invoice); per-DM freshness is supplied by the nonce + the spent-ledger.
 
 All checks pass + not-spent → inbox. Any fail OR already-spent → the message is **held in the Requests tray** (§6 free-tier path), never dropped.
 
