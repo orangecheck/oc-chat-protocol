@@ -173,6 +173,33 @@ The recipient SHOULD independently re-check `unlock_block` against their own nod
 ### 7.5 Redundant beacons
 If `redundant_beacon` is set, `content_key` is escrowed independently to BOTH beacons so EITHER release unlocks. Implementations MUST disclose that this **halves brick risk but doubles early-release surface**: either beacon's threshold can decrypt the body early. A sealed message's UI MUST read "readable early by {named quorum}", not "unlocks at block N".
 
+### 7.6 v0 in-ciphertext drand-tlock profile — NORMATIVE (what ships)
+
+§7.2–7.3 describe the spec-pure path: a beacon *device* re-wraps `content_key` on authenticated release, and the `seal` block is a committed top-level envelope field. That path needs an `@orangecheck/lock-core` change — the shipped `lock-core@1.0.1` exposes only `EnvelopeKind = 'identity' | 'payment'`, no `chat-seal` kind, and no committed top-level `seal` field. It is the named **upgrade target** (vectors `vc03`/`vc04`), NOT what v0 deploys.
+
+**v0 deploys the in-ciphertext drand-tlock profile**, identical in shape to the postage carrier (§6.2):
+
+- The readable `body` is the **empty string**. The real text is `AES-256-GCM(key = R, nonce, plaintext = text)` carried as `seal.locked_ct` + `seal.nonce`, where `R` is a fresh 32-byte reveal secret.
+- `R` is **timelock-encrypted to a future drand round** (`seal.tlock`, an age-armored `tlock` blob), released by the named beacon `drand:quicknet` — NOT by an OC beacon device, and with **no OC re-wrap endpoint** (drand IS the beacon; anyone can decrypt `R` once the round's BLS signature publishes).
+- The seal block rides **inside the encrypted ChatBody**, so its integrity rests on the AEAD: the ciphertext is committed in the envelope `id` and device-Schnorr-signed (§4.1), so tampering with `unlock_block` (or any seal field) breaks the signature (`vc13`).
+
+v0-profile `seal` fields (in addition to `unlock_block`, `confirmations`, `anchor:"beacon"`, `beacon_id:"drand:quicknet"`, `beacon_url`):
+
+```json
+"round":        <integer drand quicknet round, derived from unlock_block>,
+"chain_hash":   "52db9ba7…",   // quicknet chain hash — binds tlock to this beacon
+"chain_anchor": "mempool.space" | "blockstream.info",
+"tlock":        "<age-armored drand tlock ciphertext of R>",
+"locked_ct":    "<base64url AES-256-GCM(R, nonce, utf8(text))>",
+"nonce":        "<base64url 12-byte nonce>"
+```
+
+**Round derivation.** `round = roundAt(now + max(0, unlock_block − current_tip) × 600000ms)` against quicknet (`genesis 1692803367`, `period 3s`). The block→time leg is an **approximation** (~10 min/block); its std-dev is ≈ `10min · sqrt(N_blocks)` — hours at weekly horizons, unbounded worst case. The displayed unit is the block height; timing is approximate (`vc10`).
+
+**Hard chain gate (NORMATIVE).** A conforming v0 recipient **MUST NOT** surface the body until it independently confirms `chain_tip ≥ unlock_block + confirmations` against `chain_anchor` (a named explorer) **or its own node — EVEN IF `tlock` has already yielded `R`.** A sealed message therefore opens at the **later** of (the drand round elapsing, the chain reaching the height). This makes the displayed "readable ~at block N" true on a conforming client; reading it early requires BOTH a drand-threshold collusion AND a non-conforming client. On release the recipient SHOULD record the observed block hash at `unlock_block` as an offline-verifiable receipt.
+
+**Ed25519 verdict (NORMATIVE honesty).** The key release rests entirely on drand (a threshold-BLS beacon, Bitcoin-independent): swap block height for an NTP clock and the construction is byte-identical, so **this leg FAILS the Ed25519 substitution test** (WHY H5). The `unlock_block` is a condition the recipient *verifies* against public chain data — offline-verifiable, but it does not hold the key. v0 MUST say this on every seal surface, MUST NOT let the seal carry the Bitcoin claim alone, and MUST cap the horizon (reference build: ≤ 4320 blocks / ~30 days) while the beacon durability-SLA + key-resharing open items (SECURITY S3/S11) are unresolved.
+
 ## 8. Transport
 
 OC Chat uses OC Lock's gift-wrap unchanged: the canonical chat envelope is the opaque inner blob of a NIP-59 gift-wrap (Nostr kind-1059) signed by an ephemeral, discarded Schnorr key, `created_at` rounded to the minute, with the recipient inbox pubkey in the `p` tag and an advisory `ct` tag `oc-chat/v1`. The recipient's chat inbox pubkey is `HKDF(device_sk)` (so publishing a device record IS creating an inbox; no second ceremony). A relay sees an ephemeral pubkey, an inbox pubkey, and an opaque blob — no sender, no real timestamp, no content. Durable delivery (store-and-forward beyond relay retention) is specified in §8.1.

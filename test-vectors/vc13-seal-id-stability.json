@@ -1,0 +1,13 @@
+{
+  "description": "seal-til-block v0 tamper-evidence (SPEC §7.6, invariant #4). The seal block rides INSIDE the encrypted ChatBody, so it is committed in the AEAD ciphertext, which is committed in the envelope id, which is device-Schnorr-signed (§4.1). Changing any seal field — here unlock_block — changes the canonical ChatBody bytes, hence their SHA-256, hence (after sealing) the envelope id and the signature over it. A recipient that re-derives the id therefore detects any tamper. Demonstrated on the plaintext ChatBody layer with two bodies differing ONLY in seal.unlock_block.",
+  "inputs": {
+    "body_900006": "{\"body\":\"\",\"conversation_id\":\"c1\",\"seq\":0,\"parent_id\":null,\"seal\":{\"v\":1,\"unlock_block\":900006,\"confirmations\":1,\"anchor\":\"beacon\",\"beacon_id\":\"drand:quicknet\"}}",
+    "body_900007": "{\"body\":\"\",\"conversation_id\":\"c1\",\"seq\":0,\"parent_id\":null,\"seal\":{\"v\":1,\"unlock_block\":900007,\"confirmations\":1,\"anchor\":\"beacon\",\"beacon_id\":\"drand:quicknet\"}}"
+  },
+  "expected": {
+    "sha256_body_900006": "703a9a24b38685373ae98836c4144ebc5ad92e85c46d633b4f68aae7656f5133",
+    "sha256_body_900007": "572e5d53de4b2c4fff75d92355577d56bab5b41bde51971911c7f9f230bbbda3",
+    "differ": true
+  },
+  "notes": "SHA-256 over the UTF-8 ChatBody bytes. In the live envelope these bytes are AES-GCM-sealed and the ciphertext is committed in the content-addressed envelope id; flipping unlock_block by one block produces a different id and breaks the device signature. This is the same integrity posture as the pay-to-reach postage carrier (SPEC §6.2): the seal is in the ciphertext, not a separately-mutable plaintext field. The spec-pure path (§7.1, committed top-level seal field via a lock-core bump, vectors vc03/vc04) is the named upgrade target."
+}

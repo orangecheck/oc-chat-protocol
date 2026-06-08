@@ -1,0 +1,20 @@
+{
+  "description": "seal-til-block v0 round derivation (SPEC §7.6). Given the quicknet genesis + period and a fixed (current_tip, unlock_block, now_ms) triple, the drand round a sealed message's reveal-secret R is timelocked to is deterministic: round = roundAt(now_ms + max(0, unlock_block - current_tip) * 600000), where roundAt(t) = floor((t - genesis*1000) / (period*1000)) + 1. The 600000ms/block leg is an APPROXIMATION; std_dev_hours = 10*sqrt(blocks_ahead)/60 quantifies its spread.",
+  "inputs": {
+    "beacon_id": "drand:quicknet",
+    "chain_hash": "52db9ba70e0cc0f6eaf7803dd07447a1f5477735fd3f661792ba94600c84e971",
+    "genesis_time": 1692803367,
+    "period_seconds": 3,
+    "ms_per_block": 600000,
+    "current_tip": 900000,
+    "unlock_block": 900006,
+    "now_ms": 1717800000000
+  },
+  "expected": {
+    "blocks_ahead": 6,
+    "target_ms": 1717803600000,
+    "round": 8333412,
+    "std_dev_hours": 0.4082482904638631
+  },
+  "notes": "roundAt is the canonical drand-client formula, reimplemented pure so round derivation needs no network and no tlock-js in the initial bundle. Cross-checked live against drand-client's roundAt (identical). The displayed unit is unlock_block (a Bitcoin block height); the key RELEASE is drand-round (wall-clock) based — this leg fails the Ed25519 test (WHY H5). std_dev grows with the horizon: ~0.4h at 6 blocks, ~2h at a day, ~11h at a month."
+}

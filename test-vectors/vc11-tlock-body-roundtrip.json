@@ -1,0 +1,13 @@
+{
+  "description": "seal-til-block v0 body-lock layer (SPEC §7.6). The message text is AES-256-GCM-sealed under the reveal secret R: locked_ct = base64url(AES-256-GCM(key=R, nonce, plaintext=utf8(text))). Given R recovered (from the tlock layer, vc12), the recipient decrypts locked_ct back to the exact plaintext bytes. R + nonce are FIXED here (the tlock IBE layer is non-deterministic; this vector isolates the deterministic AES body layer).",
+  "inputs": {
+    "R_hex": "0101010101010101010101010101010101010101010101010101010101010101",
+    "nonce_hex": "aaaaaaaaaaaaaaaaaaaaaaaa",
+    "plaintext": "seal-til-block conformance — vc11"
+  },
+  "expected": {
+    "locked_ct": "fj95T2nVH6nkR0ZcAuxFrUssFa2N-bbWRHiE_xWCShCDhS28xw_alBJ5tIaOJK3sQ3r3",
+    "roundtrip_ok": true
+  },
+  "notes": "AES-256-GCM with a 12-byte nonce; locked_ct is base64url WITHOUT padding (the family b64url convention) and carries the GCM tag appended to the ciphertext. nonce is base64url-encoded separately in the seal block. The plaintext is UTF-8; the em-dash exercises multi-byte handling. This is the layer that stays unreadable until R is released by the drand tlock layer."
+}

@@ -1,0 +1,18 @@
+{
+  "description": "seal-til-block v0 timelock layer (SPEC §7.6), captured LIVE against drand quicknet 2026-06-08. The reveal secret R is timelock-encrypted to a drand round; once that round's BLS signature is published, ANY holder of the round signature recovers R — there is no OC beacon device and no re-wrap endpoint. Given the round's signature (pinned below), timelockDecrypt(tlock) yields R. The tlock blob itself is non-deterministic (IBE randomness), so it is recorded as a captured fixture, not a recomputable expected value.",
+  "inputs": {
+    "beacon_id": "drand:quicknet",
+    "chain_hash": "52db9ba70e0cc0f6eaf7803dd07447a1f5477735fd3f661792ba94600c84e971",
+    "public_key": "83cf0f2896adee7eb8b5f01fcad3912212c437e0073e911fb90022d3e760183c8c4b450b6a0a6c3ac6a5776a2d1064510d1fec758c921cc22b0e17e63aaf4bcb5ed66304de9cf809bd274ca73bab4af5a6e9c76a4bc09e76eae8991ef5ece45a",
+    "R_hex": "0101010101010101010101010101010101010101010101010101010101010101",
+    "round": 29380306,
+    "round_signature": "86f8e4ec756ed7a6fa2b2433ad41450e5616fd503afabd2fbedeab7e6a1179adef1179a6ba227621853bac7f834b1896",
+    "tlock_armor_header": "-----BEGIN AGE ENCRYPTED FILE-----",
+    "tlock_blob_len": 601
+  },
+  "expected": {
+    "decrypt_ok": true,
+    "recovered_R_hex": "0101010101010101010101010101010101010101010101010101010101010101"
+  },
+  "notes": "Captured + verified live (node scripts/seal-demo.mjs proves the full path end-to-end against the live beacon). The round signature is the BLS12-381 group signature over round 29380306, verifiable against the quicknet public_key; it IS the IBE private key for that round. An external `age`/`tle`-compatible decryptor can recover R from a tlock blob given this signature, satisfying invariant #6 (the primary function is callable outside OC code). A colluding drand threshold could compute this signature BEFORE the round's scheduled time, recovering R early — the named, disclosed trust assumption (SECURITY S2)."
+}
