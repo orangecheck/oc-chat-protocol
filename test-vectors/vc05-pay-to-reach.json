@@ -1,5 +1,5 @@
 {
-  "description": "pay-to-reach (kind=chat + postage): a stranger embeds a Lightning preimage proving they paid the recipient. sha256(preimage)==payment_hash is verifiable OFFLINE. payment_hash + nonce + amount are committed in the id (replay-binding); the recipient is bound so the preimage cannot be replayed to a third party.",
+  "description": "pay-to-reach (kind=chat + postage): a stranger embeds a Lightning preimage proving they paid the recipient. sha256(preimage)==payment_hash is verifiable OFFLINE. NOTE (v0 reconciliation): the shipped OC Lock seal() cannot take a postage parameter, so in v0 the `postage` block rides INSIDE the encrypted ChatBody (committed via the ciphertext field, not field-by-field — SPEC §6.2), NOT as the top-level envelope field shown here. The recipient-binding + replay defense are specified in §6.3 and exercised by vc09; this fixture's `expected.envelope.postage` shape is the future lock-core-committed form, retained for the eventual id-commitment upgrade.",
   "inputs": {
     "payload": "{\"body\":\"hi — paid postage to reach you\",\"conversation_id\":\"c-stranger-1\",\"seq\":1,\"parent_id\":null}",
     "content_key": "62b38467981bc059145a6cfd516817ed02fb311e5ae18fe70722745197553989",

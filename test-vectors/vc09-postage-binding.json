@@ -1,0 +1,22 @@
+{
+  "description": "pay-to-reach postage verification (SPEC §6.3) — the two load-bearing offline checks plus the anti-replay branch. (a) SETTLEMENT: payment_hash = SHA-256(preimage_bytes). (b) BINDING: the invoice description-hash = SHA-256(utf8(metadata) || utf8(payerdata)) — the recipient re-derives this ITSELF over verbatim bytes (LUD-18; wallets no longer enforce it, lnurl PR #234) and matches it against the bolt11 'h' tag, committing recipient + amount + nonce. (c) ANTI-REPLAY: a second message presenting the same payment_hash is rejected to the Requests tray by the recipient's local spent-ledger.",
+  "inputs": {
+    "preimage": "3a1f8b2c4d6e90a1b2c3d4e5f60718293a4b5c6d7e8f90112233445566778899",
+    "lnurl_metadata": "[[\"text/plain\",\"OC Chat postage to alice\"],[\"text/identifier\",\"alice@ln.example.com\"]]",
+    "payerdata": "{\"nonce\":\"9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08\"}",
+    "nonce": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+    "recipient_identifier": "alice@ln.example.com",
+    "floor_sats": 100,
+    "amount_sats": 100
+  },
+  "expected": {
+    "payment_hash": "b7a211fb3f93ff2916dc6a3d3b7198fdbdc7062b9b8936a9fad7187b0be767c2",
+    "description_hash": "a92afa7b86038521226d9d32323fd98f15c7217d7bb58b185c352fa03981fc3c",
+    "settlement_ok": true,
+    "binding_ok": true,
+    "amount_ok": true,
+    "first_delivery_verdict": "inbox",
+    "replay_delivery_verdict": "pending"
+  },
+  "notes": "payment_hash = SHA-256 of the 32 RAW preimage bytes (hex-decoded), not the hex string. description_hash = SHA-256 of utf8(metadata) concatenated with utf8(payerdata), both VERBATIM (never JSON.stringify(JSON.parse(x)) — reordering breaks the match). The recipient's bolt11 'h' tag must equal description_hash; the metadata's text/identifier must equal the claimed recipient. first_delivery accepts (records payment_hash in the spent-ledger); a replay of the same payment_hash to the same recipient is held in the Requests tray."
+}

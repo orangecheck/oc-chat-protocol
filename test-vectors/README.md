@@ -18,6 +18,7 @@ For OC Chat envelopes (`kind="chat"` and `kind="chat-seal"`), the content-addres
 | `vc06-inbox-queue-id.json` | Durable-inbox routing (SPEC §8.1): `queue_seed = HKDF(device_sk)`, `queue_id = base64url(HMAC(queue_seed, conversation_id))`, plus the derivable `bootstrap_id`. Proves two conversations on one device yield UNLINKABLE opaque queue ids — the operator sees N queues, never a recipient. |
 | `vc07-directory-dtag.json` | Directory listing d-tag (SPEC §8.2.1): `d-tag = "oc-lock-chat-dir:" + base64url(SHA-256("oc-lock-chat-dir/v1:" + lower(handle)))`. Salted-handle hash → lookup-by-known-handle, never enumerate-all. |
 | `vc08-directory-listing.json` | Directory listing content-addressing + tombstone (SPEC §8.2.1/§8.2.4): `listing_id = SHA-256(canonical(content))`; the tombstone (`opted_in:false`) shares the d-tag and supersedes the listing with a distinct id. |
+| `vc09-postage-binding.json` | pay-to-reach postage verification (SPEC §6.3): `payment_hash = SHA-256(preimage)`, the LUD-18 binding `description_hash = SHA-256(metadata‖payerdata)` re-derived over verbatim bytes, and the spent-ledger replay branch (valid→inbox, replayed→Requests). |
 
 ## Conformance
 

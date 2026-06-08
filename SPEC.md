@@ -96,26 +96,42 @@ This gives per-thread tamper-evidence. It is NOT a transport-layer anti-replay o
 ## 6. Postage (anti-spam)
 
 ### 6.1 Recipient policy
-A recipient MAY publish a postage policy (out of band, e.g. in their profile / device-record metadata): a `floor_sats` and a Lightning receiving endpoint — a BOLT12 offer (RECOMMENDED) or a BOLT11/LNURL-pay fallback — resolving to a wallet or gateway the **recipient** controls. No OC service mints or proxies this invoice.
+A recipient MAY publish a postage policy: a `floor_sats` and a Lightning receiving endpoint resolving to a wallet the **recipient** controls. The published endpoint string MUST live inside a record **signed by the recipient's Bitcoin identity** (e.g. the kind-30078-bound directory listing, §8.2) — otherwise an attacker substitutes their own endpoint and the §6.3 recipient-binding binds to the wrong party. No OC service mints, proxies, or relays this invoice.
+
+The endpoint is a **BOLT12 offer (RECOMMENDED, stronger)** or — the **shipped v0 rail** — an **LNURL Lightning Address** (LUD-16) with **LUD-18 payerData**. v0 ships LNURL because BOLT12 `invoice_request` cannot reliably echo a per-DM nonce today (§6.3). For the binding to hold, the recipient endpoint MUST mint a **fresh per-DM invoice** committing the sender's nonce; a static/reusable invoice degrades the proof to settlement-evidence-only.
 
 ### 6.2 Sender postage block
-A `pay-to-reach` envelope carries:
+In v0, `postage` rides **inside the encrypted `ChatBody`** (§5), NOT as a top-level envelope field — the shipped OC Lock `seal()` cannot take a `postage` parameter, so it cannot commit it in the `chat_envelope_id` field-by-field. Integrity therefore rests on the AEAD: `postage` is inside the ciphertext, which IS committed in the `id` and signed by the device, so any tamper changes the ciphertext → the `id` → breaks the signature. (True §3 per-field commitment is a deferred lock-core change.)
 
-```json
+```jsonc
 "postage": {
-  "floor_sats":  <integer>,
-  "amount_sats": <integer, >= floor_sats>,
-  "payment_hash":"<64-char hex>",
-  "preimage":    "<64-char hex>",
-  "nonce":       "<hex, the per-DM nonce committed by the recipient endpoint>",
-  "recipient":   "<recipient btc address>"
+  "floor_sats":   <integer>,
+  "amount_sats":  <integer, >= floor_sats>,
+  "payment_hash": "<64-char hex>",
+  "preimage":     "<64-char hex>",
+  "nonce":        "<hex; the sender's per-DM nonce, carried in payerData>",
+  "recipient":    "<recipient btc address — must match the endpoint's identifier>",
+  // carrier fields the recipient needs to re-verify the binding OFFLINE:
+  "bolt11":         "<the paid invoice; carries payment_hash + the description_hash 'h' tag>",
+  "lnurl_metadata": "<the recipient endpoint's metadata, VERBATIM bytes>",
+  "payerdata":      "<the url-encoded payerData the sender sent (carries the nonce)>"
 }
 ```
 
-### 6.3 Verification (offline)
-A recipient (or any observer) MUST verify `SHA-256(preimage) == payment_hash`. Because `postage` is part of the `chat_envelope_id` (§3), `payment_hash`, `nonce`, `amount_sats`, and `recipient` are committed by the sender's signature and cannot be altered. The `nonce` MUST be one the recipient's endpoint minted for THIS payment (binding the preimage to `recipient + amount + nonce`), so a preimage cannot be replayed as proof of payment to a third party.
+### 6.3 Verification (recipient-side, mostly offline) — NORMATIVE
+This was a blocking open item; v0 **specifies** a recipient-side, per-DM, non-replayable construction (honestly **not** a transferable third-party proof). A recipient verifying inbound `postage` MUST:
 
-> **Open normative item (blocking `pay-to-reach`):** how a recipient endpoint mints a per-DM invoice bound to `nonce` when the sender is a stranger and OC is out of the invoice path. BOLT12 `invoice_request` may not carry the nonce; a recipient-published nonce-commitment step is the likely construction. Until specified, a deployment MUST treat the preimage as proof-of-settlement only, NOT as non-replayable third-party proof. See WHY.md H9 and SECURITY.md S7.
+1. **Settlement:** `SHA-256(preimage) == payment_hash` — the load-bearing Lightning bearer proof.
+2. **Binding (re-derived by OC itself):** decode `bolt11`, read its description-hash (`h`) tag, and assert it equals `SHA-256( lnurl_metadata || urlDecode(payerdata) )`. The verifier MUST recompute this hash **itself** — wallets stopped enforcing the LNURL description-hash (lnurl PR #234, 2026-05) — and MUST hash the **verbatim** `lnurl_metadata` bytes (never `JSON.stringify(JSON.parse(x))`, which reorders and breaks the match).
+3. **Recipient:** the `lnurl_metadata` `text/identifier` equals the claimed `recipient`, resolved from an identity-signed endpoint (§6.1).
+4. **Amount:** the `bolt11` carries an explicit amount AND `amount_sats >= floor_sats` (reject amountless invoices).
+5. **Freshness:** `now <= invoice_timestamp + expiry` (default 3600s) at pay time.
+6. **Nonce:** the in-body `nonce` is the one committed in `payerdata`.
+7. **Anti-replay:** the `payment_hash` is not in the recipient's **local spent-ledger** (one-time use). On accept, record it.
+
+All checks pass + not-spent → inbox. Any fail OR already-spent → the message is **held in the Requests tray** (§6 free-tier path), never dropped.
+
+**Why this is non-replayable (and its honest ceiling):** because the recipient's *own* endpoint minted the per-DM invoice committing **this** recipient + amount + nonce into the description-hash, a preimage replayed to a *different* recipient fails the binding there (that recipient never minted that metadata/nonce); a preimage replayed to the *same* recipient is caught by the local spent-ledger. The residual ceiling is named in SECURITY S7: this is **recipient-scoped**, not a proof a third party who sees only `{preimage, nonce}` can verify; the recipient's LNURL endpoint is a **named trust anchor**; and a cold observer can check the hash/binding but cannot independently confirm the HTLC settled.
 
 ### 6.4 No OC payment rail
 OC operates no postage gateway. Any Lightning gateway in a recipient's postage path is operated by a NAMED third party, never OC. Zap receipts (NIP-57) MUST NOT be used as postage proof — they are server-signed and forgeable; only the BOLT11/BOLT12 preimage is a bearer proof.
@@ -286,7 +302,7 @@ A client is OC Chat v0 compliant iff it:
 - [ ] Carries `conversation_id`/`seq`/`parent_id` inside the encrypted payload and orders by the `parent_id` hash-chain, never by `created_at` (§5).
 - [ ] If it offers durable store-and-forward, derives `queue_id`/`bootstrap_id` per §8.1, routes the inbox solely on those opaque ids (no address/device-pubkey index), stores the blob byte-for-byte, and reproduces vector `vc06`.
 - [ ] If it offers the directory (§8.2), publishes a kind-30114 listing ONLY on explicit opt-in (default invisible), derives the salted-handle `d`-tag (vector `vc07`), refuses to resolve a handle unless the §8.2.2 gate passes (signature + kind-30078 binding + UTXO floor), enforces the §8.2.3 social-graph firewall, honors tombstones (vector `vc08`), and never exposes a bulk-dump endpoint.
-- [ ] Verifies `SHA-256(preimage) == payment_hash` and the `nonce`/`recipient`/`amount` binding for `pay-to-reach` (§6).
+- [ ] For `pay-to-reach` (§6): carries `postage` in the `ChatBody` (§6.2), and on receive runs the full §6.3 verification — re-derives the description-hash binding `SHA-256(lnurl_metadata‖payerdata)` ITSELF over verbatim bytes, checks `SHA-256(preimage)==payment_hash` + amount + expiry + identifier + the local spent-ledger — routing a failing/replayed message to the Requests tray, and NEVER claims transferable third-party proof.
 - [ ] Wraps to the beacon and performs release re-wrap as a detached `recipients[]` merge for `seal-til-block` (§7), and NEVER labels a v0 beacon seal "trustless".
 - [ ] Surfaces every trust anchor (beacon id/url, relay, redundant beacon) and the early-release / brick risks at compose time.
 - [ ] Operates no OC payment rail for postage (§6.4).
