@@ -380,12 +380,13 @@ A public post is an addressable kind-30111 event, the `chat-channel` envelope (�
   "author_inbox_pubkey": "<hex; bound to author_address via kind-30078>",
   "body": "<plaintext, <=4096>",
   "seq": <int>, "parent_id": "<prior post_id or null>",   // §5 hash-chain ordering, unchanged
-  "write_proof": { ... },     // §8.3.3, REQUIRED iff the channel's write.policy is "utxo-floor"
-  "created_at": <unix s>
+  "write_proof": { ... }      // §8.3.3, REQUIRED iff the channel's write.policy is "utxo-floor"
 }
 // post_id = SHA-256( canonical(content) )   // hex, content-addressed (§0; vc16). write_proof is committed;
 //           write_proof.control_sig is NOT — it and the author device sig sign post_id and are attached to
-//           the kind-30111 event, not the hashed content.
+//           the kind-30111 event, not the hashed content. The event-level `created_at` (the NIP-01 wall-clock)
+//           is likewise NOT part of post_id — the id stays stable regardless of when the event is stamped
+//           (the DM precedent: ordering is the seq/parent_id hash-chain, never wall-clock).
 ```
 
 A conforming reader MUST: (1) verify the author device signature + kind-30078 binding (§4.1); (2) evaluate the channel's `write.policy` against the post (§8.3.3) — a post failing the gate is `E_CH_WRITE_DENIED` and MUST NOT render; (3) confirm the author is permitted to write (a reader-only channel role posting is `E_CH_NOT_WRITER`); (4) order by the `parent_id` hash-chain (§5), never `created_at`.
