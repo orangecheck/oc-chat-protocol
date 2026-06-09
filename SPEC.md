@@ -93,6 +93,18 @@ Thread state is **inside the encrypted payload**, never the plaintext envelope (
 
 This gives per-thread tamper-evidence. It is NOT a transport-layer anti-replay or anti-reorder guarantee: a relay can still withhold or delay delivery (§SECURITY).
 
+### 5.1 Attachments — E2EE
+
+A message MAY carry a file via an optional `attachment` field in the ChatBody:
+
+```json
+"attachment": { "name": "<file name>", "type": "<MIME>", "size": <raw bytes>, "data": "<base64 of the raw bytes>" }
+```
+
+Because the WHOLE ChatBody is AES-256-GCM-sealed to each recipient device (the same envelope as the text), the file is **end-to-end encrypted and tamper-evident**: no server — relay or durable inbox — ever holds a plaintext file, and altering it breaks the content-addressed `id` and the device signature (§4.1). This is the **inline v0 profile**: the bytes ride in the ciphertext, so the file size is bounded to what fits a gift-wrap event (the reference client caps inline attachments at ~100KB raw). The recipient validates the parsed `attachment` shape + size defensively even though the AEAD authenticates it.
+
+Larger files are the **blob-store upgrade** (not v0): encrypt the file under a fresh per-file key, upload the ciphertext blob out-of-band to a store that sees only ciphertext, and carry `{ blob_ref, key, nonce }` inside the sealed ChatBody so only the recipient can fetch + decrypt — keeping the no-plaintext-on-a-server invariant while removing the inline size cap.
+
 ## 6. Postage (anti-spam)
 
 ### 6.1 Recipient policy
