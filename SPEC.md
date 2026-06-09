@@ -357,14 +357,16 @@ One descriptor per channel, signed by the **founder's inbox key** (`deriveNostrK
   "supersedes": "<descriptor_id of the prior version, or null for genesis>"
 }
 // descriptor_id = SHA-256( canonical(content) )   // hex, content-addressed (§0; vc14)
-// binding_sig   = BIP-322 by the founder (genesis) OR an admin valid in the PRIOR epoch, over descriptor_id;
-//                 carried in the kind-30110 event, NOT in the hashed content.
+// authorship    = the kind-30110 event's schnorr signature by an inbox key bound to the author's address via
+//                 the kind-30078 device record (the SAME trust root as DMs + the directory §8.2 — NOT a second
+//                 per-edit BIP-322 wallet ceremony). Genesis: the event pubkey IS founder_inbox_pubkey, bound to
+//                 founder_address. Supersede: the signing inbox key is bound to a PRIOR-epoch admin (or founder).
 ```
 
 Normative rules a conforming client MUST honor:
 
 - **`channel_id` binds to `founder_address`.** Identity is `SHA-256(founder_address || slug)`; the founder's address is the trust root. Two founders may reuse a `slug` → different `channel_id`s. The slug is non-authoritative (S17); the client MUST render `founder_address` + its trust tier alongside the slug. No global slug consensus (first-writer-wins, best-effort).
-- **The descriptor is a governance hash-chain.** Every change (add admin, raise the floor, change policy) is a new kind-30110 at the same d-tag with `supersedes` → the prior `descriptor_id`. A client MUST validate the new descriptor is BIP-322-signed by the founder OR an address in the *prior* `admins` set — making governance tamper-evident and offline-verifiable (the §5 `parent_id` trick applied to governance). A descriptor not so signed is `E_CH_UNAUTHORIZED`.
+- **The descriptor is a governance hash-chain.** Every change (add admin, raise the floor, change policy) is a new kind-30110 at the same d-tag with `supersedes` → the prior `descriptor_id`. A client MUST validate the new descriptor's signing inbox key is **device-bound (kind-30078) to the founder OR to an address in the *prior* `admins` set** — making governance tamper-evident and offline-verifiable (the §5 `parent_id` trick applied to governance) while reusing the device-record trust root instead of a per-edit wallet ceremony. A descriptor not so authored is `E_CH_UNAUTHORIZED`. The Bitcoin-load-bearing claim is carried by the **write policy** (§8.3.3), not the descriptor signature — so a `did:oc`-only founder can still open a public channel; its write tier just renders non-rooted unless the policy is `utxo-floor`.
 - **Exactly one `write.policy`, with a `rooted` flag that MUST match it** (§8.3.3): `utxo-floor` MUST set `rooted:true`; `allowlist`/`founder`/`open` MUST set `rooted:false`. A mismatch is `E_CH_POLICY_INVALID`. This makes the Bitcoin claim a property of the artifact, not a UI label.
 
 ### 8.3.2 Channel post — kind 30111 (`chat-channel`)
