@@ -375,23 +375,25 @@ A public post is an addressable kind-30111 event, the `chat-channel` envelope (�
 
 ```jsonc
 // kind 30111, addressable. d-tag = "oc-lock-chat-msg:" || base64url(SHA-256(channel_id || ":" || post_id))
+// PLUS an indexable single-letter scope tag ["t", channel_id] so a reader can fetch ONE channel's posts
+// relay-side via {"#t": [channel_id]} (the d-tag is a per-post point key, not a channel list filter).
 {
   "v": 1, "kind": "chat-channel",
   "channel_id": "<hex; the §8.3.1 channel this belongs to>",
   "author_address": "<bitcoin address or did:oc>",
   "author_inbox_pubkey": "<hex; bound to author_address via kind-30078>",
   "body": "<plaintext, <=4096>",
-  "seq": <int>, "parent_id": "<prior post_id or null>",   // §5 hash-chain ordering, unchanged
+  "seq": <int>, "parent_id": "<prior post_id or null>",   // null for an independent top-level post (see ordering)
   "write_proof": { ... }      // §8.3.3, REQUIRED iff the channel's write.policy is "utxo-floor"
 }
 // post_id = SHA-256( canonical(content) )   // hex, content-addressed (§0; vc16). write_proof is committed;
 //           write_proof.control_sig is NOT — it and the author device sig sign post_id and are attached to
 //           the kind-30111 event, not the hashed content. The event-level `created_at` (the NIP-01 wall-clock)
-//           is likewise NOT part of post_id — the id stays stable regardless of when the event is stamped
-//           (the DM precedent: ordering is the seq/parent_id hash-chain, never wall-clock).
+//           and the ["t", channel_id] scope tag are likewise NOT part of post_id — the id stays stable
+//           regardless of when the event is stamped or how it is routed.
 ```
 
-A conforming reader MUST: (1) verify the author device signature + kind-30078 binding (§4.1); (2) evaluate the channel's `write.policy` against the post (§8.3.3) — a post failing the gate is `E_CH_WRITE_DENIED` and MUST NOT render; (3) confirm the author is permitted to write (a reader-only channel role posting is `E_CH_NOT_WRITER`); (4) order by the `parent_id` hash-chain (§5), never `created_at`.
+A conforming reader MUST: (1) verify the author device signature + kind-30078 binding (§4.1) — a post with no resolvable event/signature is `E_CH_UNAUTHORIZED` and MUST NOT render (authorship is never optional); (2) evaluate the channel's `write.policy` against the post (§8.3.3) — a post failing the gate is `E_CH_WRITE_DENIED` and MUST NOT render; (3) confirm the author is permitted to write (a reader-only channel role posting is `E_CH_NOT_WRITER`); (4) **order the feed deterministically.** A public multi-author channel has **no single hash-chain** (independent broadcasters), so a top-level post sets `parent_id:null` and the feed is ordered by the event `created_at` as a **display hint, tie-broken by the content-addressed `post_id`** so any two clients agree. `created_at` is untrusted (a relay may backdate) and MUST NOT be treated as authoritative; the `post_id` tiebreak makes the order stable + reproducible. When `parent_id` is non-null it threads an explicit reply, and a client SHOULD render the reply under its parent. (This relaxes the §5 DM rule, which assumes a single two-party chain; channels are fan-out.)
 
 ### 8.3.3 Write / join policies (the Bitcoin-load-bearing axis)
 
