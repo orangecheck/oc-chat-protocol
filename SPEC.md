@@ -214,7 +214,17 @@ v0-profile `seal` fields (in addition to `unlock_block`, `confirmations`, `ancho
 
 ## 8. Transport
 
-OC Chat uses OC Lock's gift-wrap unchanged: the canonical chat envelope is the opaque inner blob of a NIP-59 gift-wrap (Nostr kind-1059) signed by an ephemeral, discarded Schnorr key, `created_at` rounded to the minute, with the recipient inbox pubkey in the `p` tag and an advisory `ct` tag `oc-chat/v1`. The recipient's chat inbox pubkey is `HKDF(device_sk)` (so publishing a device record IS creating an inbox; no second ceremony). A relay sees an ephemeral pubkey, an inbox pubkey, and an opaque blob — no sender, no real timestamp, no content. Durable delivery (store-and-forward beyond relay retention) is specified in §8.1.
+The canonical chat envelope travels as the inner blob of a Nostr kind-1059 gift-wrap signed by an ephemeral, discarded Schnorr key, `created_at` rounded to the minute, with the recipient inbox pubkey in the `p` tag. The recipient's chat inbox pubkey is `HKDF(device_sk)` (so publishing a device record IS creating an inbox; no second ceremony). Durable delivery (store-and-forward beyond relay retention) is specified in §8.1.
+
+**Wrap encryption (NORMATIVE — `ct = "oc-chat/v2"`).** The wrap `content` MUST be encrypted to the recipient inbox key, NOT merely encoded. The chat envelope's own plaintext fields (`from.address`, `recipients[*].address`/`device_id`/`device_pk`, full-precision `created_at`) plus the sender's stable device pubkey would otherwise hand every relay — and the §8.1 inbox operator — the full who-talks-to-whom graph, voiding §8.1.4. Construction:
+
+```
+shared   = x( ECDH(eph_sk, lift_x(inbox_pk)) )          # x-coordinate only — negation-safe for BIP-340 x-only keys
+key      = HKDF-SHA256(ikm=shared, salt="oc-chat/v2", info=eph_pk_hex || inbox_pk_hex, L=32)
+content  = base64url( nonce(12) || AES-256-GCM(key, nonce, payload_json) )
+```
+
+where `eph_sk` is the SAME ephemeral key that signs the outer event (`event.pubkey` is the ECDH counterpart the recipient uses; binding `key` to the `(eph_pk, inbox_pk)` pair stops cross-wrap key reuse). A conforming publisher MUST emit `oc-chat/v2`; a recipient SHOULD also accept the legacy plain-base64 `oc-chat/v1` for messages already in flight, and MUST treat a v2 wrap that fails the AEAD as not addressed to it. A relay then sees: an ephemeral pubkey, an inbox pubkey, a minute-rounded timestamp, and ciphertext — no sender identity, no recipient Bitcoin address, no device set, no content. The inbox `p` tag and timing remain visible (the §8.1.2 disclosure).
 
 ## 8.1 Durable inbox routing — per-conversation queue IDs — NORMATIVE
 
@@ -359,7 +369,7 @@ OC Chat versions with OC Lock's `envelope.v` (currently 2). New `kind` values an
 ## 14. IANA / external identifiers
 
 - Nostr kinds: **30110–30112** + **30114** (directory, §8.2), addressable, d-tag namespace `oc-lock-chat-*` claimed by this spec; transport reuses kind-1059 (NIP-59).
-- Advisory gift-wrap content tag: `ct = "oc-chat/v1"`.
+- Gift-wrap content tag: `ct = "oc-chat/v2"` (encrypted wrap, §8 normative). `"oc-chat/v1"` (plain base64) is legacy — accepted on receive only, never published.
 - Directory d-tag salt label: `"oc-lock-chat-dir/v1:"`.
 
 ## 15. Acknowledgements
