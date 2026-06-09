@@ -1,0 +1,41 @@
+{
+  "description": "Channel governance hash-chain (SPEC §8.3.1). A descriptor change (here: add an admin) is a NEW kind-30110 at the SAME d-tag with supersedes -> the prior descriptor_id, signed by the founder OR a prior-epoch admin. Proves the new descriptor is a distinct content-addressed artifact (different descriptor_id) replacing the prior one at one d-tag, so governance is tamper-evident + offline-verifiable. A replacement not signed by a prior-epoch admin/founder is E_CH_UNAUTHORIZED.",
+  "inputs": {
+    "descriptor_v1_id": "9aa4bb9b5064ac12d982729696f087cdc192b1d85b5909d652095798004a7436",
+    "descriptor_v2": {
+      "v": 1,
+      "channel_id": "96199b4355ca664a461d1e7bd466e58ae9697309ebc876970dd648475ea84639",
+      "slug": "bitcoin-talk",
+      "founder_address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+      "founder_inbox_pubkey": "abd5c03b14d458675ee19c6da072374fddd7a77c09cf083197f018aa58613f17",
+      "read": "public",
+      "encryption": null,
+      "write": {
+        "policy": "utxo-floor",
+        "utxo_floor_confs": 144,
+        "utxo_floor_sats": 0,
+        "allowlist_root": null,
+        "rooted": true
+      },
+      "admins": [
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+        "bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq"
+      ],
+      "moderators": [],
+      "title": "Bitcoin Talk",
+      "description": "a public channel",
+      "avatar": null,
+      "rules": null,
+      "directory_opt_in": false,
+      "created_at": 1733686400,
+      "supersedes": "9aa4bb9b5064ac12d982729696f087cdc192b1d85b5909d652095798004a7436"
+    }
+  },
+  "expected": {
+    "descriptor_v2_id": "ac9c802d12e242429f3116701367f927ba238a62f15a0018aea24e43c0fd28aa",
+    "supersedes_matches_v1": true,
+    "distinct_from_v1": true,
+    "same_d_tag": true
+  },
+  "notes": "v2 adds an admin + sets supersedes=v1 descriptor_id. descriptor_v2_id = hex(sha256(canonical(v2)+'\\n')). Both share the channel_id-derived d-tag (vc14) so v2 (addressable, NIP-33) replaces v1 at conforming relays; the ids differ. A conforming client accepts v2 only if signed by the founder or an admin present in v1's admins set."
+}

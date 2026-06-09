@@ -1,0 +1,29 @@
+{
+  "description": "Public channel post content-addressing + the recipient-exclusion rule (SPEC §8.3.2 + §3 amendment). A v1 chat-channel post is PUBLIC: plaintext body, no recipient set, no AEAD. post_id = SHA-256(canonical(content)) per §0; the post d-tag = 'oc-lock-chat-msg:' || base64url(SHA-256(channel_id || ':' || post_id)). The write_proof (§8.3.3) is committed in the content; the author device sig + the write_proof control_sig both sign post_id and are attached to the event, NOT in the hashed content. A chat-channel envelope carrying a non-empty recipients[] is E_CHANNEL_RECIPIENTS.",
+  "inputs": {
+    "post": {
+      "v": 1,
+      "kind": "chat-channel",
+      "channel_id": "96199b4355ca664a461d1e7bd466e58ae9697309ebc876970dd648475ea84639",
+      "author_address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+      "author_inbox_pubkey": "abd5c03b14d458675ee19c6da072374fddd7a77c09cf083197f018aa58613f17",
+      "body": "gm — sats as signal",
+      "seq": 0,
+      "parent_id": null,
+      "write_proof": {
+        "outpoint": "a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90:0",
+        "value_sats": 50000,
+        "anchor_block_height": 800000,
+        "anchor_block_hash": "00000000000000000002a7c4c1e48d76c5a37902165a270156b7a8d72728a054"
+      }
+    }
+  },
+  "expected": {
+    "post_canonical": "{\"author_address\":\"bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8\",\"author_inbox_pubkey\":\"abd5c03b14d458675ee19c6da072374fddd7a77c09cf083197f018aa58613f17\",\"body\":\"gm — sats as signal\",\"channel_id\":\"96199b4355ca664a461d1e7bd466e58ae9697309ebc876970dd648475ea84639\",\"kind\":\"chat-channel\",\"parent_id\":null,\"seq\":0,\"v\":1,\"write_proof\":{\"anchor_block_hash\":\"00000000000000000002a7c4c1e48d76c5a37902165a270156b7a8d72728a054\",\"anchor_block_height\":800000,\"outpoint\":\"a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90:0\",\"value_sats\":50000}}",
+    "post_id": "2131724a5289867d5e75beac355d1480c2ff57a0d35be09a06a1040283592f50",
+    "post_dtag": "oc-lock-chat-msg:gwZmxajXlg1Ql24vEPgGBRn3fozcsAcyGOTvmBdbcm4",
+    "recipients_empty": true,
+    "nonempty_recipients_error": "E_CHANNEL_RECIPIENTS"
+  },
+  "notes": "post_id = hex(sha256(canonical(post)+'\\n')); d-tag suffix = base64url-unpadded(sha256(utf8(channel_id+':'+post_id))). The body 'gm — sats as signal' contains a non-ASCII em-dash (U+2014) — canonicalization is over UTF-8 bytes, no escaping. A reader rejects the post with E_CHANNEL_RECIPIENTS if it rides as a chat-channel envelope with any recipients[]."
+}

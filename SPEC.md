@@ -30,8 +30,11 @@ OC Chat introduces two new values for the OC Lock envelope `kind` field, alongsi
 |---|---|---|
 | `"chat"` | `speak-now` / `pay-to-reach` | optional `postage` (§6) |
 | `"chat-seal"` | `seal-til-block` | `seal` (§7) |
+| `"chat-channel"` | public channel post (§8.3) | `channel_id`, `write_proof` (§8.3.2) |
 
 A conforming OC Lock implementation that does not understand these kinds MUST reject them (OC Lock SPEC §9 unknown-`kind` handling) rather than mis-decrypt. The transport (§8) is OC Lock's gift-wrap, unchanged.
+
+**NORMATIVE amendment for `chat-channel` (do not undersell).** Unlike `chat`/`chat-seal`, a v1 `chat-channel` post is **public** (§8.3) — there is no recipient set, no key-wrapping, and no AEAD ciphertext over a body. Its `recipients[]` MUST be empty; a non-empty `recipients[]` on a `chat-channel` envelope is `E_CHANNEL_RECIPIENTS` and the post MUST be rejected (this is what makes the §8.2 social-graph leak structurally absent for public channels — there is nothing to leak). The post body is plaintext, content-addressed, and BIP-322-rooted by the author's device signature; the recipient-exclusion `chat_envelope_id` rule of §3 still applies (`recipients=[]` is the steady state, not a re-wrap).
 
 ## 3. Content addressing for chat kinds (the recipient-exclusion rule) — NORMATIVE
 
@@ -313,6 +316,117 @@ Self-removal = publish a replacement kind-30114 event with the **same d-tag**, `
 
 To find a user, a client computes the `d`-tag from the queried handle, fetches the kind-30114 events for that `d`-tag across its relay set (freshest `created_at` wins; a tombstone wins over any live copy), verifies §8.2.2 (1)–(3), and on success surfaces `address` + profile + a trust tier so the user can start a thread. First-contact still passes the recipient's §4.1 anti-spam policy — **being listed is not a free-message bypass.** Privacy-sensitive resolution SHOULD query relays directly, NOT a third-party indexer (which would learn who-searches-for-whom). The relay/index operator is a NAMED availability anchor and MUST NOT be relied on as authority.
 
+## 8.3 Channels — NORMATIVE (v1: public)
+
+A **channel** is a composition, not a new verb and not a new mode: a kind-30110 governance **descriptor** + kind-30111 **posts** + (opt-in) a kind-30114 directory listing + a Bitcoin-priced **write gate**. v1 ships **public** channels (public read, signed posts, Bitcoin-gated write); private/encrypted channels are reserved behind the *same* descriptor (§8.3.7). One descriptor, phased by the `read` + `encryption` fields.
+
+A public channel makes **no E2EE claim** — it uses OC Lock's *identity binding* (BIP-322 device signatures) and OC Chat's *Bitcoin-priced access control*, not its confidentiality. Clients MUST NOT carry the DM "relays learn nothing" headline onto channel posts (S-CH-4).
+
+### 8.3.1 Channel descriptor — kind 30110 (addressable, NIP-33-replaceable)
+
+One descriptor per channel, signed by the **founder's inbox key** (`deriveNostrKey(device_sk)`), BIP-322-rooted to `founder_address` via that device's kind-30078 record. It is the single source of truth for identity, roles, and the read/write policy. Content-addressed (invariant 4). The `read` + `encryption` fields are the phase switch.
+
+```jsonc
+// kind 30110, addressable.
+// d-tag = "oc-lock-chat-ch:" || base64url( SHA-256("oc-lock-chat-ch/v1:" || channel_id) )
+// signed by the FOUNDER inbox key; bound to founder_address via kind-30078.
+{
+  "v": 1,
+  "channel_id": "<hex = SHA-256('oc-lock-chat-ch/v1:' || founder_address || ':' || slug)>",
+  "slug": "<[a-z0-9-]{3,48}; NON-authoritative display label (S17)>",
+  "founder_address": "<bitcoin address OR did:oc:...; the channel's trust root>",
+  "founder_inbox_pubkey": "<hex; the event pubkey; bound to founder_address via kind-30078>",
+
+  "read": "public",          // "public" (v1) | "members" (reserved, §8.3.7)
+  "encryption": null,        // null ⇒ public (v1). Reserved private block in §8.3.7.
+
+  "write": {                 // EXACTLY ONE policy (§8.3.3)
+    "policy": "utxo-floor",  // "utxo-floor" | "allowlist" | "founder" | "open" (pay-to-post ⇒ kind-30115)
+    "utxo_floor_confs": 144, // utxo-floor: min UTXO age (blocks)
+    "utxo_floor_sats": 0,    // utxo-floor: min value counting toward the age test
+    "allowlist_root": null,  // allowlist: hex SHA-256 of the canonical sorted writer-address list
+    "rooted": true           // MUST be true for utxo-floor; MUST be false for allowlist/founder/open
+  },
+
+  "admins": [ "<address or did:oc>", ... ],      // may replace the descriptor + post any tombstone
+  "moderators": [ "<address or did:oc>", ... ],  // may post removal tombstones ONLY
+
+  "title": "<=80>", "description": "<=280>", "avatar": "<https, optional>", "rules": "<=1000, optional>",
+  "directory_opt_in": false, // §8.3.6: list in kind-30114 (default invisible)
+  "created_at": <unix s>,
+  "supersedes": "<descriptor_id of the prior version, or null for genesis>"
+}
+// descriptor_id = SHA-256( canonical(content) )   // hex, content-addressed (§0; vc14)
+// binding_sig   = BIP-322 by the founder (genesis) OR an admin valid in the PRIOR epoch, over descriptor_id;
+//                 carried in the kind-30110 event, NOT in the hashed content.
+```
+
+Normative rules a conforming client MUST honor:
+
+- **`channel_id` binds to `founder_address`.** Identity is `SHA-256(founder_address || slug)`; the founder's address is the trust root. Two founders may reuse a `slug` → different `channel_id`s. The slug is non-authoritative (S17); the client MUST render `founder_address` + its trust tier alongside the slug. No global slug consensus (first-writer-wins, best-effort).
+- **The descriptor is a governance hash-chain.** Every change (add admin, raise the floor, change policy) is a new kind-30110 at the same d-tag with `supersedes` → the prior `descriptor_id`. A client MUST validate the new descriptor is BIP-322-signed by the founder OR an address in the *prior* `admins` set — making governance tamper-evident and offline-verifiable (the §5 `parent_id` trick applied to governance). A descriptor not so signed is `E_CH_UNAUTHORIZED`.
+- **Exactly one `write.policy`, with a `rooted` flag that MUST match it** (§8.3.3): `utxo-floor` MUST set `rooted:true`; `allowlist`/`founder`/`open` MUST set `rooted:false`. A mismatch is `E_CH_POLICY_INVALID`. This makes the Bitcoin claim a property of the artifact, not a UI label.
+
+### 8.3.2 Channel post — kind 30111 (`chat-channel`)
+
+A public post is an addressable kind-30111 event, the `chat-channel` envelope (§3), `recipients=[]`, plaintext body, signed by the **author's inbox key** bound to `author_address` via kind-30078.
+
+```jsonc
+// kind 30111, addressable. d-tag = "oc-lock-chat-msg:" || base64url(SHA-256(channel_id || ":" || post_id))
+{
+  "v": 1, "kind": "chat-channel",
+  "channel_id": "<hex; the §8.3.1 channel this belongs to>",
+  "author_address": "<bitcoin address or did:oc>",
+  "author_inbox_pubkey": "<hex; bound to author_address via kind-30078>",
+  "body": "<plaintext, <=4096>",
+  "seq": <int>, "parent_id": "<prior post_id or null>",   // §5 hash-chain ordering, unchanged
+  "write_proof": { ... },     // §8.3.3, REQUIRED iff the channel's write.policy is "utxo-floor"
+  "created_at": <unix s>
+}
+// post_id = SHA-256( canonical(content) )   // hex, content-addressed (§0; vc16). write_proof is committed;
+//           write_proof.control_sig is NOT — it and the author device sig sign post_id and are attached to
+//           the kind-30111 event, not the hashed content.
+```
+
+A conforming reader MUST: (1) verify the author device signature + kind-30078 binding (§4.1); (2) evaluate the channel's `write.policy` against the post (§8.3.3) — a post failing the gate is `E_CH_WRITE_DENIED` and MUST NOT render; (3) confirm the author is permitted to write (a reader-only channel role posting is `E_CH_NOT_WRITER`); (4) order by the `parent_id` hash-chain (§5), never `created_at`.
+
+### 8.3.3 Write / join policies (the Bitcoin-load-bearing axis)
+
+- **`utxo-floor` (canonical default, `rooted:true`).** The author proves control of a funded UTXO of age ≥ `utxo_floor_confs` (and value ≥ `utxo_floor_sats`) — the §8.2.2 directory gate, applied to write. The proof MUST be **self-contained and height-anchored**, so verification is offline and needs no per-post live point-query (which would be a rendering-DoS and fail-open-muting bug):
+
+  ```jsonc
+  "write_proof": {
+    "outpoint": "<txid:vout>",
+    "value_sats": <int>,
+    "anchor_block_height": <int>,        // the height at which age is measured
+    "anchor_block_hash": "<hex>",        // pins the anchor; the reader checks tip_height - anchor_height + 1 >= confs
+    "control_sig": "<BIP-322 by the UTXO's address over post_id>"
+  }
+  ```
+  A reader verifies: `control_sig` BIP-322 over `post_id` by the UTXO-controlling address; `value_sats >= utxo_floor_sats`; and `current_tip_height - anchor_block_height + 1 >= utxo_floor_confs` using the reader's own node/explorer tip (one tip read per render batch, not per post). Below-floor or bad-signature ⇒ `E_CHAN_FLOOR`. **This leg passes the Ed25519 substitution test** — a funded, aged UTXO has no Ed25519 analog; spam is priced in Bitcoin maturity.
+- **`allowlist` (`rooted:false`).** Writers are the addresses whose canonical sorted list hashes to `allowlist_root`; a post includes a membership proof (the address + its position). Offline-verifiable, but a signature-only allowlist **fails the Ed25519 test** — it is not Bitcoin-load-bearing. Rendered "via ochk.io" muted tier.
+- **`founder` (`rooted:false`).** Only `founder_address` + `admins` may post (an announcement channel). Same Ed25519 verdict.
+- **`open` (`rooted:false`).** Anyone with a valid device may post. Legal but defaulted-against; no spam resistance beyond device-record cost.
+- **`pay-to-post`** (Lightning postage per post, §6) is a **kind-30115 registry extension, NOT v1-canonical** — it needs an invoice round-trip + an operator-local spent-ledger and is not offline-verifiable, so it does not belong in the offline-verifiable v1 core. It is the *other* rooted policy when it ships.
+
+**Ed25519 verdict (NORMATIVE honesty).** Only `utxo-floor` (and the deferred `pay-to-post`) carry the Bitcoin claim. `allowlist`/`founder`/`open` do not — the `rooted:false` flag is structural, and the reference client MUST render a non-rooted channel in the muted "via ochk.io" tier exactly as a `did:oc` identity renders. Membership-by-signature alone is not a Bitcoin gate, and v1 says so on every surface.
+
+### 8.3.4 Roles
+
+Five roles, all enforced **offline by signature** against the current descriptor epoch: **founder** (the trust root; may do anything, including replace the descriptor), **admin** (may replace the descriptor + post any tombstone), **moderator** (may post removal tombstones only), **writer** (may post, gated by §8.3.3), **reader** (read only; a reader post is `E_CH_NOT_WRITER`). For a public channel, read is universal; the interesting axis is write.
+
+### 8.3.5 Moderation (tombstones)
+
+An admin/moderator removes a post by publishing a kind-30111 **removal tombstone** (`body:""`, a `removes` field naming the target `post_id`, signed by a roster moderator/admin). Removal is **forward-effective only** (S14/S15): conforming clients hide the target on sight of a valid tombstone, but copies already scraped/archived are not retracted. A tombstone by a non-roster signer is `E_CH_UNAUTHORIZED`.
+
+### 8.3.6 Composition with the directory (§8.2)
+
+A channel with `directory_opt_in:true` MAY publish a kind-30114 listing whose `address` = `founder_address` and whose handle resolves to the `channel_id` — so a channel is discoverable by handle under the *same* opt-in, UTXO-gated, tombstone-revocable directory rules as a person. Default invisible. The §8.2.3 social-graph firewall holds: a public channel reveals a NODE (the channel exists, its founder), never an edge set (public channels have no member roster).
+
+### 8.3.7 Private channels (RESERVED — not v1)
+
+`read:"members"` + an `encryption` block (`scheme ∈ {rewrap, sender-keys, mls}`) under the **same** kind-30110 descriptor enables private channels in a later phase, using the kind-30113 group-key rotation record (reserved, §10). The descriptor, roles, write gates, moderation, and governance chain are inherited unchanged; only an `encryption` block + the kind-30113 epoch machine are added. v1 does not implement this; the public-channel descriptor is forward-compatible by a flag, not a format break. The S9 member-to-member leak and forward-secrecy limits apply only to those phases (SECURITY S-CH-6/7).
+
 ## 9. Errors
 
 In addition to OC Lock SPEC §6 codes:
@@ -327,6 +441,12 @@ In addition to OC Lock SPEC §6 codes:
 | `E_QUEUE_ROUTE` | A durable-inbox deposit/drain referenced a `queue_id` the caller is not entitled to, or a malformed (non-base64url / wrong-length) queue id. |
 | `E_DIR_UNVERIFIED` | A kind-30114 listing failed §8.2.2: bad signature, `inbox_pubkey` not bound to `address` via a kind-30078 record, or `address` did not clear the UTXO floor. The handle resolves as un-listed. |
 | `E_DIR_REVOKED` | The resolved listing is a tombstone (`opted_in: false`) or absent — the handle is not discoverable. |
+| `E_CHANNEL_RECIPIENTS` | A `chat-channel` envelope (§8.3) carried a non-empty `recipients[]` — a v1 channel post is public and recipient-less. |
+| `E_CH_POLICY_INVALID` | A kind-30110 descriptor's `write.rooted` flag did not match its `write.policy` (§8.3.3): `utxo-floor` must be `rooted:true`; `allowlist`/`founder`/`open` must be `rooted:false`. |
+| `E_CH_UNAUTHORIZED` | A descriptor replacement or moderation tombstone was signed by an address not in the prior epoch's founder/admin (descriptor) or roster moderator/admin (tombstone) set. |
+| `E_CH_WRITE_DENIED` | A `chat-channel` post failed the channel's `write.policy` gate (§8.3.3). |
+| `E_CH_NOT_WRITER` | The post author holds a reader-only role on the channel. |
+| `E_CHAN_FLOOR` | A `utxo-floor` channel post's `write_proof` failed: bad `control_sig`, `value_sats` below floor, or UTXO age below `utxo_floor_confs` at the anchor. |
 
 ## 10. Nostr kind registry
 
@@ -334,8 +454,8 @@ OC Chat claims a fresh block above OC Find's (unratified) 30094–30109 reservat
 
 | Kind | Object | `d`-tag prefix | Notes |
 |---|---|---|---|
-| 30110 | thread / channel descriptor (addressable, NIP-33-replaceable) | `oc-lock-chat-ch:` | one active descriptor per `conversation_id`. |
-| 30111 | message envelope (when published addressably rather than gift-wrapped) | `oc-lock-chat-msg:` | gift-wrap (kind-1059) is the default DM transport; 30111 is for public/channel posts. |
+| 30110 | **channel descriptor** (addressable, NIP-33-replaceable) | `oc-lock-chat-ch:` | §8.3.1. Governance hash-chain; one active descriptor per `channel_id`; d-tag salt `oc-lock-chat-ch/v1:`. |
+| 30111 | **channel post** (`chat-channel`; addressable) | `oc-lock-chat-msg:` | §8.3.2. Public, signed, recipient-less. gift-wrap (kind-1059) stays the DM transport; 30111 is the channel/public-post carrier. |
 | 30112 | seal / block-height anchor descriptor | `oc-lock-chat-seal:` | references the sealed envelope id + `unlock_block` + beacon. |
 | 30113 | reserved (group-key rotation) | `oc-lock-chat-*:` | registry extension; not canonical v0. |
 | **30114** | **discoverability directory / reachability listing** (addressable, NIP-33-replaceable) | `oc-lock-chat-dir:` | §8.2. d-tag = salted handle hash; opt-in, UTXO-gated, revocable by tombstone. |
@@ -356,6 +476,7 @@ A client is OC Chat v0 compliant iff it:
 - [ ] Wraps to the beacon and performs release re-wrap as a detached `recipients[]` merge for `seal-til-block` (§7), and NEVER labels a v0 beacon seal "trustless".
 - [ ] Surfaces every trust anchor (beacon id/url, relay, redundant beacon) and the early-release / brick risks at compose time.
 - [ ] Operates no OC payment rail for postage (§6.4).
+- [ ] If it offers public channels (§8.3): publishes a founder-rooted kind-30110 descriptor with exactly one `write.policy` and a matching `rooted` flag (`E_CH_POLICY_INVALID` otherwise); validates the governance hash-chain on every descriptor replacement (`supersedes` + prior-epoch admin signature); rejects a `chat-channel` post with non-empty `recipients[]` (`E_CHANNEL_RECIPIENTS`); on `utxo-floor`, verifies the self-contained height-anchored `write_proof` offline (no per-post live point-query); renders a non-rooted channel (`allowlist`/`founder`/`open`) in the muted "via ochk.io" tier; honors removal tombstones (forward-effective only); and reproduces vectors `vc14`–`vc17`.
 - [ ] Emits §9 + OC Lock §6 error codes.
 
 ## 12. Security model
@@ -368,9 +489,9 @@ OC Chat versions with OC Lock's `envelope.v` (currently 2). New `kind` values an
 
 ## 14. IANA / external identifiers
 
-- Nostr kinds: **30110–30112** + **30114** (directory, §8.2), addressable, d-tag namespace `oc-lock-chat-*` claimed by this spec; transport reuses kind-1059 (NIP-59).
+- Nostr kinds: **30110** (channel descriptor, §8.3.1), **30111** (channel post, §8.3.2), **30112** (seal), **30114** (directory, §8.2), addressable, d-tag namespace `oc-lock-chat-*` claimed by this spec; **30113** reserved (group-key rotation, private channels §8.3.7), **30115** reserved (`pay-to-post`, §8.3.3); transport reuses kind-1059 (NIP-59).
 - Gift-wrap content tag: `ct = "oc-chat/v2"` (encrypted wrap, §8 normative). `"oc-chat/v1"` (plain base64) is legacy — accepted on receive only, never published.
-- Directory d-tag salt label: `"oc-lock-chat-dir/v1:"`.
+- Directory d-tag salt label: `"oc-lock-chat-dir/v1:"`. Channel descriptor d-tag salt label: `"oc-lock-chat-ch/v1:"`.
 
 ## 15. Acknowledgements
 

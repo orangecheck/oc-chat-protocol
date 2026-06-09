@@ -1,0 +1,41 @@
+{
+  "description": "Channel descriptor identity + d-tag derivation (SPEC §8.3.1). channel_id = SHA-256('oc-lock-chat-ch/v1:' || founder_address || ':' || slug); the descriptor d-tag = 'oc-lock-chat-ch:' || base64url(SHA-256('oc-lock-chat-ch/v1:' || channel_id)) (unpadded); descriptor_id = SHA-256(canonical(content)) per §0 (RFC 8785 sorted-key compact + trailing LF). The founder_address is the channel's trust root; the descriptor is BIP-322-rooted by the founder device (sig over descriptor_id, carried in the kind-30110 event, not in content).",
+  "inputs": {
+    "founder_address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+    "slug": "bitcoin-talk",
+    "ch_salt_label": "oc-lock-chat-ch/v1:",
+    "descriptor": {
+      "v": 1,
+      "channel_id": "96199b4355ca664a461d1e7bd466e58ae9697309ebc876970dd648475ea84639",
+      "slug": "bitcoin-talk",
+      "founder_address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+      "founder_inbox_pubkey": "abd5c03b14d458675ee19c6da072374fddd7a77c09cf083197f018aa58613f17",
+      "read": "public",
+      "encryption": null,
+      "write": {
+        "policy": "utxo-floor",
+        "utxo_floor_confs": 144,
+        "utxo_floor_sats": 0,
+        "allowlist_root": null,
+        "rooted": true
+      },
+      "admins": ["bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8"],
+      "moderators": [],
+      "title": "Bitcoin Talk",
+      "description": "a public channel",
+      "avatar": null,
+      "rules": null,
+      "directory_opt_in": false,
+      "created_at": 1733600000,
+      "supersedes": null
+    }
+  },
+  "expected": {
+    "channel_id": "96199b4355ca664a461d1e7bd466e58ae9697309ebc876970dd648475ea84639",
+    "descriptor_dtag": "oc-lock-chat-ch:pk_FAUvDJcFl86Od6ZbSMDD0TZmy00fLWbuqMxMh8sU",
+    "descriptor_canonical": "{\"admins\":[\"bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8\"],\"avatar\":null,\"channel_id\":\"96199b4355ca664a461d1e7bd466e58ae9697309ebc876970dd648475ea84639\",\"created_at\":1733600000,\"description\":\"a public channel\",\"directory_opt_in\":false,\"encryption\":null,\"founder_address\":\"bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8\",\"founder_inbox_pubkey\":\"abd5c03b14d458675ee19c6da072374fddd7a77c09cf083197f018aa58613f17\",\"moderators\":[],\"read\":\"public\",\"rules\":null,\"slug\":\"bitcoin-talk\",\"supersedes\":null,\"title\":\"Bitcoin Talk\",\"v\":1,\"write\":{\"allowlist_root\":null,\"policy\":\"utxo-floor\",\"rooted\":true,\"utxo_floor_confs\":144,\"utxo_floor_sats\":0}}",
+    "descriptor_id": "9aa4bb9b5064ac12d982729696f087cdc192b1d85b5909d652095798004a7436",
+    "policy_rooted_match": true
+  },
+  "notes": "Reproduce: channel_id = hex(sha256(utf8('oc-lock-chat-ch/v1:'+founder+':'+slug))); d-tag suffix = base64url-unpadded(sha256(utf8('oc-lock-chat-ch/v1:'+channel_id))); descriptor_id = hex(sha256(canonical(content)+'\\n')). policy_rooted_match asserts write.policy='utxo-floor' ⇒ write.rooted=true (else E_CH_POLICY_INVALID)."
+}
