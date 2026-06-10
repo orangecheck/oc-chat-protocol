@@ -426,7 +426,9 @@ An admin/moderator removes a post by publishing a kind-30111 **removal tombstone
 
 ### 8.3.6 Composition with the directory (§8.2)
 
-A channel with `directory_opt_in:true` MAY publish a kind-30114 listing whose `address` = `founder_address` and whose handle resolves to the `channel_id` — so a channel is discoverable by handle under the *same* opt-in, UTXO-gated, tombstone-revocable directory rules as a person. Default invisible. The §8.2.3 social-graph firewall holds: a public channel reveals a NODE (the channel exists, its founder), never an edge set (public channels have no member roster).
+A channel with `directory_opt_in:true` MAY publish a kind-30114 listing whose `address` = `founder_address` and whose content carries the `channel_id` — so a channel is discoverable by handle under the *same* opt-in, UTXO-gated (the founder address clears the §8.2.2 funded+aged floor), tombstone-revocable directory rules as a person. Default invisible. The §8.2.3 social-graph firewall holds: a public channel reveals a NODE (the channel exists, its founder), never an edge set (public channels have no member roster).
+
+**Separate handle namespace (NORMATIVE).** Channel listings use a **distinct d-tag namespace** from people listings (§8.2.1) so a channel handle can never collide with a person's: `d-tag = "oc-lock-chat-chdir:" || base64url(SHA-256("oc-lock-chat-chdir/v1:" || lower(handle)))` (people use `oc-lock-chat-dir:`). The listing is signed by the **founder inbox key** (`founder_inbox_pubkey`, bound to `founder_address` via kind-30078); a resolver honors it only if the event pubkey equals `founder_inbox_pubkey`, that key is device-bound to `founder_address`, and the address clears the UTXO floor — so only the founder can list a channel, and the same anti-squat gate applies. This keeps the shared people-resolution path (§8.2.5) untouched.
 
 ### 8.3.7 Private channels (RESERVED — not v1)
 
