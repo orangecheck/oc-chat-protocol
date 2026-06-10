@@ -152,6 +152,14 @@ All checks pass + not-spent → inbox. Any fail OR already-spent → the message
 ### 6.4 No OC payment rail
 OC operates no postage gateway. Any Lightning gateway in a recipient's postage path is operated by a NAMED third party, never OC. Zap receipts (NIP-57) MUST NOT be used as postage proof — they are server-signed and forgeable; only the BOLT11/BOLT12 preimage is a bearer proof.
 
+### 6.5 Named-Fedimint custodial fallback — NORMATIVE (institutional last-mile)
+A recipient with no Lightning endpoint of their own (an institution, a non-technical staff member) MAY name a **Fedimint federation** as their postage last-mile. The federation's LNURL/Lightning-Address endpoint is published in the recipient's own kind-30078-bound listing (§6.1, §8.2.1) exactly like any other endpoint — so the §6.3 verification is unchanged and endpoint-agnostic (the sender re-derives the same description-hash binding and pays directly; the preimage is the same bearer proof). The structural difference is custody: the **federation** receives the sats and settles ecash to the recipient's federation account.
+
+- **OC stays absent + non-custodial (NORMATIVE).** OC touches no sats, runs no guardian share, holds no hot wallet, and is never in the HTLC path — the federation custodies and settles, exactly as the family corollary requires ("federations settle to users; OC has no payout hot wallet"). This is the §6.4 named-third-party gateway, instantiated by a federation rather than a solo node.
+- **Named trust anchor.** The federation is surfaced in plaintext in the listing — its `federation_id`, human name, and invite — so a sender sees who custodies before paying (§invariant 8). A sender MUST be able to decline a federation-fronted endpoint it does not trust.
+- **Deployment gate (NORMATIVE).** Because a federation custodies inbound funds, a deployment MUST clear a money-transmitter analysis (WHY §19 open question #5) before enabling the Fedimint postage path. The spec specifies the *mechanism*; a deployment ships it only after that analysis. `E_FEDIMINT_UNAVAILABLE` (the named federation/endpoint did not respond) and `E_FEDIMINT_BINDING_MISMATCH` (the federation-fronted invoice failed the §6.3 binding) are the failure codes.
+- **Ed25519 verdict.** Lightning settlement IS the Bitcoin-load-bearing hook (a preimage has no Ed25519 analog) — unchanged from §6. The fallback adds custody convenience, not a new Bitcoin claim, and is honest that the federation is a trusted custodian, not a trustless rail.
+
 ## 7. Seal (`seal-til-block`)
 
 ### 7.1 Seal block
@@ -447,6 +455,24 @@ A channel with `directory_opt_in:true` MAY publish a kind-30114 listing whose `a
 
 `read:"members"` + an `encryption` block (`scheme ∈ {rewrap, sender-keys, mls}`) under the **same** kind-30110 descriptor enables private channels in a later phase, using the kind-30113 group-key rotation record (reserved, §10). The descriptor, roles, write gates, moderation, and governance chain are inherited unchanged; only an `encryption` block + the kind-30113 epoch machine are added. v1 does not implement this; the public-channel descriptor is forward-compatible by a flag, not a format break. The S9 member-to-member leak and forward-secrecy limits apply only to those phases (SECURITY S-CH-6/7).
 
+## 8.4 Relay AUTH (NIP-42) — NORMATIVE (institutional metadata hardening)
+
+§8's transport leaves one disclosed residue: the recipient inbox pubkey in the kind-1059 `p` tag, plus the bare fact of a connection, are visible to any observer of an open relay (SECURITY S6). [NIP-42](https://nips.nostr.com/42) lets a relay demand an authenticated connection before it serves or accepts events, so an **unauthenticated** observer never sees the `p` tag at all. This is the institutional privacy posture: pair an `auth-required` relay with the v2 encrypted wrap (§8) and a relay learns nothing about who is reachable except to clients it has admitted.
+
+**Handshake.** On an `auth-required` relay the server sends `["AUTH", <challenge>]`; the client replies `["AUTH", <signed kind-22242 event>]` where the kind-22242 event carries tags `["relay", <relay-url>]` and `["challenge", <challenge>]`, a recent `created_at`, empty `content`, and a Schnorr signature. A client MUST perform this exchange before publishing or subscribing on such a relay, and MUST re-attempt a publish/subscribe that a relay rejects with an `auth-required:` `OK`/`CLOSED` message after completing AUTH (`E_RELAY_AUTH_REQUIRED`).
+
+**Which key signs (NORMATIVE).** The kind-22242 event is **not** the gift-wrap and MUST NOT be signed by an identity key, and (because AUTH is per-connection while a connection carries many independently-keyed gift-wraps) MUST NOT be tied to any one message's ephemeral wrap key. The default is a **fresh, per-connection ephemeral key** generated only for the handshake and discarded with the socket: the relay learns one random pubkey that links to no identity and no message — pure access-gating that closes the S6 observer leak with zero new disclosure. A relay that instead **allow-lists** specific members (a single-org institutional relay) MAY require a designated stable credential key; the client config names it per relay (`auth_key`), and absent that, the per-connection ephemeral key is used. The relay it authenticates to is a **named trust anchor** (§invariant 8): it now gatekeeps the metadata it once leaked, so its URL is surfaced in the client's relay settings, never implicit.
+
+**Ed25519 verdict (NORMATIVE honesty).** Relay AUTH is **not** Bitcoin-load-bearing — it works identically with any Schnorr keypair and any relay; it carries no Bitcoin claim and proves no identity by itself (the per-connection key is deliberately random). It is a metadata-privacy hardening that *rides on* the identity already proven by the §3 device record and BIP-322 binding. The shared public relay (`relay.ochk.io`) is open by default; AUTH is an opt-in posture for self-hosted / institutional relays, and a conforming client MUST surface that an `auth-required` relay sees the connection metadata of clients it admits.
+
+## 8.5 Source-intake mode — NORMATIVE (institutional composition, no new crypto)
+
+Source-intake (a SecureDrop-shaped one-way tip line) is a **composition of shipped primitives**, not a new envelope kind or ceremony: a public **intake channel** (§8.3, kind-30110, `write:"open"` or `utxo-floor`) is the org's advertised drop, where a **source** the org does not pre-know posts material (kind-30111) under an ephemeral or throwaway identity; the org reads the public post and **replies privately** by gift-wrapping a speak-now DM (§8) to the post's `author_inbox_pubkey`. No new kind, no new crypto: the public submission is an ordinary channel post; the private reply is an ordinary kind-1059 wrap to the source's inbox key.
+
+- **Source identity.** A source SHOULD use a fresh device key (its own `did:oc` session bridge or a throwaway) so the intake post and the source's other activity are unlinkable. The org stays Bitcoin-rooted (the intake channel's founder is a Bitcoin identity, and `utxo-floor` write pricing — if set — is the org's anti-flood gate). A conforming source client MUST be able to receive the org's private reply at the bootstrap queue (§8.1.2) derived from the source's ephemeral inbox key, and that ephemeral session MUST survive the client's sign-in flow.
+- **Metadata.** The submission is public by the source's choice (it is a tip line). The reply is a normal wrap — recipient `p` tag visible per §8.1.2 — and an `auth-required` relay (§8.4) on the org's side closes even that to unauthed observers. The §8.2.3 social-graph firewall holds: a public intake channel reveals that the drop exists and who founds it, never the set of sources.
+- **Ed25519 verdict.** Source-intake adds **no** Bitcoin mechanism of its own — it is transport composition; whatever Bitcoin claim it carries is the intake channel's write policy (`utxo-floor` ⇒ rooted, else the muted "via ochk.io" tier). Honest: the value is the *composition* (anonymous in, authenticated private reply out), not a new load-bearing primitive. Trust anchors — the relay(s) and the org's founding identity — are named in plaintext.
+
 ## 9. Errors
 
 In addition to OC Lock SPEC §6 codes:
@@ -467,6 +493,9 @@ In addition to OC Lock SPEC §6 codes:
 | `E_CH_WRITE_DENIED` | A `chat-channel` post failed the channel's `write.policy` gate (§8.3.3). |
 | `E_CH_NOT_WRITER` | The post author holds a reader-only role on the channel. |
 | `E_CHAN_FLOOR` | A `utxo-floor` channel post's `write_proof` failed: bad `control_sig`, `value_sats` below floor, or UTXO age below `utxo_floor_confs` at the anchor. |
+| `E_RELAY_AUTH_REQUIRED` | An `auth-required` relay (§8.4) rejected a publish/subscribe pending NIP-42 AUTH. A client MUST complete the kind-22242 handshake and re-attempt. |
+| `E_FEDIMINT_UNAVAILABLE` | A named-Fedimint postage endpoint (§6.5) did not respond or could not be reached. |
+| `E_FEDIMINT_BINDING_MISMATCH` | A federation-fronted postage invoice (§6.5) failed the §6.3 description-hash / nonce / amount binding. |
 
 ## 10. Nostr kind registry
 
@@ -481,7 +510,7 @@ OC Chat claims a fresh block above OC Find's (unratified) 30094–30109 reservat
 | **30114** | **discoverability directory / reachability listing** (addressable, NIP-33-replaceable) | `oc-lock-chat-dir:` | §8.2. d-tag = salted handle hash; opt-in, UTXO-gated, revocable by tombstone. |
 | 30115 | reserved (postage-policy record) | `oc-lock-chat-*:` | registry extension; not canonical v0. |
 
-The transport gift-wrap remains Nostr kind-1059 (NIP-59, not an OC-allocated kind). Device records remain kind-30078 (OC Lock SPEC §11). Allocating these required widening the family range past 30099; the workspace `KINDS.md` and `oc-agent-protocol/SPEC.md §4` are the rolled-up source of truth.
+The transport gift-wrap remains Nostr kind-1059 (NIP-59, not an OC-allocated kind). Device records remain kind-30078 (OC Lock SPEC §11). Relay AUTH (§8.4) uses **kind-22242** — a [NIP-42](https://nips.nostr.com/42) ephemeral handshake event, signed per connection and never stored; it is a Nostr protocol kind, NOT an OC-allocated or content-addressed artifact. Allocating these required widening the family range past 30099; the workspace `KINDS.md` and `oc-agent-protocol/SPEC.md §4` are the rolled-up source of truth.
 
 ## 11. Compliance checklist
 
