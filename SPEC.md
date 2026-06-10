@@ -526,6 +526,9 @@ A client is OC Chat v0 compliant iff it:
 - [ ] Surfaces every trust anchor (beacon id/url, relay, redundant beacon) and the early-release / brick risks at compose time.
 - [ ] Operates no OC payment rail for postage (§6.4).
 - [ ] If it offers public channels (§8.3): publishes a founder-rooted kind-30110 descriptor with exactly one `write.policy` and a matching `rooted` flag (`E_CH_POLICY_INVALID` otherwise); validates the governance hash-chain on every descriptor replacement (`supersedes` + prior-epoch admin signature); rejects a `chat-channel` post with non-empty `recipients[]` (`E_CHANNEL_RECIPIENTS`); on `utxo-floor`, verifies the self-contained height-anchored `write_proof` offline (no per-post live point-query); renders a non-rooted channel (`allowlist`/`founder`/`open`) in the muted "via ochk.io" tier; honors removal tombstones (forward-effective only); and reproduces vectors `vc14`–`vc17`.
+- [ ] If it supports an `auth-required` relay (§8.4): completes the kind-22242 NIP-42 handshake before publish/subscribe (`E_RELAY_AUTH_REQUIRED` otherwise), signs the challenge with a fresh per-connection ephemeral key by default (or a configured `auth_key`), surfaces the AUTH relay as a named trust anchor, and NEVER presents AUTH as making a relay trustless.
+- [ ] If it offers source-intake (§8.5): warns the source at submission time that the intake post is public + permanent (only the org's reply is E2EE), defaults the source to a fresh throwaway identity, and never claims SecureDrop-grade anonymity for the inbound leg (S-M7-2).
+- [ ] If it offers a named-Fedimint postage fallback (§6.5): surfaces the federation as a named plaintext custodian before the sender pays, lets the sender decline a federation-fronted endpoint, keeps OC out of custody (the federation settles), and does not enable the path absent a money-transmitter analysis (`E_FEDIMINT_*`).
 - [ ] Emits §9 + OC Lock §6 error codes.
 
 ## 12. Security model
