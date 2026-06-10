@@ -66,6 +66,12 @@ A journalist arms a disclosure: a `seal-til-block` envelope to a trusted recipie
 
 This is the one seal use case with real, repeat, high-stakes demand. It also has the sharpest failure mode: a beacon outage could false-fire an irreversible disclosure. A conforming deployment MUST provide a mandatory **second check-in channel** so a single beacon's liveness cannot trigger release alone — and MUST state plainly that a multi-year seal depends on the named beacon existing and cooperating that far out (the drand `fastnet` sunset, which permanently bricked its ciphertexts, is the cautionary precedent).
 
+## Flow 6 — institutional / source-intake (M7)
+
+The institutional tier is composition, not new crypto. A newsroom founds a **public intake channel** (§8.3, `write:"open"` — a Bitcoin-gated `utxo-floor` if it wants to price out flooding) and publishes its handle. A **source** the newsroom does not pre-know opens OC Chat under a fresh throwaway identity and posts material to that channel (an ordinary kind-30111 post). The newsroom reads the public post and clicks **"Message privately"**: the client opens a `speak-now` gift-wrap (§8) to the source's inbox key — the **reply** is end-to-end encrypted even though the **intake** was public. Neither the relay nor the newsroom learns a link between the source's public submission and any other identity beyond what the source itself chose to reveal in the post (S-M7-2: the inbound post is permanent and public — that is the honest boundary, *not* a SecureDrop-grade anonymity claim).
+
+Two institutional hardenings ride on top, both opt-in and owner-operated. The newsroom can run its **own NIP-42 AUTH relay** (§8.4) so the recipient inbox tags on its private replies never appear to a passive observer of a public relay — the relay becomes a named trust anchor it controls (S-M7-1; AUTH is a metadata hardening, not a Bitcoin claim). And a staff recipient with no Lightning node can name a **Fedimint federation** as their postage last-mile (§6.5) — the federation custodies and settles, OC touches no sats — so pay-to-reach works for an institution without anyone running an LN node, at the cost of trusting the named federation (S-M7-3; gated on a money-transmitter analysis).
+
 ## What's different from the lock.ochk.io chat
 
 | Concern | lock.ochk.io chat (v0 prototype) | OC Chat |
