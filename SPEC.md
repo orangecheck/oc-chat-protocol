@@ -302,11 +302,13 @@ d-tag   = "oc-lock-chat-dir:" || base64url( SHA-256( "oc-lock-chat-dir/v1:" || l
 content = canonical JSON {
   "v": 1, "handle": "<[a-z0-9_]{3,32}>", "address": "<bitcoin address the inbox key is bound to>",
   "inbox_pubkey": "<hex; the §8.2 reachability pointer = the event pubkey>",
-  "display_name"?: "<=48 chars", "bio"?: "<=80 chars", "avatar"?: "<https url>",
+  "display_name"?: "<=48 chars", "bio"?: "<=80 chars", "avatar"?: "<small inline raster data: URL, ≤24KB>",
   "opted_in": true, "created_at": <unix seconds>
 }
 listing_id = SHA-256( canonical(content) )   // hex, content-addressed (invariant 4)
 ```
+
+**`avatar` is an inline `data:` raster URL, NOT an external link (NORMATIVE).** A profile image rides as a small `data:image/(png|jpeg|webp|gif);base64,…` URL inside the signed content — content-addressed (it changes `listing_id`, so it can't be swapped under a fixed handle), offline-verifiable, and with **no third-party fetch**. An external `https` avatar URL is forbidden: loading it would turn every directory lookup into a **tracking pixel** that leaks the viewer's IP + timing to the image host (and a non-content-addressed image can be swapped after signing). A conforming client downscales any picked image to a small square (reference clients: ~128px webp) and MUST render an avatar ONLY if it is a bounded raster `data:` URL — never `image/svg+xml`, `text/html`, or any non-raster type (the `data:`/blob-URL XSS class); an unsafe or oversized avatar is dropped, the listing still resolves.
 
 The `d`-tag is a **salted hash of the handle** — a conforming directory is **lookup-by-known-handle, never enumerate-all** (there is NO `GET /all` and no bulk-dump). It is keyed by the handle hash, not the raw address (a raw-address key would be deterministically enumerable). `canonical(x)` is §0's RFC 8785 + LF-terminator.
 
