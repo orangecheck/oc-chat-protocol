@@ -391,6 +391,7 @@ A public post is an addressable kind-30111 event, the `chat-channel` envelope (�
   "author_address": "<bitcoin address or did:oc>",
   "author_inbox_pubkey": "<hex; bound to author_address via kind-30078>",
   "body": "<plaintext, <=4096>",
+  "attachment": { "name": "<str>", "type": "<mime>", "size": <int>, "data": "<base64>" },  // OPTIONAL, see below
   "seq": <int>, "parent_id": "<prior post_id or null>",   // null for an independent top-level post (see ordering)
   "write_proof": { ... }      // §8.3.3, REQUIRED iff the channel's write.policy is "utxo-floor"
 }
@@ -400,6 +401,8 @@ A public post is an addressable kind-30111 event, the `chat-channel` envelope (�
 //           and the ["t", channel_id] scope tag are likewise NOT part of post_id — the id stays stable
 //           regardless of when the event is stamped or how it is routed.
 ```
+
+**Optional `attachment`** (a single inline file, same shape as the §5 DM attachment) carries `{name, type, size, data}` where `data` is the base64 of the raw bytes. Unlike a DM attachment — sealed inside the E2EE `ChatBody` — a channel attachment is **PUBLIC**: it lives in the plaintext post content, is committed to `post_id` (so it is tamper-evident and any edit yields a new id), and is readable by anyone who can read the channel. Clients SHOULD cap it at the same small inline ceiling as DM files (reference clients use 100 KiB) and SHOULD treat an attachment that fails the §5 shape check as a malformed post (`E_CH_MALFORMED`, MUST NOT render). It is a convenience for small images/snippets, not a file-hosting layer; large media belongs behind a link.
 
 A conforming reader MUST: (1) verify the author device signature + kind-30078 binding (§4.1) — a post with no resolvable event/signature is `E_CH_UNAUTHORIZED` and MUST NOT render (authorship is never optional); (2) evaluate the channel's `write.policy` against the post (§8.3.3) — a post failing the gate is `E_CH_WRITE_DENIED` and MUST NOT render; (3) confirm the author is permitted to write (a reader-only channel role posting is `E_CH_NOT_WRITER`); (4) **order the feed deterministically.** A public multi-author channel has **no single hash-chain** (independent broadcasters), so a top-level post sets `parent_id:null` and the feed is ordered by the event `created_at` as a **display hint, tie-broken by the content-addressed `post_id`** so any two clients agree. `created_at` is untrusted (a relay may backdate) and MUST NOT be treated as authoritative; the `post_id` tiebreak makes the order stable + reproducible. When `parent_id` is non-null it threads an explicit reply, and a client SHOULD render the reply under its parent. (This relaxes the §5 DM rule, which assumes a single two-party chain; channels are fan-out.)
 
