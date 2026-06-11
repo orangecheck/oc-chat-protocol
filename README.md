@@ -38,18 +38,18 @@ You sign in once with BIP-322; your browser generates an X25519 device key bound
 ## Layers
 
 ```
-┌────────────────────────────────────────────────────────────────┐
-│  chat.ochk.io           threads, postage UI, seal compose       │
-├────────────────────────────────────────────────────────────────┤
+┌──────────────────────────────────────────────────────────────────┐
+│  chat.ochk.io           threads, postage UI, seal compose        │
+├──────────────────────────────────────────────────────────────────┤
 │  oc-chat-protocol       kind=chat / chat-seal, threading, seal   │
 │  oc-lock-protocol       envelope crypto, canonicalization        │
 │  @orangecheck/lock-*    X25519 ECDH, HKDF, AES-256-GCM           │
-├────────────────────────────────────────────────────────────────┤
+├──────────────────────────────────────────────────────────────────┤
 │  OrangeCheck            identity (BIP-322 sign-in, did_oc)       │
 │  Nostr                  device directory (30078) + gift-wrap     │
 │  Lightning              postage preimage; drand beacon for seal  │
-│  Bitcoin                address ownership + block-height clock    │
-└────────────────────────────────────────────────────────────────┘
+│  Bitcoin                address ownership + block-height clock   │
+└──────────────────────────────────────────────────────────────────┘
 ```
 
 ## Honest by design
