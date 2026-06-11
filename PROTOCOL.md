@@ -43,7 +43,7 @@ Bob has a laptop and a phone, each with its own device key and its own kind-3007
 1. Bob publishes a postage policy: `floor_sats: 100` and a BOLT12 offer resolving to **his own** wallet.
 2. Carol (a stranger) wants to message Bob. Her wallet fetches an invoice **directly** from Bob's offer (OC is not in the path), pays it, and obtains the preimage.
 3. Carol's client embeds `postage{payment_hash, preimage, nonce, amount_sats, recipient}` in the sealed envelope (vector `vc05`). Because `postage` is in the `id`, the binding can't be altered.
-4. Bob's client verifies `SHA-256(preimage) == payment_hash` **offline** and that the `nonce` is one his endpoint minted for this payment. Valid → inbox. Invalid/absent → pending-postage tray.
+4. Bob's client verifies `SHA-256(preimage) == payment_hash` **offline** and that the `nonce` is one his endpoint minted for this payment. Valid → inbox. Invalid/absent → delivered but filtered/pending (the "Requests" surface), never dropped; Bob can approve Carol to let her reach his inbox normally thereafter.
 
 OC collects nothing. This is *sats as signal* — attention priced, not filtered — and it is the inverse of hashcash: the cost is hardware-neutral and accrues to the recipient as value. Contacts message for free; only stranger→inbox is gated.
 

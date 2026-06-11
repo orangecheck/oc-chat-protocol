@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased] — 2026-06
 
+### Changed
+- **`SPEC.md §4.1/§4.2/§6.3` + `PROTOCOL.md` Flow 3** — clarified the free-tier/postage hold as a presentation-neutral **filtered/pending** state (the "Requests" surface), not a separate "Requests tray" page. The normative routing is unchanged (a below-floor or invalid-postage first-contact is **delivered, decrypted, and shown to the recipient set apart from the main inbox — never dropped**). Specified acceptance as a **client-local, explicit, revocable allowlist** (the recipient approving a sender — e.g. by opening their filtered conversation — lets them reach the inbox normally thereafter; revocable anytime) that MUST NOT be published, carried on the wire, or co-indexed with the directory (the §8.2.3 social-graph firewall). A recipient signals acceptance to a sender only by replying; clients MUST NOT emit a separate "your request was opened" receipt (a read-receipt-style metadata leak — SECURITY S19). Reference client (`chat.ochk.io`): the standalone Requests page was removed in favor of an inline, distinct Requests group.
+
 ### Added
 - Initial OC Chat protocol specification. OC Chat is a **mode of OC Lock**, not a new verb: it adds two envelope `kind` values (`chat`, `chat-seal`) to the OC Lock v2 envelope and a thin threading/postage/seal layer on top of the unchanged X25519 + AES-256-GCM crypto.
 - **`SPEC.md`** — normative: the recipient-exclusion `id`/AAD rule for chat kinds (§3), the three canonical send modes `speak-now` / `pay-to-reach` / `seal-til-block` (§4), encrypted threading with a hash-chain `parent_id` (§5), postage preimage-binding and replay defense (§6), the seal beacon release protocol (§7), error codes (§9), and the Nostr kind allocation 30110–30112 with the `oc-lock-chat-*` d-tag namespace (§10).

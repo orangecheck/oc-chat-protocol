@@ -68,9 +68,11 @@ Consequences a conforming implementation MUST honor:
 
 Free-tier anti-spam is recipient policy, enforced by the recipient client, not the protocol: require a mutual contact, OR a BIP-322 proof of control of a funded/aged UTXO. Neither involves a payment.
 
+A first message that does not clear the recipient's policy is **delivered and decrypted, never dropped** — it is placed in a distinct **filtered/pending** state and shown to the recipient set apart from the main inbox (the "Requests" surface), so the recipient always sees that someone reached them. Acceptance is a client-local, **explicit and revocable allowlist**: the recipient approving a sender (e.g. by opening their filtered conversation) lets that sender reach the inbox normally thereafter, and the recipient MAY revoke at any time. This allowlist is private — it MUST NOT be published, carried on the wire, or co-indexed with the directory listing (the §8.2.3 social-graph firewall). A recipient MAY signal acceptance to a sender only by replying; clients MUST NOT emit a separate "your request was opened" receipt (it would be a read-receipt-style metadata leak).
+
 ### 4.2 `pay-to-reach` (paid, peer-to-peer)
 
-`kind="chat"` with a `postage` block (§6). A stranger's first message to a recipient who has published a postage floor MUST carry a valid Lightning preimage proving payment to the recipient. Messages lacking valid postage are placed by the recipient client in a pending tray, not the inbox. The payment is **sender → recipient direct**; no OC service is in the path (§6.4).
+`kind="chat"` with a `postage` block (§6). A stranger's first message to a recipient who has published a postage floor MUST carry a valid Lightning preimage proving payment to the recipient. Messages lacking valid postage are still delivered to the recipient but placed in the **filtered/pending** state (the "Requests" surface, §4.1), not the main inbox. The payment is **sender → recipient direct**; no OC service is in the path (§6.4).
 
 ### 4.3 `seal-til-block` (the timelock mode)
 
@@ -145,7 +147,7 @@ This was a blocking open item; v0 **specifies** a recipient-side, per-DM, non-re
 
 The recipient does **NOT** re-enforce the invoice's expiry: the preimage already proves the HTLC settled, and a short (e.g. 1h) invoice expiry would wrongly reject valid postage that took longer than that to *deliver*. Invoice freshness is the **sender's** pay-time concern (don't pay an expired invoice); per-DM freshness is supplied by the nonce + the spent-ledger.
 
-All checks pass + not-spent → inbox. Any fail OR already-spent → the message is **held in the Requests tray** (§6 free-tier path), never dropped.
+All checks pass + not-spent → inbox. Any fail OR already-spent → the message is **delivered but held in the filtered/pending state** (the "Requests" surface, §4.1 free-tier path), never dropped.
 
 **Why this is non-replayable (and its honest ceiling):** because the recipient's *own* endpoint minted the per-DM invoice committing **this** recipient + amount + nonce into the description-hash, a preimage replayed to a *different* recipient fails the binding there (that recipient never minted that metadata/nonce); a preimage replayed to the *same* recipient is caught by the local spent-ledger. The residual ceiling is named in SECURITY S7: this is **recipient-scoped**, not a proof a third party who sees only `{preimage, nonce}` can verify; the recipient's LNURL endpoint is a **named trust anchor**; and a cold observer can check the hash/binding but cannot independently confirm the HTLC settled.
 
@@ -523,7 +525,7 @@ A client is OC Chat v0 compliant iff it:
 - [ ] Carries `conversation_id`/`seq`/`parent_id` inside the encrypted payload and orders by the `parent_id` hash-chain, never by `created_at` (§5).
 - [ ] If it offers durable store-and-forward, derives `queue_id`/`bootstrap_id` per §8.1, routes the inbox solely on those opaque ids (no address/device-pubkey index), stores the blob byte-for-byte, and reproduces vector `vc06`.
 - [ ] If it offers the directory (§8.2), publishes a kind-30114 listing ONLY on explicit opt-in (default invisible), derives the salted-handle `d`-tag (vector `vc07`), refuses to resolve a handle unless the §8.2.2 gate passes (signature + kind-30078 binding + UTXO floor), enforces the §8.2.3 social-graph firewall, honors tombstones (vector `vc08`), and never exposes a bulk-dump endpoint.
-- [ ] For `pay-to-reach` (§6): carries `postage` in the `ChatBody` (§6.2), and on receive runs the full §6.3 verification — re-derives the description-hash binding `SHA-256(lnurl_metadata‖payerdata)` ITSELF over verbatim bytes, checks `SHA-256(preimage)==payment_hash` + amount + expiry + identifier + the local spent-ledger — routing a failing/replayed message to the Requests tray, and NEVER claims transferable third-party proof.
+- [ ] For `pay-to-reach` (§6): carries `postage` in the `ChatBody` (§6.2), and on receive runs the full §6.3 verification — re-derives the description-hash binding `SHA-256(lnurl_metadata‖payerdata)` ITSELF over verbatim bytes, checks `SHA-256(preimage)==payment_hash` + amount + expiry + identifier + the local spent-ledger — routing a failing/replayed message to the filtered/pending state (delivered, never dropped), and NEVER claims transferable third-party proof.
 - [ ] Wraps to the beacon and performs release re-wrap as a detached `recipients[]` merge for `seal-til-block` (§7), and NEVER labels a v0 beacon seal "trustless".
 - [ ] Surfaces every trust anchor (beacon id/url, relay, redundant beacon) and the early-release / brick risks at compose time.
 - [ ] Operates no OC payment rail for postage (§6.4).
