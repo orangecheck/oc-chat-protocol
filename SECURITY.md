@@ -10,7 +10,7 @@ This document covers the **OC Chat protocol specification** in this repository. 
 
 ## Threat model
 
-The adversary may: control and observe relays; run a malicious relay; seize a device; observe all network traffic as a passive global observer; operate or collude with a seal beacon; and compel the service operator (state actor). We assume Bitcoin's security holds, BIP-322 verification is correct, the user's runtime is not compromised, and randomness is strong.
+The adversary may: control and observe relays; run a malicious relay; seize a device; observe all network traffic as a passive global observer; operate or collude with a seal beacon; and compel the service operator (state actor). We assume Bitcoin's security holds, BIP-322 verification is correct, randomness is strong, and the user's runtime is not compromised **while running**. We do **not** assume a device is safe once seized, powered off and disk-imaged, or backed up — that case is in scope and addressed in S1, never assumed away here.
 
 ## What OC Chat proves (inherited + new)
 
@@ -22,7 +22,7 @@ The adversary may: control and observe relays; run a malicious relay; seize a de
 
 ## What OC Chat does NOT solve — attack scenarios
 
-**S1 — Device seizure decrypts history (no per-message forward secrecy).** An attacker who seizes a device and extracts `device_sk` decrypts every past message wrapped to it — potentially years. Mitigation is coarse only (90-day rotation). *This is the single most dangerous gap for journalists protecting sources; it is disclosed in bold on any surface targeting them, who are told to use Signal for forward-secrecy-critical work.*
+**S1 — Device seizure decrypts history (no per-message forward secrecy, no app-lock at rest).** An attacker who seizes a device and extracts `device_sk` decrypts every past message wrapped to it — potentially years; message plaintext also rests unencrypted in local storage. At rest, `device_sk` is AES-GCM-wrapped under a **non-extractable** WebCrypto key — but per W3C WebCrypto L2 §6.2 the `extractable` flag gates only `exportKey()`/`wrapKey()` in script, not the on-disk representation, so the wrap key rests beside the ciphertext. That wrap **raises the bar against in-page (XSS) key-exfiltration ONLY**; it does **not** protect a seized, powered-off-and-imaged, or backed-up device, which relies on OS full-disk encryption. The only at-rest defense that survives seizure is an **opt-in passphrase app-lock** (PBKDF2 → AES-GCM, a secret never written to disk); it is deferred, and until it ships the at-rest posture against a cold-seized device is OS-FDE-plus-nothing. Forward-secrecy mitigation is coarse only (90-day rotation). *This is the single most dangerous gap for journalists protecting sources; it is disclosed in bold on any surface targeting them, who are told to use Signal for forward-secrecy-critical work.*
 
 **S2 — Seal beacon colludes to release early.** For `kind="chat-seal"`, the `content_key` is escrowed to a beacon committee. A colluding threshold can decrypt the message body **before** `unlock_block` — this is strictly weaker than `speak-now`, where no third party ever holds key material. The product's "relays learn nothing" claim is TRUE for `speak-now` and FALSE for `seal-til-block`. The UI MUST label a sealed message "readable early by {named quorum}".
 
