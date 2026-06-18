@@ -374,7 +374,9 @@ One descriptor per channel, signed by the **founder's inbox key** (`deriveNostrK
   "title": "<=80>", "description": "<=280>", "avatar": "<https, optional>", "rules": "<=1000, optional>",
   "directory_opt_in": false, // §8.3.6: list in kind-30114 (default invisible)
   "created_at": <unix s>,
-  "supersedes": "<descriptor_id of the prior version, or null for genesis>"
+  "supersedes": "<descriptor_id of the prior version, or null for genesis>",
+  "status": "closed",        // §8.3.8 lifecycle. OMITTED when active (absent ⇒ active); present only to retire.
+  "successor_channel_id": "<hex, optional>" // §8.3.8: a replacement channel a closed one points to
 }
 // descriptor_id = SHA-256( canonical(content) )   // hex, content-addressed (§0; vc14)
 // authorship    = the kind-30110 event's schnorr signature by an inbox key bound to the author's address via
@@ -461,6 +463,16 @@ A channel with `directory_opt_in:true` MAY publish a kind-30114 listing whose `a
 
 `read:"members"` + an `encryption` block (`scheme ∈ {rewrap, sender-keys, mls}`) under the **same** kind-30110 descriptor enables private channels in a later phase, using the kind-30113 group-key rotation record (reserved, §10). The descriptor, roles, write gates, moderation, and governance chain are inherited unchanged; only an `encryption` block + the kind-30113 epoch machine are added. v1 does not implement this; the public-channel descriptor is forward-compatible by a flag, not a format break. The S9 member-to-member leak and forward-secrecy limits apply only to those phases (SECURITY S-CH-6/7).
 
+### 8.3.8 Channel close (retire) — NORMATIVE
+
+A founder MAY **close** (retire) a channel. Because a channel is content-addressed and its posts are public on relays the protocol does not control, **close is forward-effective only — it is NOT deletion** and a conforming client MUST NOT present it as erasure (S-CH-8, mirroring the §8.2.4 / S15 rule for directory tombstones). Close is a **descriptor revision**, not a new kind:
+
+- **Mechanism.** Publish a kind-30110 supersede at the channel's d-tag with `status:"closed"` (`supersedes` → the prior `descriptor_id`), inheriting the §8.3.1 governance chain (freshest valid descriptor wins, NIP-01 keep-latest). `status` is **OMITTED when active** (an active descriptor is byte-identical to a pre-`status` one — vc14/vc15 unaffected) and present only as `"closed"`. A client that resolves a `status:"closed"` descriptor MUST render the channel **read-only** (history visible, no composer) and SHOULD show the optional `successor_channel_id` as a **user-confirmed link** (never an auto-redirect; render its founder address + trust tier).
+- **Authority (NORMATIVE).** The `status` transition (close OR re-open) is **founder-only**. An admin-signed supersede that changes `status` is `E_CH_UNAUTHORIZED` — closing a channel others rely on is exactly the governance coup §8.3.1 forbids. Re-open = a later founder-signed `status:"active"` (omit the field) supersede; the lifecycle is reversible and every transition is a signed, dated, auditable artifact.
+- **Write gate.** A closed channel denies every new post with `E_CH_CLOSED`, but **still accepts removal tombstones** (§8.3.5) so moderation survives close. Already-propagated posts are unaffected.
+- **SHOULD also.** On close a client SHOULD (a) fire the §8.3.6 kind-30114 directory tombstone (`opted_in:false`) to pull the @handle from discovery, and (b) emit a best-effort [NIP-09](https://nips.nostr.com/9) kind-5 deletion request at the descriptor address — but MUST treat NIP-09 as a non-guaranteed *request* (relays MAY ignore it; the request is itself a permanent public record), never as success.
+- **Honest ceiling (NORMATIVE).** Close **cannot** erase the descriptor or any post (the id is the bytes), retract copies on non-conforming relays / archives / scrapers (S14), force a relay to forget, or reclaim the `channel_id` (bound to `founder_address`). The client copy MUST say so plainly. [NIP-62](https://nips.nostr.com/62) "vanish" is a stronger future option but binds only relays that implement it, so it does not change this ceiling — out of v1.
+
 ## 8.4 Relay AUTH (NIP-42) — NORMATIVE (institutional metadata hardening)
 
 §8's transport leaves one disclosed residue: the recipient inbox pubkey in the kind-1059 `p` tag, plus the bare fact of a connection, are visible to any observer of an open relay (SECURITY S6). [NIP-42](https://nips.nostr.com/42) lets a relay demand an authenticated connection before it serves or accepts events, so an **unauthenticated** observer never sees the `p` tag at all. This is the institutional privacy posture: pair an `auth-required` relay with the v2 encrypted wrap (§8) and a relay learns nothing about who is reachable except to clients it has admitted.
@@ -499,6 +511,7 @@ In addition to OC Lock SPEC §6 codes:
 | `E_CH_WRITE_DENIED` | A `chat-channel` post failed the channel's `write.policy` gate (§8.3.3). |
 | `E_CH_NOT_WRITER` | The post author holds a reader-only role on the channel. |
 | `E_CHAN_FLOOR` | A `utxo-floor` channel post's `write_proof` failed: bad `control_sig`, `value_sats` below floor, or UTXO age below `utxo_floor_confs` at the anchor. |
+| `E_CH_CLOSED` | The channel is closed (§8.3.8, `status:"closed"`): new posts are denied; only removal tombstones are accepted. Forward-effective, founder-reversible. |
 | `E_RELAY_AUTH_REQUIRED` | An `auth-required` relay (§8.4) rejected a publish/subscribe pending NIP-42 AUTH. A client MUST complete the kind-22242 handshake and re-attempt. |
 | `E_FEDIMINT_UNAVAILABLE` | A named-Fedimint postage endpoint (§6.5) did not respond or could not be reached. |
 | `E_FEDIMINT_BINDING_MISMATCH` | A federation-fronted postage invoice (§6.5) failed the §6.3 description-hash / nonce / amount binding. |
