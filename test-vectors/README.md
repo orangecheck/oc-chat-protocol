@@ -42,21 +42,22 @@ Given a vector's `inputs`, a compliant implementation MUST:
 
 Canonicalization is RFC 8785 plus the OC Lock constraint that `recipients[]` (when present in the canonical form) is sorted by `device_id` ascending — irrelevant to the chat `id`, which excludes `recipients[]`, but preserved for wire interop.
 
-## The `*_canonical` fields omit the trailing LF
+## Whether a `canonical` field carries its trailing LF — it varies
 
-`listing_canonical`, `descriptor_canonical` and `post_canonical` are stored
-**without** the trailing `\n`, for readability. The canonical form that is
-actually hashed includes it, so:
+Canonical form is always LF-terminated (§0). Whether the **stored string** in
+these files includes that byte is not uniform, so check before you hash:
 
-```
-id == SHA-256(canonical + "\n")     # NOT SHA-256(canonical)
-```
+| field | in these files | therefore |
+| --- | --- | --- |
+| `canonical` (vc01, the only envelope vector that stores one) | **includes** the `\n` | `id == SHA-256(canonical)` |
+| `listing_canonical`, `descriptor_canonical`, `post_canonical` (vc08, vc14, vc16) | **omits** the `\n` | `id == SHA-256(canonical + "\n")` |
 
-Worth stating plainly because the mistake is silent: hashing the field as
-stored yields a well-formed 64-hex digest that simply is not the `id`, with
-nothing to indicate the missing byte. Note that `oc-vote-protocol`'s vectors
-make the opposite choice and store `poll_canonical` / `reveal_canonical`
-**with** the LF included, so a validator written against one vector set will
-be off by one byte against the other. Both protocols canonicalize
-identically — LF-terminated, per §0 and vote-core's `canonicalBytes` — the
-difference is only in how the field is presented here.
+Worth stating plainly because the mistake is silent either way: hashing with
+the wrong number of trailing bytes yields a well-formed 64-hex digest that
+simply is not the `id`, with nothing pointing at the missing or extra byte.
+
+For cross-protocol work: `oc-vote-protocol` stores `poll_canonical` /
+`reveal_canonical` **with** the LF, like the envelope layer here. Every
+protocol canonicalizes identically — LF-terminated, per §0, `lock-core`'s and
+`vote-core`'s `canonicalBytes` — so this is presentation only, never a
+canonicalization difference.
