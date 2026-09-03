@@ -34,11 +34,35 @@ OC Chat introduces two new values for the OC Lock envelope `kind` field, alongsi
 
 A conforming OC Lock implementation that does not understand these kinds MUST reject them (OC Lock SPEC §9 unknown-`kind` handling) rather than mis-decrypt. The transport (§8) is OC Lock's gift-wrap, unchanged.
 
+> **v0 STATUS — read before implementing.** `@orangecheck/lock-core` ships
+> `EnvelopeKind = 'identity' | 'payment'` and no `chat`/`chat-seal` kind, so a
+> v0 `speak-now` / `pay-to-reach` / `seal-til-block` message goes out as a base
+> OC Lock `"identity"` envelope carrying `hint: "oc-chat/v1"`, with base OC Lock
+> content addressing (recipient-INCLUSIVE `id` and AAD). §7.6 defines that
+> profile and marks it NORMATIVE — *what ships*. This table and §3 describe the
+> **upgrade target**, whose vectors are `vc03` / `vc04`.
+>
+> So a reader comparing the shipped wire against §2/§3 alone will conclude the
+> client is non-conformant. It is not; it conforms to §7.6. Do not "fix" the
+> client to match this table without also landing the lock-core kinds — that
+> would change the `id` of every message ever sent.
+
 **NORMATIVE amendment for `chat-channel` (do not undersell).** Unlike `chat`/`chat-seal`, a v1 `chat-channel` post is **public** (§8.3) — there is no recipient set, no key-wrapping, and no AEAD ciphertext over a body. Its `recipients[]` MUST be empty; a non-empty `recipients[]` on a `chat-channel` envelope is `E_CHANNEL_RECIPIENTS` and the post MUST be rejected (this is what makes the §8.2 social-graph leak structurally absent for public channels — there is nothing to leak). The post body is plaintext, content-addressed, and BIP-322-rooted by the author's device signature; the recipient-exclusion `chat_envelope_id` rule of §3 still applies (`recipients=[]` is the steady state, not a re-wrap).
 
-## 3. Content addressing for chat kinds (the recipient-exclusion rule) — NORMATIVE
+## 3. Content addressing for chat kinds (the recipient-exclusion rule) — NORMATIVE for the upgrade target
 
-This is the one cryptographic rule that differs from base OC Lock, and it is load-bearing.
+This is the one cryptographic rule that differs from base OC Lock, and it is load-bearing **for the §7.2–7.3 beacon-device re-wrap path**.
+
+> **NOT the v0 wire.** The rule exists so a held envelope can be re-keyed after
+> sealing (§1.1, §7.3) — that is its entire purpose. The shipped v0 profile
+> (§7.6) does not re-wrap anything: the reveal secret is timelock-encrypted to a
+> drand round and rides *inside* the ciphertext, so `recipients[]` is never
+> replaced and nothing needs to survive a re-key. v0 therefore uses base OC Lock
+> addressing, where `recipients[]` IS included in both the `id` and the AAD.
+>
+> Both halves matter and are easy to miss: §3 changes the **AAD** as well as the
+> `id`, so an implementation that computes `chat_aad` cannot decrypt a v0
+> envelope, and vice versa. Landing this rule is a wire break, not a relabelling.
 
 In base OC Lock, the envelope `id` is `SHA-256(canonical(env | id="", sig.value=""))` and the AEAD AAD is `SHA-256(canonical(env | id="", ciphertext="", sig.value="", recipients[*].wrapped_key=""))` — both include the `recipients[]` identities. That makes the envelope un-re-keyable: changing `recipients[]` after sealing changes the `id` (breaking the BIP-322 signature) and the AAD (breaking the ciphertext tag).
 

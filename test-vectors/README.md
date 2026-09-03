@@ -62,22 +62,32 @@ protocol canonicalizes identically — LF-terminated, per §0, `lock-core`'s and
 `vote-core`'s `canonicalBytes` — so this is presentation only, never a
 canonicalization difference.
 
-## Known divergence: the shipped client does not emit chat envelopes
+## Why some vectors do not round-trip through the shipped client
 
-`vc01`–`vc05` cannot be round-tripped through the current implementation.
-Recording it here because a conformance vector that fails for a known reason
-is information, and one that fails silently is rot.
+These vectors cover the **upgrade target**, not the v0 wire, and that is by
+design rather than drift. SPEC §7.6 — "v0 in-ciphertext drand-tlock profile —
+NORMATIVE (what ships)" — states it directly: §7.2–7.3 need an
+`@orangecheck/lock-core` change, `lock-core@1.0.1` exposes only
+`EnvelopeKind = 'identity' | 'payment'`, and that path is "the named **upgrade
+target** (vectors `vc03`/`vc04`), NOT what v0 deploys".
 
-The gap is wider than an id rule. `oc-chat-web`'s send path calls
+An earlier version of this note (mine) called it a "known divergence" and read
+as though the client were non-conformant. It is not: it conforms to §7.6. §2
+and §3 now carry a v0 signpost so the next reader does not repeat that.
+
+The mechanical detail is still worth having written down. `oc-chat-web`'s send path calls
 `@orangecheck/lock-core`'s `seal()` **without a `kind`**, so lock-core applies
 its default and the envelope goes out as `kind: "identity"`, marked only by
 `hint: "oc-chat/v1"`. lock-core's `EnvelopeKind` is `'identity' | 'payment'`;
 it does not model `chat` or `chat-seal` at all, and all four of
 `oc-lock-protocol`'s own vectors are `identity` — they pass, so lock-core is
-correct for what it models. OC Chat added two kinds and a different id rule on
-top, and neither landed in code.
+correct for what it models. OC Chat's two kinds and its recipient-excluding id rule are the upgrade
+target; §7.6 is what v0 deploys. The recipient-exclusion rule exists solely to
+let a held envelope be re-keyed (§7.3), and the v0 seal never re-keys anything
+— the reveal secret is timelock-encrypted to a drand round and rides inside the
+ciphertext, so there is nothing to re-wrap.
 
-| | this spec (vc01, vc03) | what oc-chat-web sends today |
+| | upgrade target (vc01, vc03) | v0 profile — what ships (§7.6) |
 |---|---|---|
 | `kind` | `"chat"` / `"chat-seal"` | `"identity"` |
 | id | `recipients` emptied before hashing | `recipients` left populated |
