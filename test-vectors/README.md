@@ -41,3 +41,22 @@ Given a vector's `inputs`, a compliant implementation MUST:
 7. For `vc14`–`vc17` (channels §8.3), compute `channel_id`/`descriptor_id`/`post_id` as `SHA-256(canonical(content))` with the §0 canonicalization (sorted-key compact + trailing LF), derive the `oc-lock-chat-ch:`/`oc-lock-chat-msg:` d-tags via the salted-hash rule, and reproduce the `utxo-floor` age arithmetic `tip − anchor + 1 ≥ confs`.
 
 Canonicalization is RFC 8785 plus the OC Lock constraint that `recipients[]` (when present in the canonical form) is sorted by `device_id` ascending — irrelevant to the chat `id`, which excludes `recipients[]`, but preserved for wire interop.
+
+## The `*_canonical` fields omit the trailing LF
+
+`listing_canonical`, `descriptor_canonical` and `post_canonical` are stored
+**without** the trailing `\n`, for readability. The canonical form that is
+actually hashed includes it, so:
+
+```
+id == SHA-256(canonical + "\n")     # NOT SHA-256(canonical)
+```
+
+Worth stating plainly because the mistake is silent: hashing the field as
+stored yields a well-formed 64-hex digest that simply is not the `id`, with
+nothing to indicate the missing byte. Note that `oc-vote-protocol`'s vectors
+make the opposite choice and store `poll_canonical` / `reveal_canonical`
+**with** the LF included, so a validator written against one vector set will
+be off by one byte against the other. Both protocols canonicalize
+identically — LF-terminated, per §0 and vote-core's `canonicalBytes` — the
+difference is only in how the field is presented here.
