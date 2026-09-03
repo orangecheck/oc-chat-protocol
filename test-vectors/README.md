@@ -62,34 +62,41 @@ protocol canonicalizes identically — LF-terminated, per §0, `lock-core`'s and
 `vote-core`'s `canonicalBytes` — so this is presentation only, never a
 canonicalization difference.
 
-## Known divergence: the shipped `lock-core` does not apply §3's recipient rule
+## Known divergence: the shipped client does not emit chat envelopes
 
-`vc01`–`vc05` cannot currently be round-tripped through
-`@orangecheck/lock-core` (1.0.x). Recording it here because a conformance
-vector that fails for a known reason is information, and one that fails
-silently is rot.
+`vc01`–`vc05` cannot be round-tripped through the current implementation.
+Recording it here because a conformance vector that fails for a known reason
+is information, and one that fails silently is rot.
 
-§3 computes a chat envelope's id with `recipients` **emptied**:
+The gap is wider than an id rule. `oc-chat-web`'s send path calls
+`@orangecheck/lock-core`'s `seal()` **without a `kind`**, so lock-core applies
+its default and the envelope goes out as `kind: "identity"`, marked only by
+`hint: "oc-chat/v1"`. lock-core's `EnvelopeKind` is `'identity' | 'payment'`;
+it does not model `chat` or `chat-seal` at all, and all four of
+`oc-lock-protocol`'s own vectors are `identity` — they pass, so lock-core is
+correct for what it models. OC Chat added two kinds and a different id rule on
+top, and neither landed in code.
 
-```
-id = SHA-256(canonical(envelope | id="", sig.value="", recipients=[]))
-```
+| | this spec (vc01, vc03) | what oc-chat-web sends today |
+|---|---|---|
+| `kind` | `"chat"` / `"chat-seal"` | `"identity"` |
+| id | `recipients` emptied before hashing | `recipients` left populated |
+| marker | the `kind` field | `hint: "oc-chat/v1"` |
 
-`vc01`'s `canonical` shows exactly that — `"recipients":[]` — while the
-envelope it describes carries one recipient. lock-core's `computeEnvelopeId`
-blanks only `id` and `sig.value` and leaves `recipients` populated, so it
-derives a different id for the same envelope and `unseal()` rejects this
-vector with `LockError: envelope id mismatch`.
+So `unseal()` rejects `vc01` with `LockError: envelope id mismatch`:
+`vc01`'s `canonical` shows `"recipients":[]` while the envelope carries one,
+and lock-core's `computeEnvelopeId` blanks only `id` and `sig.value`.
 
 **Nothing is broken for users today.** `oc-chat-web` seals and unseals through
 the same lock-core, so its ids are self-consistent, and the re-wrap path that
 recipient-exclusion exists to protect (`vc04`) is not implemented —
 seal-til-block releases by the recipient decrypting locally via tlock, and
-nobody re-wraps.
+nobody re-wraps. No code reads `kind` to decide anything.
 
-**Interop is broken, which is what these vectors are for.** A second
-implementation following §3 would reject every envelope OC Chat sends, and OC
-Chat would reject every envelope it receives. Resolving it means changing
-either §3 or lock-core's id rule; the latter changes the id of every message
-ever sent, so it is a deliberate decision about a published package and a wire
-format rather than a quiet patch.
+**Interop is what breaks, which is what these vectors are for.** A second
+implementation built from this spec would reject every envelope OC Chat sends
+and send envelopes OC Chat rejects. Closing it means either implementing the
+chat kinds and the recipient-excluding id in lock-core — which changes the id
+of every message ever sent — or amending §3 to describe what is actually on
+the wire. That is a deliberate decision about a published package and a wire
+format, not a quiet patch.
