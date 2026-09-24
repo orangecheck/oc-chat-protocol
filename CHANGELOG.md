@@ -4,6 +4,17 @@ All notable changes to the OC Chat protocol.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased] — 2026-09
+
+### Changed
+- **§0 device records** — an inbox key is bound to an address as OC Lock SPEC §3.4 authorizes it: v3 device records sign the Nostr pubkey; a v2 record binds only while it is the sole pubkey carrying its `(address, device_id)`. Publishers MUST emit v3.
+- **§6.3 postage** — verification now binds the invoice to the recipient's own node: the `bolt11` must be signed by a node the recipient's endpoint issues invoices from, learned from an unpaid probe invoice. `SECURITY.md` S7 names the shared-node ceiling.
+- **§8.2.2 / §8.2.4 / §8.2.5 directory resolution** — replaces the conflicting "first-writer-wins" and "freshest wins, tombstone wins" rules. Binding is checked first; records are grouped by address; `created_at` orders only one address's own records; a tombstone withdraws only its author's claim; a handle held by more than one qualifying address is contested and resolves to none (`E_DIR_CONTESTED`). §8.3.6 channel handles follow the same rule.
+- **§8.3.1** — a resolver ignores kind-30110 events whose `channel_id` differs from the channel being resolved.
+
+### Added
+- **§8.6 session devices** — a `did:oc` session device record is bound only by the ochk.io auth host's vouch over `(did_oc, device_pk, nostr_pk, device_id)`, obtained with a proof of possession of the Nostr key and verified against the host's JWKS.
+
 ## [Unreleased] — 2026-06
 
 ### Changed

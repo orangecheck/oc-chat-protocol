@@ -11,6 +11,7 @@ This document uses the key words MUST, MUST NOT, SHOULD, MAY per [RFC 2119](http
 - `SHA-256(x)` — 32-byte digest; hex unless stated.
 - `addr` — a Bitcoin address; the user's identity (OC Lock SPEC §2).
 - A **device record** — a kind-30078 Nostr event binding an X25519 `device_pk` to `addr` via BIP-322 (OC Lock SPEC §3).
+- An **inbox key is bound to `addr`** only as OC Lock SPEC §3.4 authorizes it: a v3 record binds its signed `nostr_pk`; a v2 record binds its `event.pubkey` only while it is the sole pubkey carrying that `(addr, device_id)` and no v3 record exists for it. Publishers MUST emit v3 records. A `did:oc` session device is bound as §8.6 specifies.
 
 ## 1. What OC Chat adds
 
@@ -165,6 +166,7 @@ This was a blocking open item; v0 **specifies** a recipient-side, per-DM, non-re
 1. **Settlement:** `SHA-256(preimage) == payment_hash` — the load-bearing Lightning bearer proof.
 2. **Binding (re-derived by OC itself):** decode `bolt11`, read its description-hash (`h`) tag, and assert it equals `SHA-256( lnurl_metadata || urlDecode(payerdata) )`. The verifier MUST recompute this hash **itself** — wallets stopped enforcing the LNURL description-hash (lnurl PR #234, 2026-05) — and MUST hash the **verbatim** `lnurl_metadata` bytes (never `JSON.stringify(JSON.parse(x))`, which reorders and breaks the match).
 3. **Recipient:** the `lnurl_metadata` `text/identifier` equals the claimed `recipient`, resolved from an identity-signed endpoint (§6.1).
+   **Payee (NORMATIVE):** every carrier field is supplied by the sender, who can mint and pay an invoice on a node of their own that carries the recipient's identifier and a matching description-hash. The recipient MUST therefore check that the `bolt11` is signed by a node its own endpoint issues invoices from (the key recovered from the BOLT 11 signature, which MUST match an explicit `n` field when present), and SHOULD check that `lnurl_metadata` equals, byte for byte, the metadata its endpoint serves. The recipient learns its node set by requesting an unpaid invoice from its own endpoint when it sets a floor. A recipient that does not know its node set MUST treat postage as unverified.
 4. **Amount:** the `bolt11` carries an explicit amount AND `amount_sats >= floor_sats` (reject amountless invoices).
 5. **Nonce:** the in-body `nonce` is the one committed in `payerdata`.
 6. **Anti-replay:** the `payment_hash` is not in the recipient's **local spent-ledger** (one-time use). On accept, record it.
@@ -346,7 +348,7 @@ A bare listing is **not** Bitcoin-load-bearing: *"address X, here is my inbox ke
 2. `inbox_pubkey` is bound to `address` via a valid kind-30078 device record (the existing BIP-322 binding, OC Lock §3). **The directory inherits its Bitcoin proof from the device record — no second wallet ceremony.**
 3. **`address` clears the UTXO floor:** it controls at least one confirmed UTXO of age ≥ the deployment's `dir_utxo_floor`. This is the load-bearing hook — an Ed25519 keypair has **no analog to an aged, funded UTXO**, so a handle costs Bitcoin maturity to claim (Sybil-resistance doubling as anti-squat). UTXO state is **public chain data**, so the check preserves offline-verifiability (invariant 5). The floor is deployment-set; the RECOMMENDED v0 floor is *funded + ≥ 144 confirmations (~1 day)*, with the actual UTXO age surfaced as a graduated trust signal (older = more trusted).
 
-A handle whose claimant fails (2) or (3) MUST be treated as un-listed. Handle uniqueness is **first-writer-wins, best-effort across relays, explicitly NOT global consensus** — the address is the trust root; the handle is a non-authoritative display label. A `did:oc`-only identity (the session bridge, no Bitcoin address) MAY publish a bridge listing but MUST NOT claim a scarce handle under (3); a conforming client surfaces it with a muted "via ochk.io" tier and prompts attaching a Bitcoin address to graduate.
+A handle whose claimant fails (2) or (3) MUST be treated as un-listed. Handle uniqueness is **best-effort across relays, explicitly NOT global consensus** — the address is the trust root; the handle is a non-authoritative display label. Because `created_at` is set by whoever signs, it cannot order different claimants (§8.2.5): a handle held by more than one address that clears (1)–(3) is **contested** and resolves to none of them — unavailable rather than impersonated. A `did:oc`-only identity (the session bridge, no Bitcoin address) MAY publish a bridge listing but MUST NOT claim a scarce handle under (3); a conforming client surfaces it with a muted "via ochk.io" tier and prompts attaching a Bitcoin address to graduate.
 
 ### 8.2.3 The social-graph firewall — NORMATIVE
 
@@ -354,11 +356,18 @@ The listing record MUST NOT contain, reference, or be co-indexed with any `queue
 
 ### 8.2.4 Revocation
 
-Self-removal = publish a replacement kind-30114 event with the **same d-tag**, `opted_in: false` and the optional fields stripped, signed by the inbox key (reusing the OC Lock §3.5/§3.6 tombstone precedent). Because the event is NIP-33-addressable, the tombstone **replaces** the prior record at conforming relays. A conforming client MUST treat a tombstone — or an absent record — as not-discoverable, MUST refuse to resolve the handle, and MUST treat a tombstone seen on ANY relay as authoritative even if a stale live copy exists elsewhere; it SHOULD additionally fire a NIP-09 deletion request. **Revocation is forward-effective only** (NORMATIVE honesty, surfaced at opt-in time): a tombstone stops new resolution on conforming relays; it cannot retract copies on non-conforming relays, archives, or scrapers. The promise is "stop new discovery," never "delete yourself completely." Removal does not unsend or break existing conversations.
+Self-removal = publish a replacement kind-30114 event with the **same d-tag**, `opted_in: false` and the optional fields stripped, signed by the inbox key (reusing the OC Lock §3.5/§3.6 tombstone precedent). Because the event is NIP-33-addressable, the tombstone **replaces** the prior record at conforming relays. A conforming client MUST treat a tombstone — or an absent record — as not-discoverable, MUST refuse to resolve the handle, and MUST treat a tombstone seen on ANY relay as authoritative over that same owner's older live copies even if a stale one exists elsewhere. A tombstone withdraws only its own author's claim: it counts only when it passes §8.2.2 (1)–(2) for the `address` it names; it SHOULD additionally fire a NIP-09 deletion request. **Revocation is forward-effective only** (NORMATIVE honesty, surfaced at opt-in time): a tombstone stops new resolution on conforming relays; it cannot retract copies on non-conforming relays, archives, or scrapers. The promise is "stop new discovery," never "delete yourself completely." Removal does not unsend or break existing conversations.
 
 ### 8.2.5 Resolution
 
-To find a user, a client computes the `d`-tag from the queried handle, fetches the kind-30114 events for that `d`-tag across its relay set (freshest `created_at` wins; a tombstone wins over any live copy), verifies §8.2.2 (1)–(3), and on success surfaces `address` + profile + a trust tier so the user can start a thread. First-contact still passes the recipient's §4.1 anti-spam policy — **being listed is not a free-message bypass.** Privacy-sensitive resolution SHOULD query relays directly, NOT a third-party indexer (which would learn who-searches-for-whom). The relay/index operator is a NAMED availability anchor and MUST NOT be relied on as authority.
+To find a user, a client computes the `d`-tag from the queried handle, fetches the kind-30114 events for that `d`-tag across its relay set, and:
+
+1. Keeps records whose `handle` matches and that pass §8.2.2 (1)–(2). The binding check comes **first**: a record not bound to the `address` it names belongs to nobody and carries no weight, including as a tombstone.
+2. Groups them by `address`. Each address's freshest `created_at` is that address's current state (a tombstone if it opted out). `created_at` is compared only within one address, never across addresses.
+3. Drops addresses whose current state is a tombstone, then those failing §8.2.2 (3).
+4. Resolves to the one remaining address, or to none: no address left is `E_DIR_REVOKED` (if any bound tombstone was seen) or `E_DIR_UNVERIFIED`; more than one is `E_DIR_CONTESTED`. A resolver MAY bound the number of distinct addresses it examines and treat a handle beyond that bound as contested.
+
+On success the client surfaces `address` + profile + a trust tier so the user can start a thread. First-contact still passes the recipient's §4.1 anti-spam policy — **being listed is not a free-message bypass.** Privacy-sensitive resolution SHOULD query relays directly, NOT a third-party indexer (which would learn who-searches-for-whom). The relay/index operator is a NAMED availability anchor and MUST NOT be relied on as authority.
 
 ## 8.3 Channels — NORMATIVE (v1: public)
 
@@ -412,6 +421,7 @@ One descriptor per channel, signed by the **founder's inbox key** (`deriveNostrK
 Normative rules a conforming client MUST honor:
 
 - **`channel_id` binds to `founder_address`.** Identity is `SHA-256(founder_address || slug)`; the founder's address is the trust root. Two founders may reuse a `slug` → different `channel_id`s. The slug is non-authoritative (S17); the client MUST render `founder_address` + its trust tier alongside the slug. No global slug consensus (first-writer-wins, best-effort).
+- **Resolve by `channel_id`, not by d-tag.** The d-tag is a relay lookup key anyone can publish under. A resolver MUST ignore every kind-30110 event whose `channel_id` differs from the channel being resolved before choosing among governance chains, so another founder's valid chain can never stand in for this channel.
 - **The descriptor is a governance hash-chain.** Every change (add admin, raise the floor, change policy) is a new kind-30110 at the same d-tag with `supersedes` → the prior `descriptor_id`. A client MUST validate the new descriptor's signing inbox key is **device-bound (kind-30078) to the founder OR to an address in the *prior* `admins` set** — making governance tamper-evident and offline-verifiable (the §5 `parent_id` trick applied to governance) while reusing the device-record trust root instead of a per-edit wallet ceremony. A descriptor not so authored is `E_CH_UNAUTHORIZED`. The Bitcoin-load-bearing claim is carried by the **write policy** (§8.3.3), not the descriptor signature — so a `did:oc`-only founder can still open a public channel; its write tier just renders non-rooted unless the policy is `utxo-floor`.
 - **Exactly one `write.policy`, with a `rooted` flag that MUST match it** (§8.3.3): `utxo-floor` MUST set `rooted:true`; `allowlist`/`founder`/`open` MUST set `rooted:false`. A mismatch is `E_CH_POLICY_INVALID`. This makes the Bitcoin claim a property of the artifact, not a UI label.
 
@@ -481,7 +491,7 @@ A channel with `directory_opt_in:true` MAY publish a kind-30114 listing whose `a
 
 **A directory handle is Bitcoin-gated; a `did:oc` founder cannot claim one (NORMATIVE).** The §8.3.1 descriptor permits a `did:oc`-only founder to open a public channel (its write tier just renders non-rooted), but the §8.2.2 anti-squat floor applies unchanged to the directory **handle**: a scarce `@handle` requires the `founder_address` to clear a funded+aged UTXO, which a `did:oc` identity has no analog for. So a `did:oc`-founded channel MUST NOT publish a kind-30114 listing, and a resolver MUST treat any listing whose `founder_address` is a `did:oc` as un-listed — exactly as §8.2.2 forbids a `did:oc` person from claiming a scarce handle. A conforming client surfaces this honestly (the channel is still fully usable and shareable by its `founder_address`+`slug` or `channel_id`) and prompts founding with a Bitcoin address to become handle-discoverable. The `channel_id` itself is bound to the *original* `founder_address` (§8.3.1), so a channel rooted at `did:oc` cannot graduate its existing handle by later attaching a Bitcoin address — it must be re-founded under that address.
 
-**Separate handle namespace (NORMATIVE).** Channel listings use a **distinct d-tag namespace** from people listings (§8.2.1) so a channel handle can never collide with a person's: `d-tag = "oc-lock-chat-chdir:" || base64url(SHA-256("oc-lock-chat-chdir/v1:" || lower(handle)))` (people use `oc-lock-chat-dir:`). The listing is signed by the **founder inbox key** (`founder_inbox_pubkey`, bound to `founder_address` via kind-30078); a resolver honors it only if the event pubkey equals `founder_inbox_pubkey`, that key is device-bound to `founder_address`, and the address clears the UTXO floor — so only the founder can list a channel, and the same anti-squat gate applies. This keeps the shared people-resolution path (§8.2.5) untouched.
+**Separate handle namespace (NORMATIVE).** Channel listings use a **distinct d-tag namespace** from people listings (§8.2.1) so a channel handle can never collide with a person's: `d-tag = "oc-lock-chat-chdir:" || base64url(SHA-256("oc-lock-chat-chdir/v1:" || lower(handle)))` (people use `oc-lock-chat-dir:`). The listing is signed by the **founder inbox key** (`founder_inbox_pubkey`, bound to `founder_address` via kind-30078); a resolver honors it only if the event pubkey equals `founder_inbox_pubkey`, that key is device-bound to `founder_address`, and the address clears the UTXO floor — so only the founder can list a channel, and the same anti-squat gate applies. Resolution follows §8.2.5 with `founder_address` as the owner: bind first, group by founder, a tombstone withdraws only its founder's claim, and two founders who both clear the gate leave the handle contested. This keeps the shared people-resolution path (§8.2.5) untouched.
 
 ### 8.3.7 Private channels (RESERVED — not v1)
 
@@ -515,6 +525,30 @@ Source-intake (a SecureDrop-shaped one-way tip line) is a **composition of shipp
 - **Metadata.** The submission is public by the source's choice (it is a tip line). The reply is a normal wrap — recipient `p` tag visible per §8.1.2 — and an `auth-required` relay (§8.4) on the org's side closes even that to unauthed observers. The §8.2.3 social-graph firewall holds: a public intake channel reveals that the drop exists and who founds it, never the set of sources.
 - **Ed25519 verdict.** Source-intake adds **no** Bitcoin mechanism of its own — it is transport composition; whatever Bitcoin claim it carries is the intake channel's write policy (`utxo-floor` ⇒ rooted, else the muted "via ochk.io" tier). Honest: the value is the *composition* (anonymous in, authenticated private reply out), not a new load-bearing primitive. Trust anchors — the relay(s) and the org's founding identity — are named in plaintext.
 
+## 8.6 Session devices (`did:oc`) — NORMATIVE
+
+A `did:oc` identity (the ochk.io session bridge, no Bitcoin address) publishes a kind-30078 **session device record** under `d = "oc-chat:device:" || did_oc`, with tags `addr = did_oc`, `device_id`, `device_pk`, `auth = "session"`, an empty `binding_sig`, and a `vouch`. It has no BIP-322 signature, and its Nostr self-signature proves only that some key published it — so it is bound to its `did_oc` only by the **vouch** of the ochk.io auth host, the named trust anchor that authenticates `did:oc` sessions.
+
+**Obtaining a vouch.** The device's authenticated session calls `POST https://ochk.io/api/chat/device-vouch` with `{ device_pk, nostr_pk, device_id, pop }`, where `pop` is a BIP-340 signature by the device's Nostr key over
+
+```
+SHA-256( "oc-chat:device-vouch-request:v1\n" || "did_oc: " || did_oc || "\n" || "device_pk: " || device_pk || "\n"
+         || "nostr_pk: " || nostr_pk || "\n" || "device_id: " || device_id || "\n" )
+```
+
+and `did_oc` is the session's own. The host returns a compact JWS (`alg: "EdDSA"`, `typ: "oc-chat-device-vouch"`, `kid` from its JWKS) whose payload is the plain-text statement
+
+```
+"oc-chat:device-vouch:v1\n" || "did_oc: " || did_oc || "\n" || "device_pk: " || device_pk || "\n"
+|| "nostr_pk: " || nostr_pk || "\n" || "device_id: " || device_id || "\n" || "issued_at: " || unix_seconds || "\n"
+```
+
+The payload is not a JSON claims set, so no session-token verifier can accept a vouch as a session.
+
+**Verifying.** A resolver MUST bind a session record's `event.pubkey` to `did_oc` only when the event's Nostr signature verifies and its `vouch` verifies against a key published at `https://ochk.io/.well-known/jwks.json` with every statement field equal to the record's `did_oc`, `device_pk`, `event.pubkey` and `device_id`. A record without a valid vouch is unbound; a resolver that cannot load the host keys binds nothing.
+
+**Trust posture (NORMATIVE honesty).** This tier is not offline-verifiable and not Bitcoin-load-bearing: a compromised auth host can vouch for any key under any `did:oc`. Clients render it as `session`, never `verified`, and prompt attaching a Bitcoin address to graduate.
+
 ## 9. Errors
 
 In addition to OC Lock SPEC §6 codes:
@@ -524,10 +558,11 @@ In addition to OC Lock SPEC §6 codes:
 | `E_BLOCK_UNMET` | Seal release requested before `unlock_block + confirmations` confirmed. |
 | `E_BEACON_UNAVAILABLE` | Seal beacon did not respond or could not be reached. |
 | `E_NO_POSTAGE` | `pay-to-reach` envelope from a non-contact lacked valid postage for the recipient's floor. |
-| `E_BAD_POSTAGE` | `SHA-256(preimage) != payment_hash`, or the `nonce`/`recipient`/`amount` binding did not match. |
+| `E_BAD_POSTAGE` | `SHA-256(preimage) != payment_hash`, or the `nonce`/`recipient`/`amount` binding did not match, or the invoice was not signed by one of the recipient's own nodes (§6.3). |
 | `E_THREAD_GAP` | `parent_id` does not resolve to a held parent envelope id. |
 | `E_QUEUE_ROUTE` | A durable-inbox deposit/drain referenced a `queue_id` the caller is not entitled to, or a malformed (non-base64url / wrong-length) queue id. |
 | `E_DIR_UNVERIFIED` | A kind-30114 listing failed §8.2.2: bad signature, `inbox_pubkey` not bound to `address` via a kind-30078 record, or `address` did not clear the UTXO floor. The handle resolves as un-listed. |
+| `E_DIR_CONTESTED` | More than one address that clears §8.2.2 holds the handle (§8.2.5). The handle resolves to none of them. |
 | `E_DIR_REVOKED` | The resolved listing is a tombstone (`opted_in: false`) or absent — the handle is not discoverable. |
 | `E_CHANNEL_RECIPIENTS` | A `chat-channel` envelope (§8.3) carried a non-empty `recipients[]` — a v1 channel post is public and recipient-less. |
 | `E_CH_POLICY_INVALID` | A kind-30110 descriptor's `write.rooted` flag did not match its `write.policy` (§8.3.3): `utxo-floor` must be `rooted:true`; `allowlist`/`founder`/`open` must be `rooted:false`. |
