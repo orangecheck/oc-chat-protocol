@@ -2,7 +2,7 @@
 
 ## Reporting a vulnerability
 
-Email **security@ochk.io** with a description, reproduction steps (a minimal test vector is ideal), an impact assessment, and whether you want credit. We aim to acknowledge within 48 hours. Do not file public issues for suspected vulnerabilities. Protocol-level concerns (a clause that is unsound, not an implementation bug) get subject prefix `[protocol]`.
+Email **security@ochk.io** with a description, reproduction steps (a minimal test vector is ideal), an impact assessment, and whether you want credit. We aim to reply to every report within 30 days. We can't promise a time to a fix yet. Do not file public issues for suspected vulnerabilities. Protocol-level concerns (a clause that is unsound, not an implementation bug) get subject prefix `[protocol]`.
 
 ## Scope
 
