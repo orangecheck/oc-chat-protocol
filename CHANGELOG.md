@@ -4,6 +4,11 @@ All notable changes to the OC Chat protocol.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Fixed
+- **SECURITY S15** named `nostr.band` as an example of an indexer that keeps a handle after its tombstone. That service has not answered since 2026-09-03, so S15 now says "a search indexer". The consideration and its disclosure are unchanged.
+
 ## [0.1.1] — 2026-10-21
 
 Editorial. No wire or rule change.
