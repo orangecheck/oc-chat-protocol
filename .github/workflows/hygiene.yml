@@ -1,0 +1,22 @@
+name: Hygiene
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+
+jobs:
+    home-paths:
+        # A path into someone's home directory names a person in a public repo
+        # and works on one machine only. Use a repo-relative path or an env var.
+        name: No absolute home-directory paths
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v5
+            - name: Fail on any tracked file that has one
+              run: |
+                  if git grep -nIE '(^|[^A-Za-z0-9_.:/-])/(Users|home)/[A-Za-z0-9_.-]+/' -- . ':!*.lock'; then
+                      echo "::error::absolute home-directory path in a tracked file"
+                      exit 1
+                  fi
