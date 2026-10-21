@@ -4,6 +4,13 @@ All notable changes to the OC Chat protocol.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.1.1] — 2026-10-21
+
+Editorial. No wire or rule change.
+
+### Fixed
+- **§0 revocation** cited OC Lock LIFECYCLE §1.1 for the cross-relay revocation rule. Until OC Lock 2.1.0 that section ordered device records by NIP-33 replacement, which a revocation carried by another key cannot trigger. §0 now cites OC Lock SPEC §3.5 and LIFECYCLE §1.1 as of 2.1.0, which state the rule §0 already applied, and says it holds whichever Nostr key carried either record, as the reference reader already did.
+
 ## [0.1.0] — 2026-10-21
 
 The first numbered version; the dated drafts below are 0.0. Additive and

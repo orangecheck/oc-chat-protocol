@@ -11,7 +11,7 @@ This document uses the key words MUST, MUST NOT, SHOULD, MAY per [RFC 2119](http
 - `SHA-256(x)` — 32-byte digest; hex unless stated.
 - `addr` — a Bitcoin address; the user's identity (OC Lock SPEC §2).
 - A **device record** — a kind-30078 Nostr event binding an X25519 `device_pk` to `addr` via BIP-322 (OC Lock SPEC §3).
-- An **inbox key is bound to `addr`** only as OC Lock SPEC §3.4 authorizes it: a v3 record binds its signed `nostr_pk`; a v2 record binds its `event.pubkey` only while it is the sole pubkey carrying that `(addr, device_id)` and no v3 record exists for it. Publishers MUST emit v3 records. A BIP-322-valid revocation seen on any relay retires every bind of that `device_id` whose signed `created_at` is not later than its signed `revoked_at` (OC Lock LIFECYCLE §1.1), even while another relay still serves the bind. A `did:oc` session device is bound as §8.6 specifies.
+- An **inbox key is bound to `addr`** only as OC Lock SPEC §3.4 authorizes it: a v3 record binds its signed `nostr_pk`; a v2 record binds its `event.pubkey` only while it is the sole pubkey carrying that `(addr, device_id)` and no v3 record exists for it. Publishers MUST emit v3 records. A BIP-322-valid revocation seen on any relay retires every bind of that `device_id` whose signed `created_at` is not later than its signed `revoked_at` (OC Lock SPEC §3.5 and LIFECYCLE §1.1, from OC Lock 2.1.0), whichever Nostr key carried either record, even while another relay still serves the bind. A `did:oc` session device is bound as §8.6 specifies.
 
 ## 1. What OC Chat adds
 
