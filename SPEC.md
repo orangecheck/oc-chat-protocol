@@ -1,4 +1,4 @@
-# oc chat — specification (v0)
+# oc chat — specification (v0.1)
 
 **Status:** draft. OC Chat is a **mode of OC Lock**, not a new verb. It extends the OC Lock v2 envelope ([`oc-lock-protocol/SPEC.md`](https://github.com/orangecheck/oc-lock-protocol/blob/main/SPEC.md)) with two `kind` values and a thin threading / postage / seal layer. The base cryptography (X25519 ECDH + HKDF-SHA256 + AES-256-GCM, RFC 8785 canonicalization, BIP-322 identity binding) is **unchanged and not restated here** — read the OC Lock spec first.
 
@@ -548,7 +548,16 @@ The payload is not a JSON claims set, so no session-token verifier can accept a 
 
 **Verifying.** A resolver MUST bind a session record's `event.pubkey` to `did_oc` only when the event's Nostr signature verifies and its `vouch` verifies against a key published at `https://ochk.io/.well-known/jwks.json` with every statement field equal to the record's `did_oc`, `device_pk`, `event.pubkey` and `device_id`. A record without a valid vouch is unbound; a resolver that cannot load the host keys binds nothing.
 
-**Trust posture (NORMATIVE honesty).** This tier is not offline-verifiable and not Bitcoin-load-bearing: a compromised auth host can vouch for any key under any `did:oc`. Clients render it as `session`, never `verified`, and prompt attaching a Bitcoin address to graduate.
+**Trust posture (NORMATIVE honesty).** This tier is not offline-verifiable and not Bitcoin-load-bearing: a compromised auth host can vouch for any key under any `did:oc`. Clients render it as `session`, never `verified` (unless the step-up below resolves), and prompt attaching a Bitcoin address to graduate.
+
+**Stepping up to a Bitcoin address (NORMATIVE).** A session device MAY also be bound to a Bitcoin address: an OC Lock device record (kind-30078, `d = "oc-lock:device:" || addr`) published under the same Nostr key `K`, binding `K` to `addr` as §0 states, by a BIP-322 signature over a v3 statement that signs `K`. A receiver that has authenticated a message under a session record (above), signed by `K`, SHOULD look up the kind-30078 records published by `K` (`{"kinds":[30078],"authors":[K]}`) and resolve every Bitcoin `addr` they name exactly as §0 resolves any address: the BIP-322 signature verifies, the record binds `K`, and no revocation seen on any relay retires the bind.
+
+- If `K` is bound to such an address, the receiver MUST render the message as verified and name the address: "verified · `addr`". When more than one resolves, it names the lexicographically smallest.
+- Otherwise it MUST render the message as `session`. A receiver MUST NOT step a message up on an address merely linked to the account at the auth host, on a binding of `addr` to a different key, or on a record whose binding does not resolve.
+- The step-up does not change the sender. The message still comes from the `did:oc`, and the link between `K` and the `did:oc` still rests on the ochk.io auth host's vouch, the named trust anchor. What the step-up adds is offline-verifiable and Bitcoin-load-bearing: the holder of `addr` controls the key that signed the message.
+- A receiver that records the key that signed each message MAY re-label messages it already holds from `K` once the step-up resolves. A revocation it sees later applies to messages it receives after; it need not re-label earlier ones.
+
+Vector `vc18` covers a bound key and a revoked bind.
 
 ## 9. Errors
 
@@ -608,6 +617,7 @@ A client is OC Chat v0 compliant iff it:
 - [ ] If it supports an `auth-required` relay (§8.4): completes the kind-22242 NIP-42 handshake before publish/subscribe (`E_RELAY_AUTH_REQUIRED` otherwise), signs the challenge with a fresh per-connection ephemeral key by default (or a configured `auth_key`), surfaces the AUTH relay as a named trust anchor, and NEVER presents AUTH as making a relay trustless.
 - [ ] If it offers source-intake (§8.5): warns the source at submission time that the intake post is public + permanent (only the org's reply is E2EE), defaults the source to a fresh throwaway identity, and never claims SecureDrop-grade anonymity for the inbound leg (S-M7-2).
 - [ ] If it offers a named-Fedimint postage fallback (§6.5): surfaces the federation as a named plaintext custodian before the sender pays, lets the sender decline a federation-fronted endpoint, keeps OC out of custody (the federation settles), and does not enable the path absent a money-transmitter analysis (`E_FEDIMINT_*`).
+- [ ] If it accepts `did:oc` session devices (§8.6): binds a session record only through a vouch that verifies against the ochk.io JWKS, renders it as `session`, and steps a message up to "verified · `addr`" only when §0 resolution binds the signing key to `addr` (vector `vc18`).
 - [ ] Emits §9 + OC Lock §6 error codes.
 
 ## 12. Security model

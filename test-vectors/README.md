@@ -27,6 +27,7 @@ For OC Chat envelopes (`kind="chat"` and `kind="chat-seal"`), the content-addres
 | `vc15-channel-governance.json` | Channel governance hash-chain (SPEC §8.3.1): a superseding descriptor (`supersedes` → prior `descriptor_id`) is a distinct content-addressed artifact at the SAME d-tag. |
 | `vc16-channel-post.json` | Public channel post content-addressing + recipient-exclusion (SPEC §8.3.2/§3): `post_id = SHA-256(canonical(content))`, the post d-tag, and the `E_CHANNEL_RECIPIENTS` rule for a non-empty `recipients[]`. |
 | `vc17-channel-utxo-write-proof.json` | Height-anchored UTXO write-proof arithmetic (SPEC §8.3.3): the offline age gate `tip - anchor + 1 >= confs` for a clearing proof and below-floor (age + value) rejections → `E_CHAN_FLOOR`. |
+| `vc18-session-step-up.json` | A `did:oc` session message steps up (SPEC §8.6): records published by the signing key name a Bitcoin address, §0 resolution binds the key to it, so the message reads "verified · address"; the same bind retired by a BIP-322 revocation stays `session`. |
 
 ## Conformance
 
@@ -39,6 +40,7 @@ Given a vector's `inputs`, a compliant implementation MUST:
 5. For `vc05`, verify `SHA-256(preimage) == payment_hash`.
 6. For `vc06`, derive `queue_seed`/`queue_id`/`bootstrap_id` per SPEC §8.1 and reproduce `expected`, including `queue_id != queue_id_2` (unlinkability).
 7. For `vc14`–`vc17` (channels §8.3), compute `channel_id`/`descriptor_id`/`post_id` as `SHA-256(canonical(content))` with the §0 canonicalization (sorted-key compact + trailing LF), derive the `oc-lock-chat-ch:`/`oc-lock-chat-msg:` d-tags via the salted-hash rule, and reproduce the `utxo-floor` age arithmetic `tip − anchor + 1 ≥ confs`.
+8. For `vc18` (session step-up, §8.6), for each case serve `records_by_author` to the `authors` lookup and `records_by_address` to the address lookup, resolve the address as §0 does (BIP-322, v3 binding of the signing key, revocations), and reproduce `expected.display` and, when verified, `expected.address`.
 
 Canonicalization is RFC 8785 plus the OC Lock constraint that `recipients[]` (when present in the canonical form) is sorted by `device_id` ascending — irrelevant to the chat `id`, which excludes `recipients[]`, but preserved for wire interop.
 

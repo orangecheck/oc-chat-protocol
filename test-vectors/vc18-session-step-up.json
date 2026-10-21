@@ -1,0 +1,106 @@
+{
+  "description": "A did:oc session message steps up to \"verified · <address>\" only when an OC Lock device record published by the signing key K binds K to a Bitcoin address, by BIP-322 over a v3 statement, and no revocation retires it (SPEC §8.6, stepping up).",
+  "spec": "SPEC §8.6 — Stepping up to a Bitcoin address",
+  "precondition": "The message is already authenticated under a did:oc session record (§8.6, Verifying): its device signature verifies under K and the ochk.io vouch binds K to the did:oc. These cases test only the step-up.",
+  "inputs": {
+    "signing_key": "cea5093ebb7e3a46da2e71323fd82ad1273852851742f455ff2e77a431b07a54",
+    "address": "bc1qwa3q3pj8qc0jmr0593vyu43xed63urentcdxc3",
+    "bind_record": {
+      "kind": 30078,
+      "tags": [
+        [
+          "d",
+          "oc-lock:device:bc1qwa3q3pj8qc0jmr0593vyu43xed63urentcdxc3"
+        ],
+        [
+          "addr",
+          "bc1qwa3q3pj8qc0jmr0593vyu43xed63urentcdxc3"
+        ],
+        [
+          "device_id",
+          "196d2687e16af0f89c39d21c9569c89e"
+        ],
+        [
+          "device_pk",
+          "e9fd1fe4edf9020fbdd374c7dedea155745a604d22ec7ced42cae7239968e31c"
+        ],
+        [
+          "alg",
+          "x25519"
+        ],
+        [
+          "binding_sig",
+          "AkgwRQIhAMulxBnjPkw7ZRCHm9ldGgD39ktXgrcLNXB2OMfxhOikAiAlYKD70pmknvJllYBAxP1mei8hkmZJcjmIfV7s0jL+7gEhA6WOu7QFIMELiC1bxBR5Mmxx0h9kd16Mfd7tSGGFdKve"
+        ]
+      ],
+      "content": "oc-lock:device-bind:v3\naddress: bc1qwa3q3pj8qc0jmr0593vyu43xed63urentcdxc3\ndevice_pk: e9fd1fe4edf9020fbdd374c7dedea155745a604d22ec7ced42cae7239968e31c\nnostr_pk: cea5093ebb7e3a46da2e71323fd82ad1273852851742f455ff2e77a431b07a54\ndevice_id: 196d2687e16af0f89c39d21c9569c89e\ncreated_at: 2026-10-01T00:00:00.000Z\n",
+      "created_at": 1792551002,
+      "pubkey": "cea5093ebb7e3a46da2e71323fd82ad1273852851742f455ff2e77a431b07a54",
+      "id": "da847e534e2ded280dc1f145a97968f96fc5c39e836a6aa7cffc5c243fd4275a",
+      "sig": "b5bdf9c29871f8599fb18ff055f5851c526af1c2e3f6327131e9365190118dc957ca621ceafa0e67845c025e53d828072b6a339f661a130df26b27aabb854f74"
+    },
+    "revocation_record": {
+      "kind": 30078,
+      "tags": [
+        [
+          "d",
+          "oc-lock:device:bc1qwa3q3pj8qc0jmr0593vyu43xed63urentcdxc3"
+        ],
+        [
+          "addr",
+          "bc1qwa3q3pj8qc0jmr0593vyu43xed63urentcdxc3"
+        ],
+        [
+          "device_id",
+          "196d2687e16af0f89c39d21c9569c89e"
+        ],
+        [
+          "device_pk",
+          "revoked"
+        ],
+        [
+          "alg",
+          "x25519"
+        ],
+        [
+          "binding_sig",
+          "AkcwRAIgU+flpUbW/d6sIOj2g5nto8+15PyQ5Nm4nEqJgPV9nrACIFCwxiyZGXnyc4/xbh05QeWxCQGEqtpFOR/DU+zpRRWLASEDpY67tAUgwQuILVvEFHkybHHSH2R3Xox93u1IYYV0q94="
+        ]
+      ],
+      "content": "oc-lock:device-revoke:v2\naddress: bc1qwa3q3pj8qc0jmr0593vyu43xed63urentcdxc3\ndevice_id: 196d2687e16af0f89c39d21c9569c89e\nrevoked_at: 2026-10-15T00:00:00.000Z\n",
+      "created_at": 1792551002,
+      "pubkey": "2e66ed9cf5911d5a39b7c257d69546d6a34ab4a4f6bdb00a90fbae3c7086c501",
+      "id": "dacbd5ef29274fe4256f67a35c90f544cfe65b55a66c1604cd537f5e4e2eb8c8",
+      "sig": "df96614a7297afa2db89071fd41e80a3b9ae05ec47774577d2925c6740bac774ba7783cb7c990ec1a73ccf1f92dd90e73d38cdbafb8b1d47886f3d20e575a04c"
+    }
+  },
+  "lookup": "records_by_author is what relays return for {\"kinds\":[30078],\"authors\":[signing_key]}; records_by_address is what they return for {\"kinds\":[30078],\"#d\":[\"oc-lock:device:\" + address]}. Resolve the address from records_by_address exactly as §0 does.",
+  "cases": [
+    {
+      "name": "bound",
+      "records_by_author": [
+        "bind_record"
+      ],
+      "records_by_address": [
+        "bind_record"
+      ],
+      "expected": {
+        "display": "verified",
+        "address": "bc1qwa3q3pj8qc0jmr0593vyu43xed63urentcdxc3"
+      }
+    },
+    {
+      "name": "revoked",
+      "records_by_author": [
+        "bind_record"
+      ],
+      "records_by_address": [
+        "bind_record",
+        "revocation_record"
+      ],
+      "expected": {
+        "display": "session"
+      }
+    }
+  ]
+}

@@ -4,6 +4,17 @@ All notable changes to the OC Chat protocol.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.1.0] — 2026-10-21
+
+The first numbered version; the dated drafts below are 0.0. Additive and
+backward compatible: a receiver that does not implement the step-up keeps
+rendering session devices as `session`, which stays correct.
+
+### Added
+- **§8.6 stepping up to a Bitcoin address** — a `did:oc` session message is shown "verified · `addr`" when an OC Lock device record published by its signing key binds that key to `addr` (BIP-322 over a v3 statement, revocations applied, resolved exactly as §0). Otherwise it stays `session`. The sender is unchanged and the auth host stays the named trust anchor for the `did:oc` link; the step-up adds only the offline-verifiable link from `addr` to the key. A receiver that records each message's signing key MAY re-label earlier messages from that key.
+- **`test-vectors/vc18-session-step-up.json`** — a bound key steps up; the same bind with a revocation does not.
+- **§11** — a compliance line for session devices and the step-up.
+
 ## [Unreleased] — 2026-09
 
 ### Changed
