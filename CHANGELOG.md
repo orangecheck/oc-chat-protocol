@@ -4,9 +4,12 @@ All notable changes to the OC Chat protocol.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [Unreleased]
+## [0.2.1] — 2026-10-22
+
+Errata. No wire change.
 
 ### Fixed
+- **§8.3.1 copies of a descriptor.** The rules did not say how a resolver treats several events that carry one `descriptor_id`. A resolver keeps every such event and accepts the descriptor if any one copy is authored as §8.3.1 requires. It counts as founder-signed at a fork if any authorized copy is the founder's, and it competes with an authorized copy's `created_at`.
 - **SECURITY S15** named `nostr.band` as an example of an indexer that keeps a handle after its tombstone. That service has not answered since 2026-09-03, so S15 now says "a search indexer". The consideration and its disclosure are unchanged.
 
 ## [0.2.0] — 2026-10-22
