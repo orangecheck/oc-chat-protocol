@@ -4,6 +4,13 @@ All notable changes to the OC Chat protocol.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.3.1] — 2026-10-22
+
+No wire change.
+
+### Changed
+- **§8.6 revoked session devices.** The auth host MUST NOT vouch again for a `did_oc` and `device_id`, or a `nostr_pk`, it has revoked; a device that comes back registers a new key. A device that reads a revocation of itself MUST NOT ask for a new vouch and SHOULD stop sending. Revoking a device MUST end, in the same step, the host sign-in that obtained that device's vouch (every other sign-in of the account when the host cannot tell which one that was), and the host SHOULD offer to end the account's other sign-ins too.
+
 ## [0.3.0] — 2026-10-22
 
 Wire change for publishers of channel descriptors. Readers keep reading channels published before it.
