@@ -1,0 +1,1928 @@
+{
+  "description": "Channel version bindings (SPEC §8.3.1 and §8.6, from 0.3.0). Every descriptor version carries, in a `binding` tag, the kind-30078 device record that binds its event pubkey: an OC Lock v3 record for a Bitcoin address, a §8.6 session record with its vouch for a did:oc. A version with a later version after it on the chain is authorized by that binding alone; the last version of a chain also needs its binding to be live (no revocation seen on any relay, the device's own or, for a did:oc, the auth host's). At a fork, and among the geneses of one channel_id, a version the founder signed with a live binding ranks first, one with a binding since revoked second, any other third; a live device's copy of a version counts as that version signed with a live binding. A founder can re-sign a channel with a new genesis for the same channel_id when no version verifies or the inbox-key device is revoked. A retired host key verifies only a vouch issued before its retired_at.",
+  "spec": "§8.3.1, §8.6",
+  "inputs": {
+    "addresses": {
+      "founder_F": "bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq",
+      "admin_M": "bc1qha7546x08qwudehuc724np522c2n65m4sseeae",
+      "added_by_thief_T": "bc1q0c505nqleaf5yevn6zug588ytlmdvfwncdunxy",
+      "founder_L": "bc1qt95lqr64arnwv42sgkd3n9q0ddpmxzj8hlqu42"
+    },
+    "did_oc_founder": "did:oc:0123456789abcdef0123456789abcdef",
+    "records": {
+      "bind_F_K1": {
+        "kind": 30078,
+        "tags": [
+          [
+            "d",
+            "oc-lock:device:bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq"
+          ],
+          [
+            "addr",
+            "bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq"
+          ],
+          [
+            "device_id",
+            "f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1"
+          ],
+          [
+            "device_pk",
+            "a4e09292b651c278b9772c569f5fa9bb13d906b46ab68c9df9dc2b4409f8a209"
+          ],
+          [
+            "alg",
+            "x25519"
+          ],
+          [
+            "binding_sig",
+            "AkgwRQIhAIlYxrodAtf2fpe4vaNwrRUZwx6PUHt1dvCn4+Zv2Gj2AiBoypjdVprxbtZGlPVubMuT8batUBb0ATw/UEWey3vW/AEhAo11AN1MEmhdH1aLTCtQSOhTS4czGfOo2qYStGkTLsf3"
+          ]
+        ],
+        "content": "oc-lock:device-bind:v3\naddress: bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\ndevice_pk: a4e09292b651c278b9772c569f5fa9bb13d906b46ab68c9df9dc2b4409f8a209\nnostr_pk: 5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\ndevice_id: f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1\ncreated_at: 2026-10-01T00:00:00.000Z\n",
+        "created_at": 1790812800,
+        "pubkey": "5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33",
+        "id": "ad25432b4a826a5e85d7366372ecfec0b37d0a14e3c47d6a8d409c5f2abe360f",
+        "sig": "55db3068e7f8ad51af2012ae67909ad6f4720a8c00a52fa13c0e020a0ed811e942bfcffcbeab61b88159a278986a17109e7f121954c2b2cb1ed472b803166ddd"
+      },
+      "bind_F_K2": {
+        "kind": 30078,
+        "tags": [
+          [
+            "d",
+            "oc-lock:device:bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq"
+          ],
+          [
+            "addr",
+            "bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq"
+          ],
+          [
+            "device_id",
+            "f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2"
+          ],
+          [
+            "device_pk",
+            "ce8d3ad1ccb633ec7b70c17814a5c76ecd029685050d344745ba05870e587d59"
+          ],
+          [
+            "alg",
+            "x25519"
+          ],
+          [
+            "binding_sig",
+            "AkcwRAIgKovckQpAkpQaEInTumeGQ1svj5ewDEpcAdZgbIT8wR4CIBo/PcbeyYh/W2jabseCZEQgMrkzUScpDu1L5CaDgWJqASECjXUA3UwSaF0fVotMK1BI6FNLhzMZ86japhK0aRMux/c="
+          ]
+        ],
+        "content": "oc-lock:device-bind:v3\naddress: bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\ndevice_pk: ce8d3ad1ccb633ec7b70c17814a5c76ecd029685050d344745ba05870e587d59\nnostr_pk: dd17c1f8fe9d931e2538916a7852d22978cd30661488a2674d8b2f39d9af58ea\ndevice_id: f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2\ncreated_at: 2026-10-05T00:00:00.000Z\n",
+        "created_at": 1791158400,
+        "pubkey": "dd17c1f8fe9d931e2538916a7852d22978cd30661488a2674d8b2f39d9af58ea",
+        "id": "1b49487ea2d09de198150a1b2ffacd20517b20e822ce68e108c6a1a96c683f4a",
+        "sig": "8ef70102f91cf1426f285659d0dee52cab0a727f4fc978bc131298398d067f3ab8c359977d0113cdd7030a800302eb62082545eadb5bb00b7cc482d86de5b12a"
+      },
+      "bind_M_KM": {
+        "kind": 30078,
+        "tags": [
+          [
+            "d",
+            "oc-lock:device:bc1qha7546x08qwudehuc724np522c2n65m4sseeae"
+          ],
+          [
+            "addr",
+            "bc1qha7546x08qwudehuc724np522c2n65m4sseeae"
+          ],
+          [
+            "device_id",
+            "a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3"
+          ],
+          [
+            "device_pk",
+            "5dfedd3b6bd47f6fa28ee15d969d5bb0ea53774d488bdaf9df1c6e0124b3ef22"
+          ],
+          [
+            "alg",
+            "x25519"
+          ],
+          [
+            "binding_sig",
+            "AkgwRQIhAIWEeVD5RYyNv6FVoEQHUJLswExqReX5ZITkR0UkhO/3AiAIE5XJaXbDqT9p1KvoGDcbTkNKWl3epTmHc2faFPOKYAEhA+EfQK9rQfSUv7wnxHoXjOVy6LjKaHzGfhKYUUhhrF5I"
+          ]
+        ],
+        "content": "oc-lock:device-bind:v3\naddress: bc1qha7546x08qwudehuc724np522c2n65m4sseeae\ndevice_pk: 5dfedd3b6bd47f6fa28ee15d969d5bb0ea53774d488bdaf9df1c6e0124b3ef22\nnostr_pk: 1f13d2c4bdb669ffb6bfee6872339392fd85a5d569269d45f57b0f583d21176b\ndevice_id: a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3\ncreated_at: 2026-10-01T00:00:00.000Z\n",
+        "created_at": 1790812800,
+        "pubkey": "1f13d2c4bdb669ffb6bfee6872339392fd85a5d569269d45f57b0f583d21176b",
+        "id": "1c0141204b326a7a13718eb261698d1d66cff5f3f28ebd977d31c57f78ba9c1a",
+        "sig": "c5c809d37a79c8009b54e37aac37b9c83cd01c3653973d78a7d631e400fb428bd8adf2e36d8ec00706b912ffc0f164220b46ec23ecb4fb6f93f318f262d0f1f9"
+      },
+      "bind_M_KM2": {
+        "kind": 30078,
+        "tags": [
+          [
+            "d",
+            "oc-lock:device:bc1qha7546x08qwudehuc724np522c2n65m4sseeae"
+          ],
+          [
+            "addr",
+            "bc1qha7546x08qwudehuc724np522c2n65m4sseeae"
+          ],
+          [
+            "device_id",
+            "a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4"
+          ],
+          [
+            "device_pk",
+            "97c3b10b4d6c133a78ea5dcc1cf6421d3f81ae37b1f628ce14ca6fce7730f333"
+          ],
+          [
+            "alg",
+            "x25519"
+          ],
+          [
+            "binding_sig",
+            "AkgwRQIhAIgNgQ0GEkxcjSw0pzsQYkZeDXQszS5PHCeDsxedf70iAiAjSW3/Y0VpCdEY5oET2CyMV3JZQoT2B822U861DuEM+AEhA+EfQK9rQfSUv7wnxHoXjOVy6LjKaHzGfhKYUUhhrF5I"
+          ]
+        ],
+        "content": "oc-lock:device-bind:v3\naddress: bc1qha7546x08qwudehuc724np522c2n65m4sseeae\ndevice_pk: 97c3b10b4d6c133a78ea5dcc1cf6421d3f81ae37b1f628ce14ca6fce7730f333\nnostr_pk: 2f177f9cd3c724c7d7df90132e30447d3b805434834e0acb48b12aef8de66f40\ndevice_id: a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4\ncreated_at: 2026-10-08T00:00:00.000Z\n",
+        "created_at": 1791417600,
+        "pubkey": "2f177f9cd3c724c7d7df90132e30447d3b805434834e0acb48b12aef8de66f40",
+        "id": "841ff24f9af9e905a58494d07edecf9781519b8fea23d9ee65991d18aacf7fd6",
+        "sig": "886f359cc2af51f397b0ae017d28ba94cc3e72e4e95e475f65bcffbcd73ff08a4fe7643b9e19d8da6794e95fafeadbfa120bc63dbd633b71ccc281956f4368ae"
+      },
+      "bind_L_K3": {
+        "kind": 30078,
+        "tags": [
+          [
+            "d",
+            "oc-lock:device:bc1qt95lqr64arnwv42sgkd3n9q0ddpmxzj8hlqu42"
+          ],
+          [
+            "addr",
+            "bc1qt95lqr64arnwv42sgkd3n9q0ddpmxzj8hlqu42"
+          ],
+          [
+            "device_id",
+            "b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5"
+          ],
+          [
+            "device_pk",
+            "50a61409b1ddd0325e9b16b700e719e9772c07000b1bd7786e907c653d20495d"
+          ],
+          [
+            "alg",
+            "x25519"
+          ],
+          [
+            "binding_sig",
+            "AkgwRQIhAI9kTumJ4sOnEhGKmYB9M7VjyVgNqysAg+1/RIILMTX5AiBv8pFbPpA35ToGFeQ5jeOqcO7SYl9s06KCIj+wQv7cWwEhA1xODexyFeJoM5OHMOXlBapiUE2oW6VxBqRrWiQE/J2O"
+          ]
+        ],
+        "content": "oc-lock:device-bind:v3\naddress: bc1qt95lqr64arnwv42sgkd3n9q0ddpmxzj8hlqu42\ndevice_pk: 50a61409b1ddd0325e9b16b700e719e9772c07000b1bd7786e907c653d20495d\nnostr_pk: 33e2759b81d433fe22bb93109956507eeac18776c83177a4564256d084b6e274\ndevice_id: b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5\ncreated_at: 2026-10-01T00:00:00.000Z\n",
+        "created_at": 1790812800,
+        "pubkey": "33e2759b81d433fe22bb93109956507eeac18776c83177a4564256d084b6e274",
+        "id": "eecbd65691eb62814522cac793e7637d5e6d2a693d536738053882bba63d456d",
+        "sig": "26495cbe22674b32709d21e797f7bf71bf1c902dfdf63685b90613966a1ef84a571f6df79cb38a00d760e291b1afa0b57229fa9c8c67b31215de1e33903010b4"
+      },
+      "bind_T_KT": {
+        "kind": 30078,
+        "tags": [
+          [
+            "d",
+            "oc-lock:device:bc1q0c505nqleaf5yevn6zug588ytlmdvfwncdunxy"
+          ],
+          [
+            "addr",
+            "bc1q0c505nqleaf5yevn6zug588ytlmdvfwncdunxy"
+          ],
+          [
+            "device_id",
+            "d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8"
+          ],
+          [
+            "device_pk",
+            "31d4ab6aceec961137917037936e60716fac573afe94d9da84a8020448dfc112"
+          ],
+          [
+            "alg",
+            "x25519"
+          ],
+          [
+            "binding_sig",
+            "AkgwRQIhAPizWozdD2XxXxu6K+rd373KoI9MF3ZvoEuJ1/NfTLpQAiBGzmiabOcoR06eU7T0+D6oOTggtyc6rh2hH0A63YbpbAEhAhY0W/gxFkoDdY6upei2b+4r53ELjxkO6IAkkDKintZu"
+          ]
+        ],
+        "content": "oc-lock:device-bind:v3\naddress: bc1q0c505nqleaf5yevn6zug588ytlmdvfwncdunxy\ndevice_pk: 31d4ab6aceec961137917037936e60716fac573afe94d9da84a8020448dfc112\nnostr_pk: e4b0a54749be74b4e2f1ae63a895493599faf5d2048dbe4696fb7ef0f0f560d5\ndevice_id: d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8\ncreated_at: 2026-10-01T00:00:00.000Z\n",
+        "created_at": 1790812800,
+        "pubkey": "e4b0a54749be74b4e2f1ae63a895493599faf5d2048dbe4696fb7ef0f0f560d5",
+        "id": "c44a97d23a680be89e8e64440cb1f11f664f3a6bc192154d67312b8ba71a4f8b",
+        "sig": "2d9cd4bf2fddeb4ca026846bf16910ad91b64c2dd8ef1689ab386cf2d3b0c33fbbf98c3ef2293517951ef5023dd6fb81105336e29965f9988b90bd0d05e7c3dc"
+      },
+      "bind_F_KF0": {
+        "kind": 30078,
+        "tags": [
+          [
+            "d",
+            "oc-lock:device:bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq"
+          ],
+          [
+            "addr",
+            "bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq"
+          ],
+          [
+            "device_id",
+            "f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0"
+          ],
+          [
+            "device_pk",
+            "73b2d8b76aa9b53660032bc8f5d8bee3a3ae4e3b3a7fd49ade81f7347a34aa68"
+          ],
+          [
+            "alg",
+            "x25519"
+          ],
+          [
+            "binding_sig",
+            "AkgwRQIhAO34njJBK8cnyET8t2iJKkFbZppqH4JmMfyJa9kFxBhuAiBAm4SwIfO8Wu81cY9omoQnC9uFoJx8zp3e5lzLpcpouwEhAo11AN1MEmhdH1aLTCtQSOhTS4czGfOo2qYStGkTLsf3"
+          ]
+        ],
+        "content": "oc-lock:device-bind:v3\naddress: bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\ndevice_pk: 73b2d8b76aa9b53660032bc8f5d8bee3a3ae4e3b3a7fd49ade81f7347a34aa68\nnostr_pk: d1f4c5f0e3b0006114b716d6e6694df26aa76c53f59b10dd6cf701ef4d4daa22\ndevice_id: f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0\ncreated_at: 2026-10-01T00:00:00.000Z\n",
+        "created_at": 1790812800,
+        "pubkey": "d1f4c5f0e3b0006114b716d6e6694df26aa76c53f59b10dd6cf701ef4d4daa22",
+        "id": "7605e0deb18539a61354e399f00dabbe2b09773ff7e7fbb14e6c49584ce35f71",
+        "sig": "c14226b82c331e89c72ed72f2870e9855b81b0542a9984739a40ab953fee86772d9f52c8eaac2171de7b58bbcadb9434ffb4ae2dfcb24721e2af6a3f6d80ab8c"
+      },
+      "revoke_F_K1": {
+        "kind": 30078,
+        "tags": [
+          [
+            "d",
+            "oc-lock:device:bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq"
+          ],
+          [
+            "addr",
+            "bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq"
+          ],
+          [
+            "device_id",
+            "f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1"
+          ],
+          [
+            "device_pk",
+            "revoked"
+          ],
+          [
+            "alg",
+            "x25519"
+          ],
+          [
+            "binding_sig",
+            "AkgwRQIhAIm6MMCt6kVVomNgJOVql/6UbBI5D1mreN7TjqAKzsoCAiAY3HU2cxdCXpgv2hBWZ4UNkjTsNAFpkX7yfZxNzQmtAwEhAo11AN1MEmhdH1aLTCtQSOhTS4czGfOo2qYStGkTLsf3"
+          ]
+        ],
+        "content": "oc-lock:device-revoke:v2\naddress: bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\ndevice_id: f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1\nrevoked_at: 2026-10-10T00:00:00.000Z\n",
+        "created_at": 1791590400,
+        "pubkey": "1e3f998fda35c66df730440567b2e3901c51cc8344f05d998f323c333edc67d5",
+        "id": "3ec7620926e91c2afcad1ae6387d3faff06100bcac3489e74e51293cfca8ad6b",
+        "sig": "cfe20285788dc4bb65badcd1e0befbf015d01aef408ae70181f496996be64bf029f236ab749fba569c72076288db3c31c041766785c2b0da89eb3e50c117aef6"
+      },
+      "revoke_M_KM": {
+        "kind": 30078,
+        "tags": [
+          [
+            "d",
+            "oc-lock:device:bc1qha7546x08qwudehuc724np522c2n65m4sseeae"
+          ],
+          [
+            "addr",
+            "bc1qha7546x08qwudehuc724np522c2n65m4sseeae"
+          ],
+          [
+            "device_id",
+            "a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3"
+          ],
+          [
+            "device_pk",
+            "revoked"
+          ],
+          [
+            "alg",
+            "x25519"
+          ],
+          [
+            "binding_sig",
+            "AkgwRQIhAOp1EHnoT0ESJ3Qo10sSYvF8M/L23gowNImCl3I/ZoUzAiBUk8+pnpzZnqbnhsfwtGD3KW4QYCQf3OYrTTSneciF/AEhA+EfQK9rQfSUv7wnxHoXjOVy6LjKaHzGfhKYUUhhrF5I"
+          ]
+        ],
+        "content": "oc-lock:device-revoke:v2\naddress: bc1qha7546x08qwudehuc724np522c2n65m4sseeae\ndevice_id: a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3\nrevoked_at: 2026-10-10T00:00:00.000Z\n",
+        "created_at": 1791590400,
+        "pubkey": "1f13d2c4bdb669ffb6bfee6872339392fd85a5d569269d45f57b0f583d21176b",
+        "id": "cf625f410bebaf07a64e9b7649a4c2d56d495d0dc81ac0a9d20202055d80bd10",
+        "sig": "f2f07b2e0542d913b989cf600038ef4b06fede9110337aebb05670a640dcfba4b13221ca5c9d82d9c824636c8993ea9dd61bc86992eaf7b433c4ed98b87aa2d0"
+      },
+      "session_S1": {
+        "kind": 30078,
+        "tags": [
+          [
+            "d",
+            "oc-chat:device:did:oc:0123456789abcdef0123456789abcdef"
+          ],
+          [
+            "addr",
+            "did:oc:0123456789abcdef0123456789abcdef"
+          ],
+          [
+            "device_id",
+            "c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6"
+          ],
+          [
+            "device_pk",
+            "f5b2d6e60f9477e310c2982daaa6c9136c108a1777c5947e448fa37d68174557"
+          ],
+          [
+            "alg",
+            "x25519"
+          ],
+          [
+            "auth",
+            "session"
+          ],
+          [
+            "binding_sig",
+            ""
+          ],
+          [
+            "vouch",
+            "eyJhbGciOiJFZERTQSIsInR5cCI6Im9jLWNoYXQtZGV2aWNlLXZvdWNoIiwia2lkIjoia2lkLWEifQ.b2MtY2hhdDpkZXZpY2Utdm91Y2g6djEKZGlkX29jOiBkaWQ6b2M6MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWYKZGV2aWNlX3BrOiBmNWIyZDZlNjBmOTQ3N2UzMTBjMjk4MmRhYWE2YzkxMzZjMTA4YTE3NzdjNTk0N2U0NDhmYTM3ZDY4MTc0NTU3Cm5vc3RyX3BrOiBiNWRjYjIxN2JkMWZmOTUyNTA1ZWFmODIzMDNmYTlmNGI2ZjYxZDQxNWYyNWM3NDUxMWQyYjdhOTEyNmE4OGRlCmRldmljZV9pZDogYzZjNmM2YzZjNmM2YzZjNmM2YzZjNmM2YzZjNmM2YzYKaXNzdWVkX2F0OiAxNzg4MjIwODAwCg.4-qtZy2B1Nj8mOgjWWi4L8RVcyrG1-fwznBhUyyXs4EN9ZtODCeSLhKHoOs3xufBAJB4KDPVZLAaaMLl8v-qBg"
+          ]
+        ],
+        "content": "oc-chat:device-bind:session:v1\ndid_oc: did:oc:0123456789abcdef0123456789abcdef\ndevice_pk: f5b2d6e60f9477e310c2982daaa6c9136c108a1777c5947e448fa37d68174557\ndevice_id: c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6\ncreated_at: 2026-09-01T00:00:00.000Z\n",
+        "created_at": 1788220800,
+        "pubkey": "b5dcb217bd1ff952505eaf82303fa9f4b6f61d415f25c74511d2b7a9126a88de",
+        "id": "21a084f4f5db67a08263249caf89efc8509bc3751bd72ddba9707d2f6ab1a35d",
+        "sig": "7fd2bb4cb832e9dc2231723fd82f88f0673ea161f3ed9883a0541b1226c2cc3a5796f11246d5fc058e705a580b6042b7f65dbe2f5259aaf79d93da3a7947ce29"
+      },
+      "session_S2": {
+        "kind": 30078,
+        "tags": [
+          [
+            "d",
+            "oc-chat:device:did:oc:0123456789abcdef0123456789abcdef"
+          ],
+          [
+            "addr",
+            "did:oc:0123456789abcdef0123456789abcdef"
+          ],
+          [
+            "device_id",
+            "c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7"
+          ],
+          [
+            "device_pk",
+            "13be4feaeaf204c7fd3358fc9c00721881d174278128227ec674f37f7fe97b6d"
+          ],
+          [
+            "alg",
+            "x25519"
+          ],
+          [
+            "auth",
+            "session"
+          ],
+          [
+            "binding_sig",
+            ""
+          ],
+          [
+            "vouch",
+            "eyJhbGciOiJFZERTQSIsInR5cCI6Im9jLWNoYXQtZGV2aWNlLXZvdWNoIiwia2lkIjoia2lkLWIifQ.b2MtY2hhdDpkZXZpY2Utdm91Y2g6djEKZGlkX29jOiBkaWQ6b2M6MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWYKZGV2aWNlX3BrOiAxM2JlNGZlYWVhZjIwNGM3ZmQzMzU4ZmM5YzAwNzIxODgxZDE3NDI3ODEyODIyN2VjNjc0ZjM3ZjdmZTk3YjZkCm5vc3RyX3BrOiBkOWUzOGFiMWZkMDg3YTU5NWZiZGNhY2JiNTM5OTFiZWRlOTk0MjlhZWQ2ZWY1Mzk5M2NjYTRlYzY2ZDM3ZmM0CmRldmljZV9pZDogYzdjN2M3YzdjN2M3YzdjN2M3YzdjN2M3YzdjN2M3YzcKaXNzdWVkX2F0OiAxNzkxMTU4NDAwCg.B4sFcwN9rwkoHGl8rt9MN_d_i1YcfSqAwWXiSjIHd1Fefthb-pQa57f90fBsa4C4F1FPHGYeub_H-Ou050NRCQ"
+          ]
+        ],
+        "content": "oc-chat:device-bind:session:v1\ndid_oc: did:oc:0123456789abcdef0123456789abcdef\ndevice_pk: 13be4feaeaf204c7fd3358fc9c00721881d174278128227ec674f37f7fe97b6d\ndevice_id: c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7\ncreated_at: 2026-10-05T00:00:00.000Z\n",
+        "created_at": 1791158400,
+        "pubkey": "d9e38ab1fd087a595fbdcacbb53991bede99429aed6ef53993cca4ec66d37fc4",
+        "id": "b40adafe3f48c7ee568689633aeca1ff59612eb574569b003a039fc8c9c7ecce",
+        "sig": "e8694cbbe79cfe517aa2d85efcd304b667eaba03135284cec598eb631c1f06676c83ac06f4ecdaa0a436b413b16b6d1be34cbac09362c4dc24071a11ebf8b7c3"
+      },
+      "session_S3": {
+        "kind": 30078,
+        "tags": [
+          [
+            "d",
+            "oc-chat:device:did:oc:0123456789abcdef0123456789abcdef"
+          ],
+          [
+            "addr",
+            "did:oc:0123456789abcdef0123456789abcdef"
+          ],
+          [
+            "device_id",
+            "c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9"
+          ],
+          [
+            "device_pk",
+            "57db4b359f23ae5e146e4e2512056704722506348c150c14753d0c933d04d421"
+          ],
+          [
+            "alg",
+            "x25519"
+          ],
+          [
+            "auth",
+            "session"
+          ],
+          [
+            "binding_sig",
+            ""
+          ],
+          [
+            "vouch",
+            "eyJhbGciOiJFZERTQSIsInR5cCI6Im9jLWNoYXQtZGV2aWNlLXZvdWNoIiwia2lkIjoia2lkLWIifQ.b2MtY2hhdDpkZXZpY2Utdm91Y2g6djEKZGlkX29jOiBkaWQ6b2M6MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWYKZGV2aWNlX3BrOiA1N2RiNGIzNTlmMjNhZTVlMTQ2ZTRlMjUxMjA1NjcwNDcyMjUwNjM0OGMxNTBjMTQ3NTNkMGM5MzNkMDRkNDIxCm5vc3RyX3BrOiA3M2RkZGUxYmU0YzA0MjdlMzYwOGZiNjYxYWIyNjYyMmI0OGMwZGUxYThlMWZjZjhjYzFiNjVhZDY3NzEyM2ZlCmRldmljZV9pZDogYzljOWM5YzljOWM5YzljOWM5YzljOWM5YzljOWM5YzkKaXNzdWVkX2F0OiAxNzkxMTU4NDAwCg.GcdjqLxgZUfxNBVhze7ymKOVp4vsaLUDw1-g-G7Mi2ZLivvdtrpdXPjiaZK12hN00aS-CsoK8v88-4ITLC6hDg"
+          ]
+        ],
+        "content": "oc-chat:device-bind:session:v1\ndid_oc: did:oc:0123456789abcdef0123456789abcdef\ndevice_pk: 57db4b359f23ae5e146e4e2512056704722506348c150c14753d0c933d04d421\ndevice_id: c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9\ncreated_at: 2026-10-05T00:00:00.000Z\n",
+        "created_at": 1791158400,
+        "pubkey": "73ddde1be4c0427e3608fb661ab26622b48c0de1a8e1fcf8cc1b65ad677123fe",
+        "id": "25033671178df3f3952c7b04b407f5e0cb227a08f4f75d1097af266866134090",
+        "sig": "65638839f10a3a6b6e483baf8cfc9e636e7cf966c38647b5782224d1198365c6d85b80b8bbbba3db5e50b3325256e47527f6e184bf8fcbbc7314831af29f2d6e"
+      },
+      "session_S4_vouched_after_retirement": {
+        "kind": 30078,
+        "tags": [
+          [
+            "d",
+            "oc-chat:device:did:oc:0123456789abcdef0123456789abcdef"
+          ],
+          [
+            "addr",
+            "did:oc:0123456789abcdef0123456789abcdef"
+          ],
+          [
+            "device_id",
+            "cacacacacacacacacacacacacacacaca"
+          ],
+          [
+            "device_pk",
+            "f77ff4b10788bfdca62ca0bb160d427cf5762d85f2b5cad6807ec9c3febbde09"
+          ],
+          [
+            "alg",
+            "x25519"
+          ],
+          [
+            "auth",
+            "session"
+          ],
+          [
+            "binding_sig",
+            ""
+          ],
+          [
+            "vouch",
+            "eyJhbGciOiJFZERTQSIsInR5cCI6Im9jLWNoYXQtZGV2aWNlLXZvdWNoIiwia2lkIjoia2lkLWEifQ.b2MtY2hhdDpkZXZpY2Utdm91Y2g6djEKZGlkX29jOiBkaWQ6b2M6MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWYKZGV2aWNlX3BrOiBmNzdmZjRiMTA3ODhiZmRjYTYyY2EwYmIxNjBkNDI3Y2Y1NzYyZDg1ZjJiNWNhZDY4MDdlYzljM2ZlYmJkZTA5Cm5vc3RyX3BrOiAwN2E3NjI0YTQwZTA2YTFlNTMwNDcyMTkwZmM2NjcwOTU0NDU1MTFlNDhlOWYzOTI4NjMxZjgyZmMxNjk4NWRkCmRldmljZV9pZDogY2FjYWNhY2FjYWNhY2FjYWNhY2FjYWNhY2FjYWNhY2EKaXNzdWVkX2F0OiAxNzkyMDIyNDAwCg.sol5KkCdaQ2hkpHz-zHvGGwSLDEcu0osuVG4uTaFBSzR17xoteOHenUrp365SoNMEd6cqnfa_zbRxlEjm-YrCQ"
+          ]
+        ],
+        "content": "oc-chat:device-bind:session:v1\ndid_oc: did:oc:0123456789abcdef0123456789abcdef\ndevice_pk: f77ff4b10788bfdca62ca0bb160d427cf5762d85f2b5cad6807ec9c3febbde09\ndevice_id: cacacacacacacacacacacacacacacaca\ncreated_at: 2026-10-15T00:00:00.000Z\n",
+        "created_at": 1792022400,
+        "pubkey": "07a7624a40e06a1e530472190fc667095445511e48e9f3928631f82fc16985dd",
+        "id": "7c92a21a25204eb8166838f5825b87090ec347c176d3e5418efc409158d2eb5b",
+        "sig": "f1e62ddd83e180adfed8b8ffde3bc2cf820f5eccb8dd79e57c0a1fbd2e2b7e01616efc43ea6bf5d329c4336f9620960ff4861dcd2536bfdef575aed08ea9cea5"
+      },
+      "revoke_S1": {
+        "kind": 30078,
+        "tags": [
+          [
+            "d",
+            "oc-chat:device:did:oc:0123456789abcdef0123456789abcdef"
+          ],
+          [
+            "addr",
+            "did:oc:0123456789abcdef0123456789abcdef"
+          ],
+          [
+            "device_id",
+            "c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6"
+          ],
+          [
+            "device_pk",
+            "revoked"
+          ],
+          [
+            "alg",
+            "x25519"
+          ],
+          [
+            "auth",
+            "session"
+          ],
+          [
+            "binding_sig",
+            ""
+          ],
+          [
+            "vouch",
+            ""
+          ]
+        ],
+        "content": "oc-chat:device-bind:session:v1\ndid_oc: did:oc:0123456789abcdef0123456789abcdef\ndevice_pk: revoked\ndevice_id: c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6\ncreated_at: 2026-10-12T00:00:00.000Z\n",
+        "created_at": 1791763200,
+        "pubkey": "b5dcb217bd1ff952505eaf82303fa9f4b6f61d415f25c74511d2b7a9126a88de",
+        "id": "b91be37ce17487fbd7511ee33f5ef2731210c66089d06d65e3efcf230027e285",
+        "sig": "7cfa5669dbb3a9c52279c1db43702219944e790e16b6be096e925e79e0b479af5ef49100fef050ef7832bb75c0d20d53eccb7b596b139332245c32d3708d0c92"
+      },
+      "host_revoke_S3": {
+        "kind": 30078,
+        "created_at": 1792108800,
+        "tags": [
+          [
+            "d",
+            "oc-chat:device:did:oc:0123456789abcdef0123456789abcdef"
+          ],
+          [
+            "addr",
+            "did:oc:0123456789abcdef0123456789abcdef"
+          ],
+          [
+            "device_id",
+            "c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9"
+          ],
+          [
+            "device_pk",
+            "revoked"
+          ],
+          [
+            "auth",
+            "session"
+          ],
+          [
+            "revocation",
+            "eyJhbGciOiJFZERTQSIsInR5cCI6Im9jLWNoYXQtZGV2aWNlLXJldm9rZSIsImtpZCI6ImtpZC1iIn0.b2MtY2hhdDpkZXZpY2UtcmV2b2tlOnYxCmRpZF9vYzogZGlkOm9jOjAxMjM0NTY3ODlhYmNkZWYwMTIzNDU2Nzg5YWJjZGVmCmRldmljZV9pZDogYzljOWM5YzljOWM5YzljOWM5YzljOWM5YzljOWM5YzkKbm9zdHJfcGs6IDczZGRkZTFiZTRjMDQyN2UzNjA4ZmI2NjFhYjI2NjIyYjQ4YzBkZTFhOGUxZmNmOGNjMWI2NWFkNjc3MTIzZmUKcmV2b2tlZF9hdDogMTc5MjEwODgwMAo._w6CuPxS1j-Jo_IUSTbx3b4kmEXjJ5NFN0DY6tWRDzkK51xDixTKAdsVScOYwzSJsAlwlaKAeGolH0h75mAOAw"
+          ]
+        ],
+        "content": "oc-chat:device-revoke:v1\ndid_oc: did:oc:0123456789abcdef0123456789abcdef\ndevice_id: c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9\nnostr_pk: 73ddde1be4c0427e3608fb661ab26622b48c0de1a8e1fcf8cc1b65ad677123fe\nrevoked_at: 1792108800\n",
+        "pubkey": "9ac20335eb38768d2052be1dbbc3c8f6178407458e51e6b4ad22f1d91758895b",
+        "id": "d2c2305db04b6e083122d74505a616e1c8e522c0dca290bf58c523c6a02a1132",
+        "sig": "025a65bd8ce29f8573c6e683fb33a2bcc9216414a967e541896b28b92602e607629fbc60800cca8766ef7add6bd7e681e04b060dd0c036fc4fd4be9e98464917"
+      },
+      "session_S3_revouched": {
+        "kind": 30078,
+        "tags": [
+          [
+            "d",
+            "oc-chat:device:did:oc:0123456789abcdef0123456789abcdef"
+          ],
+          [
+            "addr",
+            "did:oc:0123456789abcdef0123456789abcdef"
+          ],
+          [
+            "device_id",
+            "c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9"
+          ],
+          [
+            "device_pk",
+            "57db4b359f23ae5e146e4e2512056704722506348c150c14753d0c933d04d421"
+          ],
+          [
+            "alg",
+            "x25519"
+          ],
+          [
+            "auth",
+            "session"
+          ],
+          [
+            "binding_sig",
+            ""
+          ],
+          [
+            "vouch",
+            "eyJhbGciOiJFZERTQSIsInR5cCI6Im9jLWNoYXQtZGV2aWNlLXZvdWNoIiwia2lkIjoia2lkLWIifQ.b2MtY2hhdDpkZXZpY2Utdm91Y2g6djEKZGlkX29jOiBkaWQ6b2M6MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWYKZGV2aWNlX3BrOiA1N2RiNGIzNTlmMjNhZTVlMTQ2ZTRlMjUxMjA1NjcwNDcyMjUwNjM0OGMxNTBjMTQ3NTNkMGM5MzNkMDRkNDIxCm5vc3RyX3BrOiA3M2RkZGUxYmU0YzA0MjdlMzYwOGZiNjYxYWIyNjYyMmI0OGMwZGUxYThlMWZjZjhjYzFiNjVhZDY3NzEyM2ZlCmRldmljZV9pZDogYzljOWM5YzljOWM5YzljOWM5YzljOWM5YzljOWM5YzkKaXNzdWVkX2F0OiAxNzkyMjgxNjAwCg.Sy8HaE0wE_V4_wqb7ZVnBnc24JUO9cTHhbriW5IxQkSoTS03c_kBi1b0I4auwswICDeirl7SwEu0K2jxPFtuCQ"
+          ]
+        ],
+        "content": "oc-chat:device-bind:session:v1\ndid_oc: did:oc:0123456789abcdef0123456789abcdef\ndevice_pk: 57db4b359f23ae5e146e4e2512056704722506348c150c14753d0c933d04d421\ndevice_id: c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9\ncreated_at: 2026-10-18T00:00:00.000Z\n",
+        "created_at": 1792281600,
+        "pubkey": "73ddde1be4c0427e3608fb661ab26622b48c0de1a8e1fcf8cc1b65ad677123fe",
+        "id": "90c3ad84249186484d4fcd9c2fddbb1af8fd0e220e141a7b20183ebe9443b26b",
+        "sig": "ea467fb7ba64b28c61d79ced0d03a846f89e60ea8609d77417c01f333e592bf6d7e319268da3b14963e30faa88da7fa4659a217e432c5e46ed47689b0d871d92"
+      }
+    },
+    "versions": {
+      "G": {
+        "kind": 30110,
+        "created_at": 1790899200,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:d8129b7f754c31ae827f4b0cd0a6005ae1cc5c9f75241e6d349680cf6be927de"
+          ],
+          [
+            "t",
+            "c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352"
+          ],
+          [
+            "descriptor_id",
+            "d8129b7f754c31ae827f4b0cd0a6005ae1cc5c9f75241e6d349680cf6be927de"
+          ],
+          [
+            "binding",
+            "{\"kind\":30078,\"tags\":[[\"d\",\"oc-lock:device:bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\"],[\"addr\",\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\"],[\"device_id\",\"f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1\"],[\"device_pk\",\"a4e09292b651c278b9772c569f5fa9bb13d906b46ab68c9df9dc2b4409f8a209\"],[\"alg\",\"x25519\"],[\"binding_sig\",\"AkgwRQIhAIlYxrodAtf2fpe4vaNwrRUZwx6PUHt1dvCn4+Zv2Gj2AiBoypjdVprxbtZGlPVubMuT8batUBb0ATw/UEWey3vW/AEhAo11AN1MEmhdH1aLTCtQSOhTS4czGfOo2qYStGkTLsf3\"]],\"content\":\"oc-lock:device-bind:v3\\naddress: bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\\ndevice_pk: a4e09292b651c278b9772c569f5fa9bb13d906b46ab68c9df9dc2b4409f8a209\\nnostr_pk: 5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\\ndevice_id: f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1\\ncreated_at: 2026-10-01T00:00:00.000Z\\n\",\"created_at\":1790812800,\"pubkey\":\"5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\",\"id\":\"ad25432b4a826a5e85d7366372ecfec0b37d0a14e3c47d6a8d409c5f2abe360f\",\"sig\":\"55db3068e7f8ad51af2012ae67909ad6f4720a8c00a52fa13c0e020a0ed811e942bfcffcbeab61b88159a278986a17109e7f121954c2b2cb1ed472b803166ddd\"}"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352\",\"slug\":\"town\",\"founder_address\":\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\",\"founder_inbox_pubkey\":\"5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[\"bc1qha7546x08qwudehuc724np522c2n65m4sseeae\"],\"moderators\":[],\"title\":\"Town\",\"description\":\"\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1790899200,\"supersedes\":null}",
+        "pubkey": "5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33",
+        "id": "4062e38f0053962f8720ab82fc3d532c61dddc1881698d5d35bf95654bee254c",
+        "sig": "424957df1585fb3c1289a1b323a50f9583e0fad0f20ab26e44a5c5c197d6c5bd1193c108a8338293e2dcd1fdc0da97cef5fc96df41b0ee0b2e1010df0d20df62"
+      },
+      "A2_by_M": {
+        "kind": 30110,
+        "created_at": 1790985600,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:3b41211f2d58492597fd9801106c2cce30896022798e941cb38a3621c4c08cd7"
+          ],
+          [
+            "t",
+            "c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352"
+          ],
+          [
+            "s",
+            "d8129b7f754c31ae827f4b0cd0a6005ae1cc5c9f75241e6d349680cf6be927de"
+          ],
+          [
+            "descriptor_id",
+            "3b41211f2d58492597fd9801106c2cce30896022798e941cb38a3621c4c08cd7"
+          ],
+          [
+            "binding",
+            "{\"kind\":30078,\"tags\":[[\"d\",\"oc-lock:device:bc1qha7546x08qwudehuc724np522c2n65m4sseeae\"],[\"addr\",\"bc1qha7546x08qwudehuc724np522c2n65m4sseeae\"],[\"device_id\",\"a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3\"],[\"device_pk\",\"5dfedd3b6bd47f6fa28ee15d969d5bb0ea53774d488bdaf9df1c6e0124b3ef22\"],[\"alg\",\"x25519\"],[\"binding_sig\",\"AkgwRQIhAIWEeVD5RYyNv6FVoEQHUJLswExqReX5ZITkR0UkhO/3AiAIE5XJaXbDqT9p1KvoGDcbTkNKWl3epTmHc2faFPOKYAEhA+EfQK9rQfSUv7wnxHoXjOVy6LjKaHzGfhKYUUhhrF5I\"]],\"content\":\"oc-lock:device-bind:v3\\naddress: bc1qha7546x08qwudehuc724np522c2n65m4sseeae\\ndevice_pk: 5dfedd3b6bd47f6fa28ee15d969d5bb0ea53774d488bdaf9df1c6e0124b3ef22\\nnostr_pk: 1f13d2c4bdb669ffb6bfee6872339392fd85a5d569269d45f57b0f583d21176b\\ndevice_id: a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3\\ncreated_at: 2026-10-01T00:00:00.000Z\\n\",\"created_at\":1790812800,\"pubkey\":\"1f13d2c4bdb669ffb6bfee6872339392fd85a5d569269d45f57b0f583d21176b\",\"id\":\"1c0141204b326a7a13718eb261698d1d66cff5f3f28ebd977d31c57f78ba9c1a\",\"sig\":\"c5c809d37a79c8009b54e37aac37b9c83cd01c3653973d78a7d631e400fb428bd8adf2e36d8ec00706b912ffc0f164220b46ec23ecb4fb6f93f318f262d0f1f9\"}"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352\",\"slug\":\"town\",\"founder_address\":\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\",\"founder_inbox_pubkey\":\"5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[\"bc1qha7546x08qwudehuc724np522c2n65m4sseeae\"],\"moderators\":[],\"title\":\"Town\",\"description\":\"edited by M\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1790985600,\"supersedes\":\"d8129b7f754c31ae827f4b0cd0a6005ae1cc5c9f75241e6d349680cf6be927de\"}",
+        "pubkey": "1f13d2c4bdb669ffb6bfee6872339392fd85a5d569269d45f57b0f583d21176b",
+        "id": "dd775c7ae91bc1e53d63fdc48ef72cf3b60b57198730b0aa376cc70345dc7d94",
+        "sig": "b8550aedb260fcca2c5886b877e580d98ed4f702d3a75275989718084243f23c9b1f5090a1cb2b521b78bd830fd90014ebfa96eac938f178f78b41a45009fb72"
+      },
+      "A3_close_by_F": {
+        "kind": 30110,
+        "created_at": 1791072000,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:1660183dbbd1145e88862379007e3cfd41d17f85d4f570a9c355eb4ccc455ef2"
+          ],
+          [
+            "t",
+            "c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352"
+          ],
+          [
+            "s",
+            "3b41211f2d58492597fd9801106c2cce30896022798e941cb38a3621c4c08cd7"
+          ],
+          [
+            "descriptor_id",
+            "1660183dbbd1145e88862379007e3cfd41d17f85d4f570a9c355eb4ccc455ef2"
+          ],
+          [
+            "binding",
+            "{\"kind\":30078,\"tags\":[[\"d\",\"oc-lock:device:bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\"],[\"addr\",\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\"],[\"device_id\",\"f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1\"],[\"device_pk\",\"a4e09292b651c278b9772c569f5fa9bb13d906b46ab68c9df9dc2b4409f8a209\"],[\"alg\",\"x25519\"],[\"binding_sig\",\"AkgwRQIhAIlYxrodAtf2fpe4vaNwrRUZwx6PUHt1dvCn4+Zv2Gj2AiBoypjdVprxbtZGlPVubMuT8batUBb0ATw/UEWey3vW/AEhAo11AN1MEmhdH1aLTCtQSOhTS4czGfOo2qYStGkTLsf3\"]],\"content\":\"oc-lock:device-bind:v3\\naddress: bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\\ndevice_pk: a4e09292b651c278b9772c569f5fa9bb13d906b46ab68c9df9dc2b4409f8a209\\nnostr_pk: 5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\\ndevice_id: f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1\\ncreated_at: 2026-10-01T00:00:00.000Z\\n\",\"created_at\":1790812800,\"pubkey\":\"5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\",\"id\":\"ad25432b4a826a5e85d7366372ecfec0b37d0a14e3c47d6a8d409c5f2abe360f\",\"sig\":\"55db3068e7f8ad51af2012ae67909ad6f4720a8c00a52fa13c0e020a0ed811e942bfcffcbeab61b88159a278986a17109e7f121954c2b2cb1ed472b803166ddd\"}"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352\",\"slug\":\"town\",\"founder_address\":\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\",\"founder_inbox_pubkey\":\"5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[],\"moderators\":[],\"title\":\"Town\",\"description\":\"edited by M\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1791072000,\"supersedes\":\"3b41211f2d58492597fd9801106c2cce30896022798e941cb38a3621c4c08cd7\",\"status\":\"closed\"}",
+        "pubkey": "5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33",
+        "id": "aadd4bb5b0cc94ffb4cf79f728edcb05bc6c2cd53778e4ca8dc97eecb62424a6",
+        "sig": "6263318f70e1e8e5148e10449cc2ec52bb56b45907a7241a8afd09009f0a057164a9e3c28c5f6ca38cf860ffd30351952184796d7bfae7b7656e62f6d4024948"
+      },
+      "R3_by_M_KM2": {
+        "kind": 30110,
+        "created_at": 1791504000,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:9fc351e10ba668f82b05a946ed3fb3c84488b3c889f5abbbb0b6dc9b818b9e42"
+          ],
+          [
+            "t",
+            "c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352"
+          ],
+          [
+            "s",
+            "3b41211f2d58492597fd9801106c2cce30896022798e941cb38a3621c4c08cd7"
+          ],
+          [
+            "descriptor_id",
+            "9fc351e10ba668f82b05a946ed3fb3c84488b3c889f5abbbb0b6dc9b818b9e42"
+          ],
+          [
+            "binding",
+            "{\"kind\":30078,\"tags\":[[\"d\",\"oc-lock:device:bc1qha7546x08qwudehuc724np522c2n65m4sseeae\"],[\"addr\",\"bc1qha7546x08qwudehuc724np522c2n65m4sseeae\"],[\"device_id\",\"a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4\"],[\"device_pk\",\"97c3b10b4d6c133a78ea5dcc1cf6421d3f81ae37b1f628ce14ca6fce7730f333\"],[\"alg\",\"x25519\"],[\"binding_sig\",\"AkgwRQIhAIgNgQ0GEkxcjSw0pzsQYkZeDXQszS5PHCeDsxedf70iAiAjSW3/Y0VpCdEY5oET2CyMV3JZQoT2B822U861DuEM+AEhA+EfQK9rQfSUv7wnxHoXjOVy6LjKaHzGfhKYUUhhrF5I\"]],\"content\":\"oc-lock:device-bind:v3\\naddress: bc1qha7546x08qwudehuc724np522c2n65m4sseeae\\ndevice_pk: 97c3b10b4d6c133a78ea5dcc1cf6421d3f81ae37b1f628ce14ca6fce7730f333\\nnostr_pk: 2f177f9cd3c724c7d7df90132e30447d3b805434834e0acb48b12aef8de66f40\\ndevice_id: a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4\\ncreated_at: 2026-10-08T00:00:00.000Z\\n\",\"created_at\":1791417600,\"pubkey\":\"2f177f9cd3c724c7d7df90132e30447d3b805434834e0acb48b12aef8de66f40\",\"id\":\"841ff24f9af9e905a58494d07edecf9781519b8fea23d9ee65991d18aacf7fd6\",\"sig\":\"886f359cc2af51f397b0ae017d28ba94cc3e72e4e95e475f65bcffbcd73ff08a4fe7643b9e19d8da6794e95fafeadbfa120bc63dbd633b71ccc281956f4368ae\"}"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352\",\"slug\":\"town\",\"founder_address\":\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\",\"founder_inbox_pubkey\":\"5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[\"bc1qha7546x08qwudehuc724np522c2n65m4sseeae\"],\"moderators\":[],\"title\":\"Town\",\"description\":\"edited by M\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1791504000,\"supersedes\":\"3b41211f2d58492597fd9801106c2cce30896022798e941cb38a3621c4c08cd7\"}",
+        "pubkey": "2f177f9cd3c724c7d7df90132e30447d3b805434834e0acb48b12aef8de66f40",
+        "id": "4bcd2067e65dfe9a30a6fac139aea5f2125d4cde5b0f0a611dfce1cdc11c8858",
+        "sig": "62373275b8243d71a3b2ecb571dd2983021f8cc4280116f7fe0b3af18f747d1de2e97b4292a8bf2658eadf7e34c08bed30316008e739f43044c1ba117b90437b"
+      },
+      "B2_resign_by_F_K2": {
+        "kind": 30110,
+        "created_at": 1791504000,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:ca1a1d5ec071f71e88eed93813b93fd8c7d39be65deff7dd6110b7b1f071e8f8"
+          ],
+          [
+            "t",
+            "c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352"
+          ],
+          [
+            "s",
+            "d8129b7f754c31ae827f4b0cd0a6005ae1cc5c9f75241e6d349680cf6be927de"
+          ],
+          [
+            "descriptor_id",
+            "ca1a1d5ec071f71e88eed93813b93fd8c7d39be65deff7dd6110b7b1f071e8f8"
+          ],
+          [
+            "binding",
+            "{\"kind\":30078,\"tags\":[[\"d\",\"oc-lock:device:bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\"],[\"addr\",\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\"],[\"device_id\",\"f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2\"],[\"device_pk\",\"ce8d3ad1ccb633ec7b70c17814a5c76ecd029685050d344745ba05870e587d59\"],[\"alg\",\"x25519\"],[\"binding_sig\",\"AkcwRAIgKovckQpAkpQaEInTumeGQ1svj5ewDEpcAdZgbIT8wR4CIBo/PcbeyYh/W2jabseCZEQgMrkzUScpDu1L5CaDgWJqASECjXUA3UwSaF0fVotMK1BI6FNLhzMZ86japhK0aRMux/c=\"]],\"content\":\"oc-lock:device-bind:v3\\naddress: bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\\ndevice_pk: ce8d3ad1ccb633ec7b70c17814a5c76ecd029685050d344745ba05870e587d59\\nnostr_pk: dd17c1f8fe9d931e2538916a7852d22978cd30661488a2674d8b2f39d9af58ea\\ndevice_id: f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2\\ncreated_at: 2026-10-05T00:00:00.000Z\\n\",\"created_at\":1791158400,\"pubkey\":\"dd17c1f8fe9d931e2538916a7852d22978cd30661488a2674d8b2f39d9af58ea\",\"id\":\"1b49487ea2d09de198150a1b2ffacd20517b20e822ce68e108c6a1a96c683f4a\",\"sig\":\"8ef70102f91cf1426f285659d0dee52cab0a727f4fc978bc131298398d067f3ab8c359977d0113cdd7030a800302eb62082545eadb5bb00b7cc482d86de5b12a\"}"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352\",\"slug\":\"town\",\"founder_address\":\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\",\"founder_inbox_pubkey\":\"5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[\"bc1qha7546x08qwudehuc724np522c2n65m4sseeae\"],\"moderators\":[],\"title\":\"Town\",\"description\":\"\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1791504000,\"supersedes\":\"d8129b7f754c31ae827f4b0cd0a6005ae1cc5c9f75241e6d349680cf6be927de\"}",
+        "pubkey": "dd17c1f8fe9d931e2538916a7852d22978cd30661488a2674d8b2f39d9af58ea",
+        "id": "c0dca583d08aebe0e3121d3ceb2f7d10b24560f7903a06b0bf2d2f545289449c",
+        "sig": "3bd8260426cf5da93127d9a9a2609bf850b6004d28afb429c76d67bfbef768d3498f3e3bc4635d79cd409c2a44c8bc37449e05acd4ec6b9ea803e28a404b8e92"
+      },
+      "B3_by_stolen_K1": {
+        "kind": 30110,
+        "created_at": 1791676800,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:7ed8265d0fa9f23d734899b4547f03d0839ccc7ff701af6db3fe5516ebee461d"
+          ],
+          [
+            "t",
+            "c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352"
+          ],
+          [
+            "s",
+            "ca1a1d5ec071f71e88eed93813b93fd8c7d39be65deff7dd6110b7b1f071e8f8"
+          ],
+          [
+            "descriptor_id",
+            "7ed8265d0fa9f23d734899b4547f03d0839ccc7ff701af6db3fe5516ebee461d"
+          ],
+          [
+            "binding",
+            "{\"kind\":30078,\"tags\":[[\"d\",\"oc-lock:device:bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\"],[\"addr\",\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\"],[\"device_id\",\"f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1\"],[\"device_pk\",\"a4e09292b651c278b9772c569f5fa9bb13d906b46ab68c9df9dc2b4409f8a209\"],[\"alg\",\"x25519\"],[\"binding_sig\",\"AkgwRQIhAIlYxrodAtf2fpe4vaNwrRUZwx6PUHt1dvCn4+Zv2Gj2AiBoypjdVprxbtZGlPVubMuT8batUBb0ATw/UEWey3vW/AEhAo11AN1MEmhdH1aLTCtQSOhTS4czGfOo2qYStGkTLsf3\"]],\"content\":\"oc-lock:device-bind:v3\\naddress: bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\\ndevice_pk: a4e09292b651c278b9772c569f5fa9bb13d906b46ab68c9df9dc2b4409f8a209\\nnostr_pk: 5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\\ndevice_id: f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1\\ncreated_at: 2026-10-01T00:00:00.000Z\\n\",\"created_at\":1790812800,\"pubkey\":\"5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\",\"id\":\"ad25432b4a826a5e85d7366372ecfec0b37d0a14e3c47d6a8d409c5f2abe360f\",\"sig\":\"55db3068e7f8ad51af2012ae67909ad6f4720a8c00a52fa13c0e020a0ed811e942bfcffcbeab61b88159a278986a17109e7f121954c2b2cb1ed472b803166ddd\"}"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352\",\"slug\":\"town\",\"founder_address\":\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\",\"founder_inbox_pubkey\":\"5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[\"bc1qha7546x08qwudehuc724np522c2n65m4sseeae\",\"bc1q0c505nqleaf5yevn6zug588ytlmdvfwncdunxy\"],\"moderators\":[],\"title\":\"Town\",\"description\":\"\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1791676800,\"supersedes\":\"ca1a1d5ec071f71e88eed93813b93fd8c7d39be65deff7dd6110b7b1f071e8f8\"}",
+        "pubkey": "5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33",
+        "id": "d6bfb40c0915abcc9bfc976f8e9bc32c4d16de41e864c608cebd90a23996d7bd",
+        "sig": "e0152ce9a188d684e829b9101473d0c1192600b5a76493e6a006b474d7d0b91c3f6b5f444f2b81ebe13c38485b0769453e09669ec0bb94f923a0bdc93d601028"
+      },
+      "B4_by_T": {
+        "kind": 30110,
+        "created_at": 1791763200,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:a27c9b5d7e5882f55ce85e82dd3efac935673b6e7f2899c72f0e3c2263bdbec5"
+          ],
+          [
+            "t",
+            "c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352"
+          ],
+          [
+            "s",
+            "7ed8265d0fa9f23d734899b4547f03d0839ccc7ff701af6db3fe5516ebee461d"
+          ],
+          [
+            "descriptor_id",
+            "a27c9b5d7e5882f55ce85e82dd3efac935673b6e7f2899c72f0e3c2263bdbec5"
+          ],
+          [
+            "binding",
+            "{\"kind\":30078,\"tags\":[[\"d\",\"oc-lock:device:bc1q0c505nqleaf5yevn6zug588ytlmdvfwncdunxy\"],[\"addr\",\"bc1q0c505nqleaf5yevn6zug588ytlmdvfwncdunxy\"],[\"device_id\",\"d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8\"],[\"device_pk\",\"31d4ab6aceec961137917037936e60716fac573afe94d9da84a8020448dfc112\"],[\"alg\",\"x25519\"],[\"binding_sig\",\"AkgwRQIhAPizWozdD2XxXxu6K+rd373KoI9MF3ZvoEuJ1/NfTLpQAiBGzmiabOcoR06eU7T0+D6oOTggtyc6rh2hH0A63YbpbAEhAhY0W/gxFkoDdY6upei2b+4r53ELjxkO6IAkkDKintZu\"]],\"content\":\"oc-lock:device-bind:v3\\naddress: bc1q0c505nqleaf5yevn6zug588ytlmdvfwncdunxy\\ndevice_pk: 31d4ab6aceec961137917037936e60716fac573afe94d9da84a8020448dfc112\\nnostr_pk: e4b0a54749be74b4e2f1ae63a895493599faf5d2048dbe4696fb7ef0f0f560d5\\ndevice_id: d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8\\ncreated_at: 2026-10-01T00:00:00.000Z\\n\",\"created_at\":1790812800,\"pubkey\":\"e4b0a54749be74b4e2f1ae63a895493599faf5d2048dbe4696fb7ef0f0f560d5\",\"id\":\"c44a97d23a680be89e8e64440cb1f11f664f3a6bc192154d67312b8ba71a4f8b\",\"sig\":\"2d9cd4bf2fddeb4ca026846bf16910ad91b64c2dd8ef1689ab386cf2d3b0c33fbbf98c3ef2293517951ef5023dd6fb81105336e29965f9988b90bd0d05e7c3dc\"}"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352\",\"slug\":\"town\",\"founder_address\":\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\",\"founder_inbox_pubkey\":\"5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[\"bc1qha7546x08qwudehuc724np522c2n65m4sseeae\",\"bc1q0c505nqleaf5yevn6zug588ytlmdvfwncdunxy\"],\"moderators\":[],\"title\":\"Town\",\"description\":\"by T\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1791763200,\"supersedes\":\"7ed8265d0fa9f23d734899b4547f03d0839ccc7ff701af6db3fe5516ebee461d\"}",
+        "pubkey": "e4b0a54749be74b4e2f1ae63a895493599faf5d2048dbe4696fb7ef0f0f560d5",
+        "id": "4dfbc7714bc8c7703f098468f4300fd53b3ca48e121b819ab3d41e7b22ac0704",
+        "sig": "1a47272fecc03b9dc874177b1e583d6a88b0e806a3c7ff7155a338154fc80878c8e07de17b9c21bfc8cb25f7bfc9ad64df29cd2f5ca04eb35ae4166d60361cea"
+      },
+      "F3_fork_by_F_K2": {
+        "kind": 30110,
+        "created_at": 1791849600,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:7afb7e27102681e18183b26d12cb90363234077fca9fe144bb9c8c73b19985a2"
+          ],
+          [
+            "t",
+            "c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352"
+          ],
+          [
+            "s",
+            "ca1a1d5ec071f71e88eed93813b93fd8c7d39be65deff7dd6110b7b1f071e8f8"
+          ],
+          [
+            "descriptor_id",
+            "7afb7e27102681e18183b26d12cb90363234077fca9fe144bb9c8c73b19985a2"
+          ],
+          [
+            "binding",
+            "{\"kind\":30078,\"tags\":[[\"d\",\"oc-lock:device:bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\"],[\"addr\",\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\"],[\"device_id\",\"f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2\"],[\"device_pk\",\"ce8d3ad1ccb633ec7b70c17814a5c76ecd029685050d344745ba05870e587d59\"],[\"alg\",\"x25519\"],[\"binding_sig\",\"AkcwRAIgKovckQpAkpQaEInTumeGQ1svj5ewDEpcAdZgbIT8wR4CIBo/PcbeyYh/W2jabseCZEQgMrkzUScpDu1L5CaDgWJqASECjXUA3UwSaF0fVotMK1BI6FNLhzMZ86japhK0aRMux/c=\"]],\"content\":\"oc-lock:device-bind:v3\\naddress: bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\\ndevice_pk: ce8d3ad1ccb633ec7b70c17814a5c76ecd029685050d344745ba05870e587d59\\nnostr_pk: dd17c1f8fe9d931e2538916a7852d22978cd30661488a2674d8b2f39d9af58ea\\ndevice_id: f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2\\ncreated_at: 2026-10-05T00:00:00.000Z\\n\",\"created_at\":1791158400,\"pubkey\":\"dd17c1f8fe9d931e2538916a7852d22978cd30661488a2674d8b2f39d9af58ea\",\"id\":\"1b49487ea2d09de198150a1b2ffacd20517b20e822ce68e108c6a1a96c683f4a\",\"sig\":\"8ef70102f91cf1426f285659d0dee52cab0a727f4fc978bc131298398d067f3ab8c359977d0113cdd7030a800302eb62082545eadb5bb00b7cc482d86de5b12a\"}"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352\",\"slug\":\"town\",\"founder_address\":\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\",\"founder_inbox_pubkey\":\"5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[\"bc1qha7546x08qwudehuc724np522c2n65m4sseeae\"],\"moderators\":[],\"title\":\"Town\",\"description\":\"recovered\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1791849600,\"supersedes\":\"ca1a1d5ec071f71e88eed93813b93fd8c7d39be65deff7dd6110b7b1f071e8f8\"}",
+        "pubkey": "dd17c1f8fe9d931e2538916a7852d22978cd30661488a2674d8b2f39d9af58ea",
+        "id": "3eb4df2384abd70d96f22dca6afbea0bbac22cde49f8025c0ec78fe2f8f2942e",
+        "sig": "7b8ac475f17bf57e36929c2406c05c67171cf9408f6a43e56590888121e56251bf723443f6a06555f2c5221566f77212ba258f98d6cec9b0f20c9d856719aa99"
+      },
+      "SG_by_F_KF0": {
+        "kind": 30110,
+        "created_at": 1790899200,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:5d07184a8f82aba90a914e47895505354177a0993d7c3dbd4db64173b474017c"
+          ],
+          [
+            "t",
+            "40c82f65af51ccbcf5e89c9f4d8c6cdfde1a9d2c46a2f1cc3dbbfa3d3a9edd9e"
+          ],
+          [
+            "descriptor_id",
+            "5d07184a8f82aba90a914e47895505354177a0993d7c3dbd4db64173b474017c"
+          ],
+          [
+            "binding",
+            "{\"kind\":30078,\"tags\":[[\"d\",\"oc-lock:device:bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\"],[\"addr\",\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\"],[\"device_id\",\"f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0\"],[\"device_pk\",\"73b2d8b76aa9b53660032bc8f5d8bee3a3ae4e3b3a7fd49ade81f7347a34aa68\"],[\"alg\",\"x25519\"],[\"binding_sig\",\"AkgwRQIhAO34njJBK8cnyET8t2iJKkFbZppqH4JmMfyJa9kFxBhuAiBAm4SwIfO8Wu81cY9omoQnC9uFoJx8zp3e5lzLpcpouwEhAo11AN1MEmhdH1aLTCtQSOhTS4czGfOo2qYStGkTLsf3\"]],\"content\":\"oc-lock:device-bind:v3\\naddress: bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\\ndevice_pk: 73b2d8b76aa9b53660032bc8f5d8bee3a3ae4e3b3a7fd49ade81f7347a34aa68\\nnostr_pk: d1f4c5f0e3b0006114b716d6e6694df26aa76c53f59b10dd6cf701ef4d4daa22\\ndevice_id: f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0f0\\ncreated_at: 2026-10-01T00:00:00.000Z\\n\",\"created_at\":1790812800,\"pubkey\":\"d1f4c5f0e3b0006114b716d6e6694df26aa76c53f59b10dd6cf701ef4d4daa22\",\"id\":\"7605e0deb18539a61354e399f00dabbe2b09773ff7e7fbb14e6c49584ce35f71\",\"sig\":\"c14226b82c331e89c72ed72f2870e9855b81b0542a9984739a40ab953fee86772d9f52c8eaac2171de7b58bbcadb9434ffb4ae2dfcb24721e2af6a3f6d80ab8c\"}"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"40c82f65af51ccbcf5e89c9f4d8c6cdfde1a9d2c46a2f1cc3dbbfa3d3a9edd9e\",\"slug\":\"square\",\"founder_address\":\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\",\"founder_inbox_pubkey\":\"d1f4c5f0e3b0006114b716d6e6694df26aa76c53f59b10dd6cf701ef4d4daa22\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[\"bc1qha7546x08qwudehuc724np522c2n65m4sseeae\"],\"moderators\":[],\"title\":\"Town\",\"description\":\"\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1790899200,\"supersedes\":null}",
+        "pubkey": "d1f4c5f0e3b0006114b716d6e6694df26aa76c53f59b10dd6cf701ef4d4daa22",
+        "id": "7edac067d841575ab812d77801b6ee9d97e5f7427916eb755225a72b20741c8c",
+        "sig": "14f6b41aac6a2c93dc54556dc6b732c470031fab797e6d389c54f53418983126d5d89ccbb51fca8fdd806887f72d5e4b80ee4c296f7948ea7abdc5e2c2aded39"
+      },
+      "SV2_by_K1": {
+        "kind": 30110,
+        "created_at": 1790985600,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:233ab633ccd9cc7cb1ca29f651cbc83e1677e07dddfd9fb1ce619c5893af5716"
+          ],
+          [
+            "t",
+            "40c82f65af51ccbcf5e89c9f4d8c6cdfde1a9d2c46a2f1cc3dbbfa3d3a9edd9e"
+          ],
+          [
+            "s",
+            "5d07184a8f82aba90a914e47895505354177a0993d7c3dbd4db64173b474017c"
+          ],
+          [
+            "descriptor_id",
+            "233ab633ccd9cc7cb1ca29f651cbc83e1677e07dddfd9fb1ce619c5893af5716"
+          ],
+          [
+            "binding",
+            "{\"kind\":30078,\"tags\":[[\"d\",\"oc-lock:device:bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\"],[\"addr\",\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\"],[\"device_id\",\"f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1\"],[\"device_pk\",\"a4e09292b651c278b9772c569f5fa9bb13d906b46ab68c9df9dc2b4409f8a209\"],[\"alg\",\"x25519\"],[\"binding_sig\",\"AkgwRQIhAIlYxrodAtf2fpe4vaNwrRUZwx6PUHt1dvCn4+Zv2Gj2AiBoypjdVprxbtZGlPVubMuT8batUBb0ATw/UEWey3vW/AEhAo11AN1MEmhdH1aLTCtQSOhTS4czGfOo2qYStGkTLsf3\"]],\"content\":\"oc-lock:device-bind:v3\\naddress: bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\\ndevice_pk: a4e09292b651c278b9772c569f5fa9bb13d906b46ab68c9df9dc2b4409f8a209\\nnostr_pk: 5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\\ndevice_id: f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1\\ncreated_at: 2026-10-01T00:00:00.000Z\\n\",\"created_at\":1790812800,\"pubkey\":\"5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\",\"id\":\"ad25432b4a826a5e85d7366372ecfec0b37d0a14e3c47d6a8d409c5f2abe360f\",\"sig\":\"55db3068e7f8ad51af2012ae67909ad6f4720a8c00a52fa13c0e020a0ed811e942bfcffcbeab61b88159a278986a17109e7f121954c2b2cb1ed472b803166ddd\"}"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"40c82f65af51ccbcf5e89c9f4d8c6cdfde1a9d2c46a2f1cc3dbbfa3d3a9edd9e\",\"slug\":\"square\",\"founder_address\":\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\",\"founder_inbox_pubkey\":\"d1f4c5f0e3b0006114b716d6e6694df26aa76c53f59b10dd6cf701ef4d4daa22\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[\"bc1qha7546x08qwudehuc724np522c2n65m4sseeae\"],\"moderators\":[],\"title\":\"Town\",\"description\":\"v2\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1790985600,\"supersedes\":\"5d07184a8f82aba90a914e47895505354177a0993d7c3dbd4db64173b474017c\"}",
+        "pubkey": "5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33",
+        "id": "88cb26c6850ac0587741301845373285c2b98005c9109fd06f9e4b04b322a194",
+        "sig": "f42c52681e8370b480d6236b6f3d9350e1a0bdeb9ad21b8f6d952b580dfe0d13e641ddea47a6117ff80a032faf856e877af2388996819936444d5216030b9bfb"
+      },
+      "SV3_by_K1": {
+        "kind": 30110,
+        "created_at": 1791072000,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:6a612db7f9d5e8eafc5e02448ff41a3abeb6d8e3ecafb04ab652fe23c636a0b9"
+          ],
+          [
+            "t",
+            "40c82f65af51ccbcf5e89c9f4d8c6cdfde1a9d2c46a2f1cc3dbbfa3d3a9edd9e"
+          ],
+          [
+            "s",
+            "233ab633ccd9cc7cb1ca29f651cbc83e1677e07dddfd9fb1ce619c5893af5716"
+          ],
+          [
+            "descriptor_id",
+            "6a612db7f9d5e8eafc5e02448ff41a3abeb6d8e3ecafb04ab652fe23c636a0b9"
+          ],
+          [
+            "binding",
+            "{\"kind\":30078,\"tags\":[[\"d\",\"oc-lock:device:bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\"],[\"addr\",\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\"],[\"device_id\",\"f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1\"],[\"device_pk\",\"a4e09292b651c278b9772c569f5fa9bb13d906b46ab68c9df9dc2b4409f8a209\"],[\"alg\",\"x25519\"],[\"binding_sig\",\"AkgwRQIhAIlYxrodAtf2fpe4vaNwrRUZwx6PUHt1dvCn4+Zv2Gj2AiBoypjdVprxbtZGlPVubMuT8batUBb0ATw/UEWey3vW/AEhAo11AN1MEmhdH1aLTCtQSOhTS4czGfOo2qYStGkTLsf3\"]],\"content\":\"oc-lock:device-bind:v3\\naddress: bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\\ndevice_pk: a4e09292b651c278b9772c569f5fa9bb13d906b46ab68c9df9dc2b4409f8a209\\nnostr_pk: 5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\\ndevice_id: f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1\\ncreated_at: 2026-10-01T00:00:00.000Z\\n\",\"created_at\":1790812800,\"pubkey\":\"5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\",\"id\":\"ad25432b4a826a5e85d7366372ecfec0b37d0a14e3c47d6a8d409c5f2abe360f\",\"sig\":\"55db3068e7f8ad51af2012ae67909ad6f4720a8c00a52fa13c0e020a0ed811e942bfcffcbeab61b88159a278986a17109e7f121954c2b2cb1ed472b803166ddd\"}"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"40c82f65af51ccbcf5e89c9f4d8c6cdfde1a9d2c46a2f1cc3dbbfa3d3a9edd9e\",\"slug\":\"square\",\"founder_address\":\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\",\"founder_inbox_pubkey\":\"d1f4c5f0e3b0006114b716d6e6694df26aa76c53f59b10dd6cf701ef4d4daa22\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[\"bc1qha7546x08qwudehuc724np522c2n65m4sseeae\"],\"moderators\":[],\"title\":\"Town\",\"description\":\"v3\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1791072000,\"supersedes\":\"233ab633ccd9cc7cb1ca29f651cbc83e1677e07dddfd9fb1ce619c5893af5716\"}",
+        "pubkey": "5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33",
+        "id": "691b988a6cf0147bd3febeb451570560617223d3c5cbe06f7b5f2971e5a6bcc6",
+        "sig": "178c1e9719717577023724dcf31217c848dd53dfca7852008108e235795e3965ca3d7634a78907833a67aec51285ad26098718131df8d568751115666eb75768"
+      },
+      "SV2_copy_by_K2": {
+        "kind": 30110,
+        "created_at": 1790985600,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:233ab633ccd9cc7cb1ca29f651cbc83e1677e07dddfd9fb1ce619c5893af5716"
+          ],
+          [
+            "t",
+            "40c82f65af51ccbcf5e89c9f4d8c6cdfde1a9d2c46a2f1cc3dbbfa3d3a9edd9e"
+          ],
+          [
+            "s",
+            "5d07184a8f82aba90a914e47895505354177a0993d7c3dbd4db64173b474017c"
+          ],
+          [
+            "descriptor_id",
+            "233ab633ccd9cc7cb1ca29f651cbc83e1677e07dddfd9fb1ce619c5893af5716"
+          ],
+          [
+            "binding",
+            "{\"kind\":30078,\"tags\":[[\"d\",\"oc-lock:device:bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\"],[\"addr\",\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\"],[\"device_id\",\"f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2\"],[\"device_pk\",\"ce8d3ad1ccb633ec7b70c17814a5c76ecd029685050d344745ba05870e587d59\"],[\"alg\",\"x25519\"],[\"binding_sig\",\"AkcwRAIgKovckQpAkpQaEInTumeGQ1svj5ewDEpcAdZgbIT8wR4CIBo/PcbeyYh/W2jabseCZEQgMrkzUScpDu1L5CaDgWJqASECjXUA3UwSaF0fVotMK1BI6FNLhzMZ86japhK0aRMux/c=\"]],\"content\":\"oc-lock:device-bind:v3\\naddress: bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\\ndevice_pk: ce8d3ad1ccb633ec7b70c17814a5c76ecd029685050d344745ba05870e587d59\\nnostr_pk: dd17c1f8fe9d931e2538916a7852d22978cd30661488a2674d8b2f39d9af58ea\\ndevice_id: f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2\\ncreated_at: 2026-10-05T00:00:00.000Z\\n\",\"created_at\":1791158400,\"pubkey\":\"dd17c1f8fe9d931e2538916a7852d22978cd30661488a2674d8b2f39d9af58ea\",\"id\":\"1b49487ea2d09de198150a1b2ffacd20517b20e822ce68e108c6a1a96c683f4a\",\"sig\":\"8ef70102f91cf1426f285659d0dee52cab0a727f4fc978bc131298398d067f3ab8c359977d0113cdd7030a800302eb62082545eadb5bb00b7cc482d86de5b12a\"}"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"40c82f65af51ccbcf5e89c9f4d8c6cdfde1a9d2c46a2f1cc3dbbfa3d3a9edd9e\",\"slug\":\"square\",\"founder_address\":\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\",\"founder_inbox_pubkey\":\"d1f4c5f0e3b0006114b716d6e6694df26aa76c53f59b10dd6cf701ef4d4daa22\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[\"bc1qha7546x08qwudehuc724np522c2n65m4sseeae\"],\"moderators\":[],\"title\":\"Town\",\"description\":\"v2\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1790985600,\"supersedes\":\"5d07184a8f82aba90a914e47895505354177a0993d7c3dbd4db64173b474017c\"}",
+        "pubkey": "dd17c1f8fe9d931e2538916a7852d22978cd30661488a2674d8b2f39d9af58ea",
+        "id": "27bf40837626ae53ab8d03f7ee016ac21161744bbe86af7cf58bb706d2f3800c",
+        "sig": "a8ccb4e71c0177991f2f669a7e8698fd51605e937d81f77f5b547dcbbc87c9215c58ed5c7938fc581b9f53439b8a3beee2f4b1b13ccdd26a9a45e1ea48565cc3"
+      },
+      "SV3_copy_by_K2": {
+        "kind": 30110,
+        "created_at": 1791072000,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:6a612db7f9d5e8eafc5e02448ff41a3abeb6d8e3ecafb04ab652fe23c636a0b9"
+          ],
+          [
+            "t",
+            "40c82f65af51ccbcf5e89c9f4d8c6cdfde1a9d2c46a2f1cc3dbbfa3d3a9edd9e"
+          ],
+          [
+            "s",
+            "233ab633ccd9cc7cb1ca29f651cbc83e1677e07dddfd9fb1ce619c5893af5716"
+          ],
+          [
+            "descriptor_id",
+            "6a612db7f9d5e8eafc5e02448ff41a3abeb6d8e3ecafb04ab652fe23c636a0b9"
+          ],
+          [
+            "binding",
+            "{\"kind\":30078,\"tags\":[[\"d\",\"oc-lock:device:bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\"],[\"addr\",\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\"],[\"device_id\",\"f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2\"],[\"device_pk\",\"ce8d3ad1ccb633ec7b70c17814a5c76ecd029685050d344745ba05870e587d59\"],[\"alg\",\"x25519\"],[\"binding_sig\",\"AkcwRAIgKovckQpAkpQaEInTumeGQ1svj5ewDEpcAdZgbIT8wR4CIBo/PcbeyYh/W2jabseCZEQgMrkzUScpDu1L5CaDgWJqASECjXUA3UwSaF0fVotMK1BI6FNLhzMZ86japhK0aRMux/c=\"]],\"content\":\"oc-lock:device-bind:v3\\naddress: bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\\ndevice_pk: ce8d3ad1ccb633ec7b70c17814a5c76ecd029685050d344745ba05870e587d59\\nnostr_pk: dd17c1f8fe9d931e2538916a7852d22978cd30661488a2674d8b2f39d9af58ea\\ndevice_id: f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2\\ncreated_at: 2026-10-05T00:00:00.000Z\\n\",\"created_at\":1791158400,\"pubkey\":\"dd17c1f8fe9d931e2538916a7852d22978cd30661488a2674d8b2f39d9af58ea\",\"id\":\"1b49487ea2d09de198150a1b2ffacd20517b20e822ce68e108c6a1a96c683f4a\",\"sig\":\"8ef70102f91cf1426f285659d0dee52cab0a727f4fc978bc131298398d067f3ab8c359977d0113cdd7030a800302eb62082545eadb5bb00b7cc482d86de5b12a\"}"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"40c82f65af51ccbcf5e89c9f4d8c6cdfde1a9d2c46a2f1cc3dbbfa3d3a9edd9e\",\"slug\":\"square\",\"founder_address\":\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\",\"founder_inbox_pubkey\":\"d1f4c5f0e3b0006114b716d6e6694df26aa76c53f59b10dd6cf701ef4d4daa22\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[\"bc1qha7546x08qwudehuc724np522c2n65m4sseeae\"],\"moderators\":[],\"title\":\"Town\",\"description\":\"v3\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1791072000,\"supersedes\":\"233ab633ccd9cc7cb1ca29f651cbc83e1677e07dddfd9fb1ce619c5893af5716\"}",
+        "pubkey": "dd17c1f8fe9d931e2538916a7852d22978cd30661488a2674d8b2f39d9af58ea",
+        "id": "b770245fba7e16c85153881bdbcfaf9e192529aa7e7a23ff4008b5cc74e5ee51",
+        "sig": "fbf976a16630ffed57fd241c56bb784bc950f4c5e1f8e7e2707a008967a416926b9fc52eae970055379bae55ac1e1168460038899858527b2bd90311557f1f65"
+      },
+      "SV4_by_K2": {
+        "kind": 30110,
+        "created_at": 1791936000,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:5a44fbcf7da327846f00d264a90d79743261beac6ce6ea78a9e9c4859989e02f"
+          ],
+          [
+            "t",
+            "40c82f65af51ccbcf5e89c9f4d8c6cdfde1a9d2c46a2f1cc3dbbfa3d3a9edd9e"
+          ],
+          [
+            "s",
+            "6a612db7f9d5e8eafc5e02448ff41a3abeb6d8e3ecafb04ab652fe23c636a0b9"
+          ],
+          [
+            "descriptor_id",
+            "5a44fbcf7da327846f00d264a90d79743261beac6ce6ea78a9e9c4859989e02f"
+          ],
+          [
+            "binding",
+            "{\"kind\":30078,\"tags\":[[\"d\",\"oc-lock:device:bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\"],[\"addr\",\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\"],[\"device_id\",\"f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2\"],[\"device_pk\",\"ce8d3ad1ccb633ec7b70c17814a5c76ecd029685050d344745ba05870e587d59\"],[\"alg\",\"x25519\"],[\"binding_sig\",\"AkcwRAIgKovckQpAkpQaEInTumeGQ1svj5ewDEpcAdZgbIT8wR4CIBo/PcbeyYh/W2jabseCZEQgMrkzUScpDu1L5CaDgWJqASECjXUA3UwSaF0fVotMK1BI6FNLhzMZ86japhK0aRMux/c=\"]],\"content\":\"oc-lock:device-bind:v3\\naddress: bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\\ndevice_pk: ce8d3ad1ccb633ec7b70c17814a5c76ecd029685050d344745ba05870e587d59\\nnostr_pk: dd17c1f8fe9d931e2538916a7852d22978cd30661488a2674d8b2f39d9af58ea\\ndevice_id: f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2\\ncreated_at: 2026-10-05T00:00:00.000Z\\n\",\"created_at\":1791158400,\"pubkey\":\"dd17c1f8fe9d931e2538916a7852d22978cd30661488a2674d8b2f39d9af58ea\",\"id\":\"1b49487ea2d09de198150a1b2ffacd20517b20e822ce68e108c6a1a96c683f4a\",\"sig\":\"8ef70102f91cf1426f285659d0dee52cab0a727f4fc978bc131298398d067f3ab8c359977d0113cdd7030a800302eb62082545eadb5bb00b7cc482d86de5b12a\"}"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"40c82f65af51ccbcf5e89c9f4d8c6cdfde1a9d2c46a2f1cc3dbbfa3d3a9edd9e\",\"slug\":\"square\",\"founder_address\":\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\",\"founder_inbox_pubkey\":\"d1f4c5f0e3b0006114b716d6e6694df26aa76c53f59b10dd6cf701ef4d4daa22\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[\"bc1qha7546x08qwudehuc724np522c2n65m4sseeae\"],\"moderators\":[],\"title\":\"Town\",\"description\":\"v3\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1791936000,\"supersedes\":\"6a612db7f9d5e8eafc5e02448ff41a3abeb6d8e3ecafb04ab652fe23c636a0b9\"}",
+        "pubkey": "dd17c1f8fe9d931e2538916a7852d22978cd30661488a2674d8b2f39d9af58ea",
+        "id": "d93600b8cb5b548cba19cb0865631191952876f9b75e250f7ee0179a499c1275",
+        "sig": "b497b443924e0cbf9cef4b574bc9c5e2d2ac0d85ede644438c7caf4ed681849d64ead7cdce29b0c74d0603508d4177b6b3b30ab2a52ec5fdd574929d2ee688d6"
+      },
+      "ST1_by_stolen_K1": {
+        "kind": 30110,
+        "created_at": 1791676800,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:6f55495014d541f389eeeac517e1b0638f4998175e406e1064cfda94023ebb34"
+          ],
+          [
+            "t",
+            "40c82f65af51ccbcf5e89c9f4d8c6cdfde1a9d2c46a2f1cc3dbbfa3d3a9edd9e"
+          ],
+          [
+            "s",
+            "5d07184a8f82aba90a914e47895505354177a0993d7c3dbd4db64173b474017c"
+          ],
+          [
+            "descriptor_id",
+            "6f55495014d541f389eeeac517e1b0638f4998175e406e1064cfda94023ebb34"
+          ],
+          [
+            "binding",
+            "{\"kind\":30078,\"tags\":[[\"d\",\"oc-lock:device:bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\"],[\"addr\",\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\"],[\"device_id\",\"f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1\"],[\"device_pk\",\"a4e09292b651c278b9772c569f5fa9bb13d906b46ab68c9df9dc2b4409f8a209\"],[\"alg\",\"x25519\"],[\"binding_sig\",\"AkgwRQIhAIlYxrodAtf2fpe4vaNwrRUZwx6PUHt1dvCn4+Zv2Gj2AiBoypjdVprxbtZGlPVubMuT8batUBb0ATw/UEWey3vW/AEhAo11AN1MEmhdH1aLTCtQSOhTS4czGfOo2qYStGkTLsf3\"]],\"content\":\"oc-lock:device-bind:v3\\naddress: bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\\ndevice_pk: a4e09292b651c278b9772c569f5fa9bb13d906b46ab68c9df9dc2b4409f8a209\\nnostr_pk: 5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\\ndevice_id: f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1\\ncreated_at: 2026-10-01T00:00:00.000Z\\n\",\"created_at\":1790812800,\"pubkey\":\"5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\",\"id\":\"ad25432b4a826a5e85d7366372ecfec0b37d0a14e3c47d6a8d409c5f2abe360f\",\"sig\":\"55db3068e7f8ad51af2012ae67909ad6f4720a8c00a52fa13c0e020a0ed811e942bfcffcbeab61b88159a278986a17109e7f121954c2b2cb1ed472b803166ddd\"}"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"40c82f65af51ccbcf5e89c9f4d8c6cdfde1a9d2c46a2f1cc3dbbfa3d3a9edd9e\",\"slug\":\"square\",\"founder_address\":\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\",\"founder_inbox_pubkey\":\"d1f4c5f0e3b0006114b716d6e6694df26aa76c53f59b10dd6cf701ef4d4daa22\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[\"bc1qha7546x08qwudehuc724np522c2n65m4sseeae\",\"bc1q0c505nqleaf5yevn6zug588ytlmdvfwncdunxy\"],\"moderators\":[],\"title\":\"Town\",\"description\":\"taken\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1791676800,\"supersedes\":\"5d07184a8f82aba90a914e47895505354177a0993d7c3dbd4db64173b474017c\"}",
+        "pubkey": "5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33",
+        "id": "068a9964299051bb91c67f4a836d1d25d5f7d9fb2e0bd6c6ce717552d9518213",
+        "sig": "97277b53db9a81b27d38478c8536ba590148f312e5f5160c63bdaeb77bc90f33ffb85617b4f6a66440b8f7f72254e6bf45d88ccc7610a5039ab633c143c4bacd"
+      },
+      "ST2_by_T": {
+        "kind": 30110,
+        "created_at": 1791763200,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:fc19b22be834c7b72d644d50b4cff803d991011323a908e5ff3176de197c1580"
+          ],
+          [
+            "t",
+            "40c82f65af51ccbcf5e89c9f4d8c6cdfde1a9d2c46a2f1cc3dbbfa3d3a9edd9e"
+          ],
+          [
+            "s",
+            "6f55495014d541f389eeeac517e1b0638f4998175e406e1064cfda94023ebb34"
+          ],
+          [
+            "descriptor_id",
+            "fc19b22be834c7b72d644d50b4cff803d991011323a908e5ff3176de197c1580"
+          ],
+          [
+            "binding",
+            "{\"kind\":30078,\"tags\":[[\"d\",\"oc-lock:device:bc1q0c505nqleaf5yevn6zug588ytlmdvfwncdunxy\"],[\"addr\",\"bc1q0c505nqleaf5yevn6zug588ytlmdvfwncdunxy\"],[\"device_id\",\"d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8\"],[\"device_pk\",\"31d4ab6aceec961137917037936e60716fac573afe94d9da84a8020448dfc112\"],[\"alg\",\"x25519\"],[\"binding_sig\",\"AkgwRQIhAPizWozdD2XxXxu6K+rd373KoI9MF3ZvoEuJ1/NfTLpQAiBGzmiabOcoR06eU7T0+D6oOTggtyc6rh2hH0A63YbpbAEhAhY0W/gxFkoDdY6upei2b+4r53ELjxkO6IAkkDKintZu\"]],\"content\":\"oc-lock:device-bind:v3\\naddress: bc1q0c505nqleaf5yevn6zug588ytlmdvfwncdunxy\\ndevice_pk: 31d4ab6aceec961137917037936e60716fac573afe94d9da84a8020448dfc112\\nnostr_pk: e4b0a54749be74b4e2f1ae63a895493599faf5d2048dbe4696fb7ef0f0f560d5\\ndevice_id: d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8\\ncreated_at: 2026-10-01T00:00:00.000Z\\n\",\"created_at\":1790812800,\"pubkey\":\"e4b0a54749be74b4e2f1ae63a895493599faf5d2048dbe4696fb7ef0f0f560d5\",\"id\":\"c44a97d23a680be89e8e64440cb1f11f664f3a6bc192154d67312b8ba71a4f8b\",\"sig\":\"2d9cd4bf2fddeb4ca026846bf16910ad91b64c2dd8ef1689ab386cf2d3b0c33fbbf98c3ef2293517951ef5023dd6fb81105336e29965f9988b90bd0d05e7c3dc\"}"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"40c82f65af51ccbcf5e89c9f4d8c6cdfde1a9d2c46a2f1cc3dbbfa3d3a9edd9e\",\"slug\":\"square\",\"founder_address\":\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\",\"founder_inbox_pubkey\":\"d1f4c5f0e3b0006114b716d6e6694df26aa76c53f59b10dd6cf701ef4d4daa22\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[\"bc1qha7546x08qwudehuc724np522c2n65m4sseeae\",\"bc1q0c505nqleaf5yevn6zug588ytlmdvfwncdunxy\"],\"moderators\":[],\"title\":\"Town\",\"description\":\"taken 2\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1791763200,\"supersedes\":\"6f55495014d541f389eeeac517e1b0638f4998175e406e1064cfda94023ebb34\"}",
+        "pubkey": "e4b0a54749be74b4e2f1ae63a895493599faf5d2048dbe4696fb7ef0f0f560d5",
+        "id": "33b4efb8f710b61d7cf48a5dab7e7511d25297354de85927a1ee9e53dd128f9e",
+        "sig": "0f5b4114cdd9adbaf97bf5888e4a98cbfe3c68183c5239979645c360e6af6fb010bdab2fbf0df7b604d86fb6841e84d254ff25947240dbab4b55af93a4cd02da"
+      },
+      "ST3_by_T": {
+        "kind": 30110,
+        "created_at": 1791849600,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:aa767eb8f1c06a5949b474de946fb271e38b3eadbd2b9ed41934e96fdde3877f"
+          ],
+          [
+            "t",
+            "40c82f65af51ccbcf5e89c9f4d8c6cdfde1a9d2c46a2f1cc3dbbfa3d3a9edd9e"
+          ],
+          [
+            "s",
+            "fc19b22be834c7b72d644d50b4cff803d991011323a908e5ff3176de197c1580"
+          ],
+          [
+            "descriptor_id",
+            "aa767eb8f1c06a5949b474de946fb271e38b3eadbd2b9ed41934e96fdde3877f"
+          ],
+          [
+            "binding",
+            "{\"kind\":30078,\"tags\":[[\"d\",\"oc-lock:device:bc1q0c505nqleaf5yevn6zug588ytlmdvfwncdunxy\"],[\"addr\",\"bc1q0c505nqleaf5yevn6zug588ytlmdvfwncdunxy\"],[\"device_id\",\"d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8\"],[\"device_pk\",\"31d4ab6aceec961137917037936e60716fac573afe94d9da84a8020448dfc112\"],[\"alg\",\"x25519\"],[\"binding_sig\",\"AkgwRQIhAPizWozdD2XxXxu6K+rd373KoI9MF3ZvoEuJ1/NfTLpQAiBGzmiabOcoR06eU7T0+D6oOTggtyc6rh2hH0A63YbpbAEhAhY0W/gxFkoDdY6upei2b+4r53ELjxkO6IAkkDKintZu\"]],\"content\":\"oc-lock:device-bind:v3\\naddress: bc1q0c505nqleaf5yevn6zug588ytlmdvfwncdunxy\\ndevice_pk: 31d4ab6aceec961137917037936e60716fac573afe94d9da84a8020448dfc112\\nnostr_pk: e4b0a54749be74b4e2f1ae63a895493599faf5d2048dbe4696fb7ef0f0f560d5\\ndevice_id: d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8\\ncreated_at: 2026-10-01T00:00:00.000Z\\n\",\"created_at\":1790812800,\"pubkey\":\"e4b0a54749be74b4e2f1ae63a895493599faf5d2048dbe4696fb7ef0f0f560d5\",\"id\":\"c44a97d23a680be89e8e64440cb1f11f664f3a6bc192154d67312b8ba71a4f8b\",\"sig\":\"2d9cd4bf2fddeb4ca026846bf16910ad91b64c2dd8ef1689ab386cf2d3b0c33fbbf98c3ef2293517951ef5023dd6fb81105336e29965f9988b90bd0d05e7c3dc\"}"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"40c82f65af51ccbcf5e89c9f4d8c6cdfde1a9d2c46a2f1cc3dbbfa3d3a9edd9e\",\"slug\":\"square\",\"founder_address\":\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\",\"founder_inbox_pubkey\":\"d1f4c5f0e3b0006114b716d6e6694df26aa76c53f59b10dd6cf701ef4d4daa22\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[\"bc1qha7546x08qwudehuc724np522c2n65m4sseeae\",\"bc1q0c505nqleaf5yevn6zug588ytlmdvfwncdunxy\"],\"moderators\":[],\"title\":\"Town\",\"description\":\"taken 3\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1791849600,\"supersedes\":\"fc19b22be834c7b72d644d50b4cff803d991011323a908e5ff3176de197c1580\"}",
+        "pubkey": "e4b0a54749be74b4e2f1ae63a895493599faf5d2048dbe4696fb7ef0f0f560d5",
+        "id": "de656bb08fe452efa067700a2ace188195c8c47640d9fe943495d8cb7a2bea98",
+        "sig": "0cf904c32f855e7724b031e43574cbff883a07935bfa7afa16a760515327d798198c57c87634890ae1e77f802af7dc45e905da2b51a055727ee69104fc575d6b"
+      },
+      "ST4_by_T": {
+        "kind": 30110,
+        "created_at": 1792022400,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:377cc8b2a10741318f05ceb2b1edecd89bc8d1476008a5515e07ddc07ba42296"
+          ],
+          [
+            "t",
+            "40c82f65af51ccbcf5e89c9f4d8c6cdfde1a9d2c46a2f1cc3dbbfa3d3a9edd9e"
+          ],
+          [
+            "s",
+            "aa767eb8f1c06a5949b474de946fb271e38b3eadbd2b9ed41934e96fdde3877f"
+          ],
+          [
+            "descriptor_id",
+            "377cc8b2a10741318f05ceb2b1edecd89bc8d1476008a5515e07ddc07ba42296"
+          ],
+          [
+            "binding",
+            "{\"kind\":30078,\"tags\":[[\"d\",\"oc-lock:device:bc1q0c505nqleaf5yevn6zug588ytlmdvfwncdunxy\"],[\"addr\",\"bc1q0c505nqleaf5yevn6zug588ytlmdvfwncdunxy\"],[\"device_id\",\"d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8\"],[\"device_pk\",\"31d4ab6aceec961137917037936e60716fac573afe94d9da84a8020448dfc112\"],[\"alg\",\"x25519\"],[\"binding_sig\",\"AkgwRQIhAPizWozdD2XxXxu6K+rd373KoI9MF3ZvoEuJ1/NfTLpQAiBGzmiabOcoR06eU7T0+D6oOTggtyc6rh2hH0A63YbpbAEhAhY0W/gxFkoDdY6upei2b+4r53ELjxkO6IAkkDKintZu\"]],\"content\":\"oc-lock:device-bind:v3\\naddress: bc1q0c505nqleaf5yevn6zug588ytlmdvfwncdunxy\\ndevice_pk: 31d4ab6aceec961137917037936e60716fac573afe94d9da84a8020448dfc112\\nnostr_pk: e4b0a54749be74b4e2f1ae63a895493599faf5d2048dbe4696fb7ef0f0f560d5\\ndevice_id: d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8\\ncreated_at: 2026-10-01T00:00:00.000Z\\n\",\"created_at\":1790812800,\"pubkey\":\"e4b0a54749be74b4e2f1ae63a895493599faf5d2048dbe4696fb7ef0f0f560d5\",\"id\":\"c44a97d23a680be89e8e64440cb1f11f664f3a6bc192154d67312b8ba71a4f8b\",\"sig\":\"2d9cd4bf2fddeb4ca026846bf16910ad91b64c2dd8ef1689ab386cf2d3b0c33fbbf98c3ef2293517951ef5023dd6fb81105336e29965f9988b90bd0d05e7c3dc\"}"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"40c82f65af51ccbcf5e89c9f4d8c6cdfde1a9d2c46a2f1cc3dbbfa3d3a9edd9e\",\"slug\":\"square\",\"founder_address\":\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\",\"founder_inbox_pubkey\":\"d1f4c5f0e3b0006114b716d6e6694df26aa76c53f59b10dd6cf701ef4d4daa22\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[\"bc1qha7546x08qwudehuc724np522c2n65m4sseeae\",\"bc1q0c505nqleaf5yevn6zug588ytlmdvfwncdunxy\"],\"moderators\":[],\"title\":\"Town\",\"description\":\"taken 4\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1792022400,\"supersedes\":\"aa767eb8f1c06a5949b474de946fb271e38b3eadbd2b9ed41934e96fdde3877f\"}",
+        "pubkey": "e4b0a54749be74b4e2f1ae63a895493599faf5d2048dbe4696fb7ef0f0f560d5",
+        "id": "3b93c9ad20508aaffedaac5d615b9b6a1fc39af2fbadcde6a4d2a84b495d6041",
+        "sig": "75099d999c3e23ca1e610f0679fa0065993f632a0959cf3b32ced8b0fcb5239c918eae324dd9a8330c4d11daa187a4718ec73fb2d5c87f8def9e46f58f370a8b"
+      },
+      "GP_thief_genesis_by_K1": {
+        "kind": 30110,
+        "created_at": 1791676800,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:5eced0e4a3e5167df9fa272627dd9565cc2578f59226b80cf9f13b9ab42eb5ad"
+          ],
+          [
+            "t",
+            "c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352"
+          ],
+          [
+            "descriptor_id",
+            "5eced0e4a3e5167df9fa272627dd9565cc2578f59226b80cf9f13b9ab42eb5ad"
+          ],
+          [
+            "binding",
+            "{\"kind\":30078,\"tags\":[[\"d\",\"oc-lock:device:bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\"],[\"addr\",\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\"],[\"device_id\",\"f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1\"],[\"device_pk\",\"a4e09292b651c278b9772c569f5fa9bb13d906b46ab68c9df9dc2b4409f8a209\"],[\"alg\",\"x25519\"],[\"binding_sig\",\"AkgwRQIhAIlYxrodAtf2fpe4vaNwrRUZwx6PUHt1dvCn4+Zv2Gj2AiBoypjdVprxbtZGlPVubMuT8batUBb0ATw/UEWey3vW/AEhAo11AN1MEmhdH1aLTCtQSOhTS4czGfOo2qYStGkTLsf3\"]],\"content\":\"oc-lock:device-bind:v3\\naddress: bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\\ndevice_pk: a4e09292b651c278b9772c569f5fa9bb13d906b46ab68c9df9dc2b4409f8a209\\nnostr_pk: 5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\\ndevice_id: f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1\\ncreated_at: 2026-10-01T00:00:00.000Z\\n\",\"created_at\":1790812800,\"pubkey\":\"5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\",\"id\":\"ad25432b4a826a5e85d7366372ecfec0b37d0a14e3c47d6a8d409c5f2abe360f\",\"sig\":\"55db3068e7f8ad51af2012ae67909ad6f4720a8c00a52fa13c0e020a0ed811e942bfcffcbeab61b88159a278986a17109e7f121954c2b2cb1ed472b803166ddd\"}"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352\",\"slug\":\"town\",\"founder_address\":\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\",\"founder_inbox_pubkey\":\"5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[\"bc1qha7546x08qwudehuc724np522c2n65m4sseeae\",\"bc1q0c505nqleaf5yevn6zug588ytlmdvfwncdunxy\"],\"moderators\":[],\"title\":\"Town\",\"description\":\"taken\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1791676800,\"supersedes\":null}",
+        "pubkey": "5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33",
+        "id": "c1a679a49fa61a803c1321c2c1d7f756187360bad4502ace5c93d14f0c0b482f",
+        "sig": "aacbacda328feef70f4246759ceb2d52bfb9a565a2724157e259d6bbcf330c935c57e18932bffc874ff0ea8b4b2adf0cf026c55bba1390fb04bba9a8bd9d2942"
+      },
+      "GP2_by_T": {
+        "kind": 30110,
+        "created_at": 1791763200,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:1aef3960934ccbca062f484658f7b58178b97a43713246a8c3c5b973f185a60f"
+          ],
+          [
+            "t",
+            "c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352"
+          ],
+          [
+            "s",
+            "5eced0e4a3e5167df9fa272627dd9565cc2578f59226b80cf9f13b9ab42eb5ad"
+          ],
+          [
+            "descriptor_id",
+            "1aef3960934ccbca062f484658f7b58178b97a43713246a8c3c5b973f185a60f"
+          ],
+          [
+            "binding",
+            "{\"kind\":30078,\"tags\":[[\"d\",\"oc-lock:device:bc1q0c505nqleaf5yevn6zug588ytlmdvfwncdunxy\"],[\"addr\",\"bc1q0c505nqleaf5yevn6zug588ytlmdvfwncdunxy\"],[\"device_id\",\"d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8\"],[\"device_pk\",\"31d4ab6aceec961137917037936e60716fac573afe94d9da84a8020448dfc112\"],[\"alg\",\"x25519\"],[\"binding_sig\",\"AkgwRQIhAPizWozdD2XxXxu6K+rd373KoI9MF3ZvoEuJ1/NfTLpQAiBGzmiabOcoR06eU7T0+D6oOTggtyc6rh2hH0A63YbpbAEhAhY0W/gxFkoDdY6upei2b+4r53ELjxkO6IAkkDKintZu\"]],\"content\":\"oc-lock:device-bind:v3\\naddress: bc1q0c505nqleaf5yevn6zug588ytlmdvfwncdunxy\\ndevice_pk: 31d4ab6aceec961137917037936e60716fac573afe94d9da84a8020448dfc112\\nnostr_pk: e4b0a54749be74b4e2f1ae63a895493599faf5d2048dbe4696fb7ef0f0f560d5\\ndevice_id: d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8\\ncreated_at: 2026-10-01T00:00:00.000Z\\n\",\"created_at\":1790812800,\"pubkey\":\"e4b0a54749be74b4e2f1ae63a895493599faf5d2048dbe4696fb7ef0f0f560d5\",\"id\":\"c44a97d23a680be89e8e64440cb1f11f664f3a6bc192154d67312b8ba71a4f8b\",\"sig\":\"2d9cd4bf2fddeb4ca026846bf16910ad91b64c2dd8ef1689ab386cf2d3b0c33fbbf98c3ef2293517951ef5023dd6fb81105336e29965f9988b90bd0d05e7c3dc\"}"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352\",\"slug\":\"town\",\"founder_address\":\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\",\"founder_inbox_pubkey\":\"5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[\"bc1qha7546x08qwudehuc724np522c2n65m4sseeae\",\"bc1q0c505nqleaf5yevn6zug588ytlmdvfwncdunxy\"],\"moderators\":[],\"title\":\"Town\",\"description\":\"taken 2\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1791763200,\"supersedes\":\"5eced0e4a3e5167df9fa272627dd9565cc2578f59226b80cf9f13b9ab42eb5ad\"}",
+        "pubkey": "e4b0a54749be74b4e2f1ae63a895493599faf5d2048dbe4696fb7ef0f0f560d5",
+        "id": "741fd89b0a30033627d6f82eb25e01e4cb2d20d8b50ecf37d674e98057e5eb0e",
+        "sig": "2258f3d2755d45227be9ac00e84ce74275e5851b2d8dabb309e0703cb18c6a75120a1602bdfe9ee4b85b267b3077d68a3f61654f448d886969d6aaad3cfcb644"
+      },
+      "GP3_by_T": {
+        "kind": 30110,
+        "created_at": 1791849600,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:fe931b2a1a72bebee21b4466999f38708474b30699327242f70ac9b44ebde9b6"
+          ],
+          [
+            "t",
+            "c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352"
+          ],
+          [
+            "s",
+            "1aef3960934ccbca062f484658f7b58178b97a43713246a8c3c5b973f185a60f"
+          ],
+          [
+            "descriptor_id",
+            "fe931b2a1a72bebee21b4466999f38708474b30699327242f70ac9b44ebde9b6"
+          ],
+          [
+            "binding",
+            "{\"kind\":30078,\"tags\":[[\"d\",\"oc-lock:device:bc1q0c505nqleaf5yevn6zug588ytlmdvfwncdunxy\"],[\"addr\",\"bc1q0c505nqleaf5yevn6zug588ytlmdvfwncdunxy\"],[\"device_id\",\"d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8\"],[\"device_pk\",\"31d4ab6aceec961137917037936e60716fac573afe94d9da84a8020448dfc112\"],[\"alg\",\"x25519\"],[\"binding_sig\",\"AkgwRQIhAPizWozdD2XxXxu6K+rd373KoI9MF3ZvoEuJ1/NfTLpQAiBGzmiabOcoR06eU7T0+D6oOTggtyc6rh2hH0A63YbpbAEhAhY0W/gxFkoDdY6upei2b+4r53ELjxkO6IAkkDKintZu\"]],\"content\":\"oc-lock:device-bind:v3\\naddress: bc1q0c505nqleaf5yevn6zug588ytlmdvfwncdunxy\\ndevice_pk: 31d4ab6aceec961137917037936e60716fac573afe94d9da84a8020448dfc112\\nnostr_pk: e4b0a54749be74b4e2f1ae63a895493599faf5d2048dbe4696fb7ef0f0f560d5\\ndevice_id: d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8d8\\ncreated_at: 2026-10-01T00:00:00.000Z\\n\",\"created_at\":1790812800,\"pubkey\":\"e4b0a54749be74b4e2f1ae63a895493599faf5d2048dbe4696fb7ef0f0f560d5\",\"id\":\"c44a97d23a680be89e8e64440cb1f11f664f3a6bc192154d67312b8ba71a4f8b\",\"sig\":\"2d9cd4bf2fddeb4ca026846bf16910ad91b64c2dd8ef1689ab386cf2d3b0c33fbbf98c3ef2293517951ef5023dd6fb81105336e29965f9988b90bd0d05e7c3dc\"}"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352\",\"slug\":\"town\",\"founder_address\":\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\",\"founder_inbox_pubkey\":\"5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[\"bc1qha7546x08qwudehuc724np522c2n65m4sseeae\",\"bc1q0c505nqleaf5yevn6zug588ytlmdvfwncdunxy\"],\"moderators\":[],\"title\":\"Town\",\"description\":\"taken 3\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1791849600,\"supersedes\":\"1aef3960934ccbca062f484658f7b58178b97a43713246a8c3c5b973f185a60f\"}",
+        "pubkey": "e4b0a54749be74b4e2f1ae63a895493599faf5d2048dbe4696fb7ef0f0f560d5",
+        "id": "3f21525ae6a919498cdb5becf0c7fdd5afa03ff22072ddcfa32e7a5b21c34e88",
+        "sig": "fb8962118e33884daa934c55a79cc5d0bf3f9f2ae354b7ef773f6196e4ff10d89fb8f248cfa52a8c97cf7c211039a01ce5b45c25cc5fe0e95c1a76858c2766a9"
+      },
+      "GN_new_genesis_by_K2": {
+        "kind": 30110,
+        "created_at": 1792454400,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:cb89cf66f42035233034534d1c8f7965f2ecee4043f6cf49ebaff23dce129903"
+          ],
+          [
+            "t",
+            "c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352"
+          ],
+          [
+            "descriptor_id",
+            "cb89cf66f42035233034534d1c8f7965f2ecee4043f6cf49ebaff23dce129903"
+          ],
+          [
+            "binding",
+            "{\"kind\":30078,\"tags\":[[\"d\",\"oc-lock:device:bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\"],[\"addr\",\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\"],[\"device_id\",\"f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2\"],[\"device_pk\",\"ce8d3ad1ccb633ec7b70c17814a5c76ecd029685050d344745ba05870e587d59\"],[\"alg\",\"x25519\"],[\"binding_sig\",\"AkcwRAIgKovckQpAkpQaEInTumeGQ1svj5ewDEpcAdZgbIT8wR4CIBo/PcbeyYh/W2jabseCZEQgMrkzUScpDu1L5CaDgWJqASECjXUA3UwSaF0fVotMK1BI6FNLhzMZ86japhK0aRMux/c=\"]],\"content\":\"oc-lock:device-bind:v3\\naddress: bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\\ndevice_pk: ce8d3ad1ccb633ec7b70c17814a5c76ecd029685050d344745ba05870e587d59\\nnostr_pk: dd17c1f8fe9d931e2538916a7852d22978cd30661488a2674d8b2f39d9af58ea\\ndevice_id: f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2f2\\ncreated_at: 2026-10-05T00:00:00.000Z\\n\",\"created_at\":1791158400,\"pubkey\":\"dd17c1f8fe9d931e2538916a7852d22978cd30661488a2674d8b2f39d9af58ea\",\"id\":\"1b49487ea2d09de198150a1b2ffacd20517b20e822ce68e108c6a1a96c683f4a\",\"sig\":\"8ef70102f91cf1426f285659d0dee52cab0a727f4fc978bc131298398d067f3ab8c359977d0113cdd7030a800302eb62082545eadb5bb00b7cc482d86de5b12a\"}"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352\",\"slug\":\"town\",\"founder_address\":\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\",\"founder_inbox_pubkey\":\"dd17c1f8fe9d931e2538916a7852d22978cd30661488a2674d8b2f39d9af58ea\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[\"bc1qha7546x08qwudehuc724np522c2n65m4sseeae\"],\"moderators\":[],\"title\":\"Town\",\"description\":\"\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1792454400,\"supersedes\":null}",
+        "pubkey": "dd17c1f8fe9d931e2538916a7852d22978cd30661488a2674d8b2f39d9af58ea",
+        "id": "ecdcdf30c47cee201e3439f8ef2273e8837fdb3620cbdb323c8a1a5032ee03c6",
+        "sig": "5055819c8bb2024a2961fd21df8392751b67fa6c9d2700c32b0e57ecd4d57ae4e022a4505ec9ee4456c77d5a1470bc425546906b43fefeb363c6993715901ab4"
+      },
+      "C0_legacy_unbound": {
+        "kind": 30110,
+        "created_at": 1781049600,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:3Z-BZZDRbjUtj--F2lE4Ayzmdi-4GO_q5xmUFY1PwX4"
+          ],
+          [
+            "descriptor_id",
+            "aa6f7603bd8c1e031d07efc2073c8228899126d7fd4fcd1a6cf141b6b193ef89"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"02a8d5014ebe2c75c500418e55a64495b6eb03ac9d6a4f3ff51807da81cd60eb\",\"slug\":\"old\",\"founder_address\":\"bc1qt95lqr64arnwv42sgkd3n9q0ddpmxzj8hlqu42\",\"founder_inbox_pubkey\":\"af9b90e1a1f716cdb7529a7a28f0cfb3284519648a1b1e2de2219385dbc7a621\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[],\"moderators\":[],\"title\":\"Town\",\"description\":\"\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1781049600,\"supersedes\":null}",
+        "pubkey": "af9b90e1a1f716cdb7529a7a28f0cfb3284519648a1b1e2de2219385dbc7a621",
+        "id": "dbe7935c2fc1f052d2bdf203e80a239c82151bfe107f9d6a0db466468dbbdd04",
+        "sig": "a3391c1a726bb6e439a7275e61a7909cf01ba2fc33d9f5da6bb57a7ba9591c2dcec0bda80da4de9a790cdd540964ce901e03694dc32e13b2b0fdc8aa5714dccd"
+      },
+      "C1_resigned_genesis": {
+        "kind": 30110,
+        "created_at": 1792454400,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:1c06502a1aa2e5011c878e0b4b3a9b87e8e1a9f9ae505c57efac8c57d9a86e6d"
+          ],
+          [
+            "t",
+            "02a8d5014ebe2c75c500418e55a64495b6eb03ac9d6a4f3ff51807da81cd60eb"
+          ],
+          [
+            "descriptor_id",
+            "1c06502a1aa2e5011c878e0b4b3a9b87e8e1a9f9ae505c57efac8c57d9a86e6d"
+          ],
+          [
+            "binding",
+            "{\"kind\":30078,\"tags\":[[\"d\",\"oc-lock:device:bc1qt95lqr64arnwv42sgkd3n9q0ddpmxzj8hlqu42\"],[\"addr\",\"bc1qt95lqr64arnwv42sgkd3n9q0ddpmxzj8hlqu42\"],[\"device_id\",\"b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5\"],[\"device_pk\",\"50a61409b1ddd0325e9b16b700e719e9772c07000b1bd7786e907c653d20495d\"],[\"alg\",\"x25519\"],[\"binding_sig\",\"AkgwRQIhAI9kTumJ4sOnEhGKmYB9M7VjyVgNqysAg+1/RIILMTX5AiBv8pFbPpA35ToGFeQ5jeOqcO7SYl9s06KCIj+wQv7cWwEhA1xODexyFeJoM5OHMOXlBapiUE2oW6VxBqRrWiQE/J2O\"]],\"content\":\"oc-lock:device-bind:v3\\naddress: bc1qt95lqr64arnwv42sgkd3n9q0ddpmxzj8hlqu42\\ndevice_pk: 50a61409b1ddd0325e9b16b700e719e9772c07000b1bd7786e907c653d20495d\\nnostr_pk: 33e2759b81d433fe22bb93109956507eeac18776c83177a4564256d084b6e274\\ndevice_id: b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5\\ncreated_at: 2026-10-01T00:00:00.000Z\\n\",\"created_at\":1790812800,\"pubkey\":\"33e2759b81d433fe22bb93109956507eeac18776c83177a4564256d084b6e274\",\"id\":\"eecbd65691eb62814522cac793e7637d5e6d2a693d536738053882bba63d456d\",\"sig\":\"26495cbe22674b32709d21e797f7bf71bf1c902dfdf63685b90613966a1ef84a571f6df79cb38a00d760e291b1afa0b57229fa9c8c67b31215de1e33903010b4\"}"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"02a8d5014ebe2c75c500418e55a64495b6eb03ac9d6a4f3ff51807da81cd60eb\",\"slug\":\"old\",\"founder_address\":\"bc1qt95lqr64arnwv42sgkd3n9q0ddpmxzj8hlqu42\",\"founder_inbox_pubkey\":\"33e2759b81d433fe22bb93109956507eeac18776c83177a4564256d084b6e274\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[],\"moderators\":[],\"title\":\"Town\",\"description\":\"\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1792454400,\"supersedes\":null}",
+        "pubkey": "33e2759b81d433fe22bb93109956507eeac18776c83177a4564256d084b6e274",
+        "id": "7ec137a11f1270e3b824237a2f860a98c8d0adfe42f950470eaac2325c88561c",
+        "sig": "d324408c3af594130ab06249106c065b3ee80327ecbbf69a41cfc8da63ba2cbd8ceb911b0f59884518209a3dd8e4adb385fea303d9400d8f3df3742c741e88cc"
+      },
+      "D1_by_S1": {
+        "kind": 30110,
+        "created_at": 1788307200,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:c5a912e8a244ed9251e496499cb9e456ca106f439768b4ea18beff206e9c897f"
+          ],
+          [
+            "t",
+            "bd10571db065c50c9cde88991d3ee9206bbf00f4d97ea6482f3de381659334d7"
+          ],
+          [
+            "descriptor_id",
+            "c5a912e8a244ed9251e496499cb9e456ca106f439768b4ea18beff206e9c897f"
+          ],
+          [
+            "binding",
+            "{\"kind\":30078,\"tags\":[[\"d\",\"oc-chat:device:did:oc:0123456789abcdef0123456789abcdef\"],[\"addr\",\"did:oc:0123456789abcdef0123456789abcdef\"],[\"device_id\",\"c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6\"],[\"device_pk\",\"f5b2d6e60f9477e310c2982daaa6c9136c108a1777c5947e448fa37d68174557\"],[\"alg\",\"x25519\"],[\"auth\",\"session\"],[\"binding_sig\",\"\"],[\"vouch\",\"eyJhbGciOiJFZERTQSIsInR5cCI6Im9jLWNoYXQtZGV2aWNlLXZvdWNoIiwia2lkIjoia2lkLWEifQ.b2MtY2hhdDpkZXZpY2Utdm91Y2g6djEKZGlkX29jOiBkaWQ6b2M6MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWYKZGV2aWNlX3BrOiBmNWIyZDZlNjBmOTQ3N2UzMTBjMjk4MmRhYWE2YzkxMzZjMTA4YTE3NzdjNTk0N2U0NDhmYTM3ZDY4MTc0NTU3Cm5vc3RyX3BrOiBiNWRjYjIxN2JkMWZmOTUyNTA1ZWFmODIzMDNmYTlmNGI2ZjYxZDQxNWYyNWM3NDUxMWQyYjdhOTEyNmE4OGRlCmRldmljZV9pZDogYzZjNmM2YzZjNmM2YzZjNmM2YzZjNmM2YzZjNmM2YzYKaXNzdWVkX2F0OiAxNzg4MjIwODAwCg.4-qtZy2B1Nj8mOgjWWi4L8RVcyrG1-fwznBhUyyXs4EN9ZtODCeSLhKHoOs3xufBAJB4KDPVZLAaaMLl8v-qBg\"]],\"content\":\"oc-chat:device-bind:session:v1\\ndid_oc: did:oc:0123456789abcdef0123456789abcdef\\ndevice_pk: f5b2d6e60f9477e310c2982daaa6c9136c108a1777c5947e448fa37d68174557\\ndevice_id: c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6c6\\ncreated_at: 2026-09-01T00:00:00.000Z\\n\",\"created_at\":1788220800,\"pubkey\":\"b5dcb217bd1ff952505eaf82303fa9f4b6f61d415f25c74511d2b7a9126a88de\",\"id\":\"21a084f4f5db67a08263249caf89efc8509bc3751bd72ddba9707d2f6ab1a35d\",\"sig\":\"7fd2bb4cb832e9dc2231723fd82f88f0673ea161f3ed9883a0541b1226c2cc3a5796f11246d5fc058e705a580b6042b7f65dbe2f5259aaf79d93da3a7947ce29\"}"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"bd10571db065c50c9cde88991d3ee9206bbf00f4d97ea6482f3de381659334d7\",\"slug\":\"session-town\",\"founder_address\":\"did:oc:0123456789abcdef0123456789abcdef\",\"founder_inbox_pubkey\":\"b5dcb217bd1ff952505eaf82303fa9f4b6f61d415f25c74511d2b7a9126a88de\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[],\"moderators\":[],\"title\":\"Session Town\",\"description\":\"\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1788307200,\"supersedes\":null}",
+        "pubkey": "b5dcb217bd1ff952505eaf82303fa9f4b6f61d415f25c74511d2b7a9126a88de",
+        "id": "b83778ea4e9adb4954c821eb073aecd03da1b0c81752acb2b960fe9e4cca289f",
+        "sig": "878231c1937fc0e3a45877028c16fe6f8e327539390bff288c2d83a47829566f5c23627e510795d49765d01865905d9926a562c3838e96c7d74407b001359ce4"
+      },
+      "D2_by_S2": {
+        "kind": 30110,
+        "created_at": 1790899200,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:ded6f9fcfb5577d8d9838683afa1b547767c22dfb09e7c06715ef385626096dd"
+          ],
+          [
+            "t",
+            "bd10571db065c50c9cde88991d3ee9206bbf00f4d97ea6482f3de381659334d7"
+          ],
+          [
+            "s",
+            "c5a912e8a244ed9251e496499cb9e456ca106f439768b4ea18beff206e9c897f"
+          ],
+          [
+            "descriptor_id",
+            "ded6f9fcfb5577d8d9838683afa1b547767c22dfb09e7c06715ef385626096dd"
+          ],
+          [
+            "binding",
+            "{\"kind\":30078,\"tags\":[[\"d\",\"oc-chat:device:did:oc:0123456789abcdef0123456789abcdef\"],[\"addr\",\"did:oc:0123456789abcdef0123456789abcdef\"],[\"device_id\",\"c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7\"],[\"device_pk\",\"13be4feaeaf204c7fd3358fc9c00721881d174278128227ec674f37f7fe97b6d\"],[\"alg\",\"x25519\"],[\"auth\",\"session\"],[\"binding_sig\",\"\"],[\"vouch\",\"eyJhbGciOiJFZERTQSIsInR5cCI6Im9jLWNoYXQtZGV2aWNlLXZvdWNoIiwia2lkIjoia2lkLWIifQ.b2MtY2hhdDpkZXZpY2Utdm91Y2g6djEKZGlkX29jOiBkaWQ6b2M6MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWYKZGV2aWNlX3BrOiAxM2JlNGZlYWVhZjIwNGM3ZmQzMzU4ZmM5YzAwNzIxODgxZDE3NDI3ODEyODIyN2VjNjc0ZjM3ZjdmZTk3YjZkCm5vc3RyX3BrOiBkOWUzOGFiMWZkMDg3YTU5NWZiZGNhY2JiNTM5OTFiZWRlOTk0MjlhZWQ2ZWY1Mzk5M2NjYTRlYzY2ZDM3ZmM0CmRldmljZV9pZDogYzdjN2M3YzdjN2M3YzdjN2M3YzdjN2M3YzdjN2M3YzcKaXNzdWVkX2F0OiAxNzkxMTU4NDAwCg.B4sFcwN9rwkoHGl8rt9MN_d_i1YcfSqAwWXiSjIHd1Fefthb-pQa57f90fBsa4C4F1FPHGYeub_H-Ou050NRCQ\"]],\"content\":\"oc-chat:device-bind:session:v1\\ndid_oc: did:oc:0123456789abcdef0123456789abcdef\\ndevice_pk: 13be4feaeaf204c7fd3358fc9c00721881d174278128227ec674f37f7fe97b6d\\ndevice_id: c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7c7\\ncreated_at: 2026-10-05T00:00:00.000Z\\n\",\"created_at\":1791158400,\"pubkey\":\"d9e38ab1fd087a595fbdcacbb53991bede99429aed6ef53993cca4ec66d37fc4\",\"id\":\"b40adafe3f48c7ee568689633aeca1ff59612eb574569b003a039fc8c9c7ecce\",\"sig\":\"e8694cbbe79cfe517aa2d85efcd304b667eaba03135284cec598eb631c1f06676c83ac06f4ecdaa0a436b413b16b6d1be34cbac09362c4dc24071a11ebf8b7c3\"}"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"bd10571db065c50c9cde88991d3ee9206bbf00f4d97ea6482f3de381659334d7\",\"slug\":\"session-town\",\"founder_address\":\"did:oc:0123456789abcdef0123456789abcdef\",\"founder_inbox_pubkey\":\"b5dcb217bd1ff952505eaf82303fa9f4b6f61d415f25c74511d2b7a9126a88de\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[],\"moderators\":[],\"title\":\"Session Town\",\"description\":\"from the new device\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1790899200,\"supersedes\":\"c5a912e8a244ed9251e496499cb9e456ca106f439768b4ea18beff206e9c897f\"}",
+        "pubkey": "d9e38ab1fd087a595fbdcacbb53991bede99429aed6ef53993cca4ec66d37fc4",
+        "id": "4742b8ce9c81ba0a939a4df665245c2e664872ee21541b1d9480f10f724cf855",
+        "sig": "dc3ddc73123a8fd77de6f491d83156cbb6d12bf29d8fe1ab7aefe8a7fdcca4a806d053514298fbee03e512a47f199503817937b591b757df049a9b00f5532bf0"
+      },
+      "D3_by_stolen_S3": {
+        "kind": 30110,
+        "created_at": 1791936000,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:807ec7b5eb2382c7678d8f1d2e514ad21d343a1c2a33e9019143b34a12100e8d"
+          ],
+          [
+            "t",
+            "bd10571db065c50c9cde88991d3ee9206bbf00f4d97ea6482f3de381659334d7"
+          ],
+          [
+            "s",
+            "ded6f9fcfb5577d8d9838683afa1b547767c22dfb09e7c06715ef385626096dd"
+          ],
+          [
+            "descriptor_id",
+            "807ec7b5eb2382c7678d8f1d2e514ad21d343a1c2a33e9019143b34a12100e8d"
+          ],
+          [
+            "binding",
+            "{\"kind\":30078,\"tags\":[[\"d\",\"oc-chat:device:did:oc:0123456789abcdef0123456789abcdef\"],[\"addr\",\"did:oc:0123456789abcdef0123456789abcdef\"],[\"device_id\",\"c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9\"],[\"device_pk\",\"57db4b359f23ae5e146e4e2512056704722506348c150c14753d0c933d04d421\"],[\"alg\",\"x25519\"],[\"auth\",\"session\"],[\"binding_sig\",\"\"],[\"vouch\",\"eyJhbGciOiJFZERTQSIsInR5cCI6Im9jLWNoYXQtZGV2aWNlLXZvdWNoIiwia2lkIjoia2lkLWIifQ.b2MtY2hhdDpkZXZpY2Utdm91Y2g6djEKZGlkX29jOiBkaWQ6b2M6MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWYKZGV2aWNlX3BrOiA1N2RiNGIzNTlmMjNhZTVlMTQ2ZTRlMjUxMjA1NjcwNDcyMjUwNjM0OGMxNTBjMTQ3NTNkMGM5MzNkMDRkNDIxCm5vc3RyX3BrOiA3M2RkZGUxYmU0YzA0MjdlMzYwOGZiNjYxYWIyNjYyMmI0OGMwZGUxYThlMWZjZjhjYzFiNjVhZDY3NzEyM2ZlCmRldmljZV9pZDogYzljOWM5YzljOWM5YzljOWM5YzljOWM5YzljOWM5YzkKaXNzdWVkX2F0OiAxNzkxMTU4NDAwCg.GcdjqLxgZUfxNBVhze7ymKOVp4vsaLUDw1-g-G7Mi2ZLivvdtrpdXPjiaZK12hN00aS-CsoK8v88-4ITLC6hDg\"]],\"content\":\"oc-chat:device-bind:session:v1\\ndid_oc: did:oc:0123456789abcdef0123456789abcdef\\ndevice_pk: 57db4b359f23ae5e146e4e2512056704722506348c150c14753d0c933d04d421\\ndevice_id: c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9\\ncreated_at: 2026-10-05T00:00:00.000Z\\n\",\"created_at\":1791158400,\"pubkey\":\"73ddde1be4c0427e3608fb661ab26622b48c0de1a8e1fcf8cc1b65ad677123fe\",\"id\":\"25033671178df3f3952c7b04b407f5e0cb227a08f4f75d1097af266866134090\",\"sig\":\"65638839f10a3a6b6e483baf8cfc9e636e7cf966c38647b5782224d1198365c6d85b80b8bbbba3db5e50b3325256e47527f6e184bf8fcbbc7314831af29f2d6e\"}"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"bd10571db065c50c9cde88991d3ee9206bbf00f4d97ea6482f3de381659334d7\",\"slug\":\"session-town\",\"founder_address\":\"did:oc:0123456789abcdef0123456789abcdef\",\"founder_inbox_pubkey\":\"b5dcb217bd1ff952505eaf82303fa9f4b6f61d415f25c74511d2b7a9126a88de\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[],\"moderators\":[],\"title\":\"Session Town\",\"description\":\"by the stolen device\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1791936000,\"supersedes\":\"ded6f9fcfb5577d8d9838683afa1b547767c22dfb09e7c06715ef385626096dd\"}",
+        "pubkey": "73ddde1be4c0427e3608fb661ab26622b48c0de1a8e1fcf8cc1b65ad677123fe",
+        "id": "1665fa80027cf77d79639e3be1e23629d353d3a83c07363413f9034ef7ef747d",
+        "sig": "a95cca1531c0c39fecce7878b38edc42b1301855eb1fafd133cea6a49fbaa9e916f7e036cd18e1b277ee8153fd3871be3be3bb1ccb36be354bcff257768f0c1a"
+      },
+      "D2x_by_S4": {
+        "kind": 30110,
+        "created_at": 1792108800,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:49541815999d8783cf19a4435ce9d5e6209677380232b9e56102c464a240567f"
+          ],
+          [
+            "t",
+            "bd10571db065c50c9cde88991d3ee9206bbf00f4d97ea6482f3de381659334d7"
+          ],
+          [
+            "s",
+            "c5a912e8a244ed9251e496499cb9e456ca106f439768b4ea18beff206e9c897f"
+          ],
+          [
+            "descriptor_id",
+            "49541815999d8783cf19a4435ce9d5e6209677380232b9e56102c464a240567f"
+          ],
+          [
+            "binding",
+            "{\"kind\":30078,\"tags\":[[\"d\",\"oc-chat:device:did:oc:0123456789abcdef0123456789abcdef\"],[\"addr\",\"did:oc:0123456789abcdef0123456789abcdef\"],[\"device_id\",\"cacacacacacacacacacacacacacacaca\"],[\"device_pk\",\"f77ff4b10788bfdca62ca0bb160d427cf5762d85f2b5cad6807ec9c3febbde09\"],[\"alg\",\"x25519\"],[\"auth\",\"session\"],[\"binding_sig\",\"\"],[\"vouch\",\"eyJhbGciOiJFZERTQSIsInR5cCI6Im9jLWNoYXQtZGV2aWNlLXZvdWNoIiwia2lkIjoia2lkLWEifQ.b2MtY2hhdDpkZXZpY2Utdm91Y2g6djEKZGlkX29jOiBkaWQ6b2M6MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWYKZGV2aWNlX3BrOiBmNzdmZjRiMTA3ODhiZmRjYTYyY2EwYmIxNjBkNDI3Y2Y1NzYyZDg1ZjJiNWNhZDY4MDdlYzljM2ZlYmJkZTA5Cm5vc3RyX3BrOiAwN2E3NjI0YTQwZTA2YTFlNTMwNDcyMTkwZmM2NjcwOTU0NDU1MTFlNDhlOWYzOTI4NjMxZjgyZmMxNjk4NWRkCmRldmljZV9pZDogY2FjYWNhY2FjYWNhY2FjYWNhY2FjYWNhY2FjYWNhY2EKaXNzdWVkX2F0OiAxNzkyMDIyNDAwCg.sol5KkCdaQ2hkpHz-zHvGGwSLDEcu0osuVG4uTaFBSzR17xoteOHenUrp365SoNMEd6cqnfa_zbRxlEjm-YrCQ\"]],\"content\":\"oc-chat:device-bind:session:v1\\ndid_oc: did:oc:0123456789abcdef0123456789abcdef\\ndevice_pk: f77ff4b10788bfdca62ca0bb160d427cf5762d85f2b5cad6807ec9c3febbde09\\ndevice_id: cacacacacacacacacacacacacacacaca\\ncreated_at: 2026-10-15T00:00:00.000Z\\n\",\"created_at\":1792022400,\"pubkey\":\"07a7624a40e06a1e530472190fc667095445511e48e9f3928631f82fc16985dd\",\"id\":\"7c92a21a25204eb8166838f5825b87090ec347c176d3e5418efc409158d2eb5b\",\"sig\":\"f1e62ddd83e180adfed8b8ffde3bc2cf820f5eccb8dd79e57c0a1fbd2e2b7e01616efc43ea6bf5d329c4336f9620960ff4861dcd2536bfdef575aed08ea9cea5\"}"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"bd10571db065c50c9cde88991d3ee9206bbf00f4d97ea6482f3de381659334d7\",\"slug\":\"session-town\",\"founder_address\":\"did:oc:0123456789abcdef0123456789abcdef\",\"founder_inbox_pubkey\":\"b5dcb217bd1ff952505eaf82303fa9f4b6f61d415f25c74511d2b7a9126a88de\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[],\"moderators\":[],\"title\":\"Session Town\",\"description\":\"from a late vouch\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1792108800,\"supersedes\":\"c5a912e8a244ed9251e496499cb9e456ca106f439768b4ea18beff206e9c897f\"}",
+        "pubkey": "07a7624a40e06a1e530472190fc667095445511e48e9f3928631f82fc16985dd",
+        "id": "7146b27717b30be62466f9f6ea03e282a31dd6199a3fc1295079e613dc2f1641",
+        "sig": "03adcb0ebdca485dc93f84267e5c48efab70ad6c9cea5e71bdfacc6ec8534449350cd9b40373bf03e37d699c17a9419416fcf7348560428fc44fa69a088e8522"
+      },
+      "D4_by_S3_revouched": {
+        "kind": 30110,
+        "created_at": 1792368000,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:e07f7d2bcc5043c8273edccf637a12687bdfbdf466d6aab5a8aedb1614c78110"
+          ],
+          [
+            "t",
+            "bd10571db065c50c9cde88991d3ee9206bbf00f4d97ea6482f3de381659334d7"
+          ],
+          [
+            "s",
+            "ded6f9fcfb5577d8d9838683afa1b547767c22dfb09e7c06715ef385626096dd"
+          ],
+          [
+            "descriptor_id",
+            "e07f7d2bcc5043c8273edccf637a12687bdfbdf466d6aab5a8aedb1614c78110"
+          ],
+          [
+            "binding",
+            "{\"kind\":30078,\"tags\":[[\"d\",\"oc-chat:device:did:oc:0123456789abcdef0123456789abcdef\"],[\"addr\",\"did:oc:0123456789abcdef0123456789abcdef\"],[\"device_id\",\"c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9\"],[\"device_pk\",\"57db4b359f23ae5e146e4e2512056704722506348c150c14753d0c933d04d421\"],[\"alg\",\"x25519\"],[\"auth\",\"session\"],[\"binding_sig\",\"\"],[\"vouch\",\"eyJhbGciOiJFZERTQSIsInR5cCI6Im9jLWNoYXQtZGV2aWNlLXZvdWNoIiwia2lkIjoia2lkLWIifQ.b2MtY2hhdDpkZXZpY2Utdm91Y2g6djEKZGlkX29jOiBkaWQ6b2M6MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWYKZGV2aWNlX3BrOiA1N2RiNGIzNTlmMjNhZTVlMTQ2ZTRlMjUxMjA1NjcwNDcyMjUwNjM0OGMxNTBjMTQ3NTNkMGM5MzNkMDRkNDIxCm5vc3RyX3BrOiA3M2RkZGUxYmU0YzA0MjdlMzYwOGZiNjYxYWIyNjYyMmI0OGMwZGUxYThlMWZjZjhjYzFiNjVhZDY3NzEyM2ZlCmRldmljZV9pZDogYzljOWM5YzljOWM5YzljOWM5YzljOWM5YzljOWM5YzkKaXNzdWVkX2F0OiAxNzkyMjgxNjAwCg.Sy8HaE0wE_V4_wqb7ZVnBnc24JUO9cTHhbriW5IxQkSoTS03c_kBi1b0I4auwswICDeirl7SwEu0K2jxPFtuCQ\"]],\"content\":\"oc-chat:device-bind:session:v1\\ndid_oc: did:oc:0123456789abcdef0123456789abcdef\\ndevice_pk: 57db4b359f23ae5e146e4e2512056704722506348c150c14753d0c933d04d421\\ndevice_id: c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9c9\\ncreated_at: 2026-10-18T00:00:00.000Z\\n\",\"created_at\":1792281600,\"pubkey\":\"73ddde1be4c0427e3608fb661ab26622b48c0de1a8e1fcf8cc1b65ad677123fe\",\"id\":\"90c3ad84249186484d4fcd9c2fddbb1af8fd0e220e141a7b20183ebe9443b26b\",\"sig\":\"ea467fb7ba64b28c61d79ced0d03a846f89e60ea8609d77417c01f333e592bf6d7e319268da3b14963e30faa88da7fa4659a217e432c5e46ed47689b0d871d92\"}"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"bd10571db065c50c9cde88991d3ee9206bbf00f4d97ea6482f3de381659334d7\",\"slug\":\"session-town\",\"founder_address\":\"did:oc:0123456789abcdef0123456789abcdef\",\"founder_inbox_pubkey\":\"b5dcb217bd1ff952505eaf82303fa9f4b6f61d415f25c74511d2b7a9126a88de\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[],\"moderators\":[],\"title\":\"Session Town\",\"description\":\"after the device was vouched again\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1792368000,\"supersedes\":\"ded6f9fcfb5577d8d9838683afa1b547767c22dfb09e7c06715ef385626096dd\"}",
+        "pubkey": "73ddde1be4c0427e3608fb661ab26622b48c0de1a8e1fcf8cc1b65ad677123fe",
+        "id": "4406407283d6ab753e638ea23549bbafc8b6c89502f737b7c6ad72da4a64dc9a",
+        "sig": "e2a2abd478b2f7723257a0ebb9f7bb214c7331dbcafeabbb1e436fed35d292e2986b01bad1978a98351f6312a6031e21a463d3c772a50c22d4490c90bf2d8825"
+      }
+    },
+    "descriptor_ids": {
+      "G": "d8129b7f754c31ae827f4b0cd0a6005ae1cc5c9f75241e6d349680cf6be927de",
+      "A2_by_M": "3b41211f2d58492597fd9801106c2cce30896022798e941cb38a3621c4c08cd7",
+      "A3_close_by_F": "1660183dbbd1145e88862379007e3cfd41d17f85d4f570a9c355eb4ccc455ef2",
+      "R3_by_M_KM2": "9fc351e10ba668f82b05a946ed3fb3c84488b3c889f5abbbb0b6dc9b818b9e42",
+      "B2_resign_by_F_K2": "ca1a1d5ec071f71e88eed93813b93fd8c7d39be65deff7dd6110b7b1f071e8f8",
+      "B3_by_stolen_K1": "7ed8265d0fa9f23d734899b4547f03d0839ccc7ff701af6db3fe5516ebee461d",
+      "B4_by_T": "a27c9b5d7e5882f55ce85e82dd3efac935673b6e7f2899c72f0e3c2263bdbec5",
+      "F3_fork_by_F_K2": "7afb7e27102681e18183b26d12cb90363234077fca9fe144bb9c8c73b19985a2",
+      "SG_by_F_KF0": "5d07184a8f82aba90a914e47895505354177a0993d7c3dbd4db64173b474017c",
+      "SV2_by_K1": "233ab633ccd9cc7cb1ca29f651cbc83e1677e07dddfd9fb1ce619c5893af5716",
+      "SV3_by_K1": "6a612db7f9d5e8eafc5e02448ff41a3abeb6d8e3ecafb04ab652fe23c636a0b9",
+      "SV2_copy_by_K2": "233ab633ccd9cc7cb1ca29f651cbc83e1677e07dddfd9fb1ce619c5893af5716",
+      "SV3_copy_by_K2": "6a612db7f9d5e8eafc5e02448ff41a3abeb6d8e3ecafb04ab652fe23c636a0b9",
+      "SV4_by_K2": "5a44fbcf7da327846f00d264a90d79743261beac6ce6ea78a9e9c4859989e02f",
+      "ST1_by_stolen_K1": "6f55495014d541f389eeeac517e1b0638f4998175e406e1064cfda94023ebb34",
+      "ST2_by_T": "fc19b22be834c7b72d644d50b4cff803d991011323a908e5ff3176de197c1580",
+      "ST3_by_T": "aa767eb8f1c06a5949b474de946fb271e38b3eadbd2b9ed41934e96fdde3877f",
+      "ST4_by_T": "377cc8b2a10741318f05ceb2b1edecd89bc8d1476008a5515e07ddc07ba42296",
+      "GP_thief_genesis_by_K1": "5eced0e4a3e5167df9fa272627dd9565cc2578f59226b80cf9f13b9ab42eb5ad",
+      "GP2_by_T": "1aef3960934ccbca062f484658f7b58178b97a43713246a8c3c5b973f185a60f",
+      "GP3_by_T": "fe931b2a1a72bebee21b4466999f38708474b30699327242f70ac9b44ebde9b6",
+      "GN_new_genesis_by_K2": "cb89cf66f42035233034534d1c8f7965f2ecee4043f6cf49ebaff23dce129903",
+      "C0_legacy_unbound": "aa6f7603bd8c1e031d07efc2073c8228899126d7fd4fcd1a6cf141b6b193ef89",
+      "C1_resigned_genesis": "1c06502a1aa2e5011c878e0b4b3a9b87e8e1a9f9ae505c57efac8c57d9a86e6d",
+      "D1_by_S1": "c5a912e8a244ed9251e496499cb9e456ca106f439768b4ea18beff206e9c897f",
+      "D2_by_S2": "ded6f9fcfb5577d8d9838683afa1b547767c22dfb09e7c06715ef385626096dd",
+      "D3_by_stolen_S3": "807ec7b5eb2382c7678d8f1d2e514ad21d343a1c2a33e9019143b34a12100e8d",
+      "D2x_by_S4": "49541815999d8783cf19a4435ce9d5e6209677380232b9e56102c464a240567f",
+      "D4_by_S3_revouched": "e07f7d2bcc5043c8273edccf637a12687bdfbdf466d6aab5a8aedb1614c78110"
+    },
+    "jwks_rotated": {
+      "keys": [
+        {
+          "kty": "OKP",
+          "crv": "Ed25519",
+          "kid": "kid-b",
+          "x": "IVL40Zt5HSRFMkLhXy6rbLfP-ntqXtMAl5YOBpiB2xI",
+          "alg": "EdDSA"
+        },
+        {
+          "kty": "OKP",
+          "crv": "Ed25519",
+          "kid": "kid-a",
+          "x": "25lf4lFp0UHKubu6krqgH58uHs599MsqwFGQ83_MH50",
+          "alg": "EdDSA",
+          "status": "retired",
+          "retired_at": 1790812800
+        }
+      ]
+    },
+    "jwks_dropped": {
+      "keys": [
+        {
+          "kty": "OKP",
+          "crv": "Ed25519",
+          "kid": "kid-b",
+          "x": "IVL40Zt5HSRFMkLhXy6rbLfP-ntqXtMAl5YOBpiB2xI",
+          "alg": "EdDSA"
+        }
+      ]
+    },
+    "reader_now": "2026-10-22T00:00:00.000Z"
+  },
+  "lookup": "relay_records is every kind-30078 record the reader sees on any relay. A version event carries its own binding in its `binding` tag; relay_records decide whether the last version's binding is live, and bind a version that has no binding tag (published before 0.3.0). For a did:oc, verify vouches and host revocations against the case's jwks (default jwks_rotated); a retired key verifies only what it signed before its retired_at.",
+  "cases": [
+    {
+      "name": "an admin revoking its own key does not undo its edit or what follows",
+      "versions": [
+        "G",
+        "A2_by_M",
+        "A3_close_by_F"
+      ],
+      "relay_records": [
+        "bind_F_K1",
+        "revoke_M_KM"
+      ],
+      "expected": {
+        "tip": "A3_close_by_F",
+        "epochs": 3,
+        "status": "closed",
+        "admins": []
+      }
+    },
+    {
+      "name": "a revoked key's own last version falls back to the version before it",
+      "versions": [
+        "G",
+        "A2_by_M"
+      ],
+      "relay_records": [
+        "bind_F_K1",
+        "revoke_M_KM"
+      ],
+      "expected": {
+        "tip": "G",
+        "epochs": 1,
+        "status": "active",
+        "admins": [
+          "admin_M"
+        ]
+      }
+    },
+    {
+      "name": "before the revocation, a version signed with the stolen key counts",
+      "versions": [
+        "G",
+        "B2_resign_by_F_K2",
+        "B3_by_stolen_K1"
+      ],
+      "relay_records": [
+        "bind_F_K1",
+        "bind_F_K2"
+      ],
+      "expected": {
+        "tip": "B3_by_stolen_K1",
+        "epochs": 3,
+        "status": "active",
+        "admins": [
+          "admin_M",
+          "added_by_thief_T"
+        ]
+      }
+    },
+    {
+      "name": "after the revocation it does not; the version re-signed from the live device stands, and the genesis signed with the revoked key stays in the chain",
+      "versions": [
+        "G",
+        "B2_resign_by_F_K2",
+        "B3_by_stolen_K1"
+      ],
+      "relay_records": [
+        "bind_F_K1",
+        "bind_F_K2",
+        "revoke_F_K1"
+      ],
+      "expected": {
+        "tip": "B2_resign_by_F_K2",
+        "epochs": 2,
+        "status": "active",
+        "admins": [
+          "admin_M"
+        ]
+      }
+    },
+    {
+      "name": "the thief's admin T signs a successor; while the stolen key is live it stands",
+      "versions": [
+        "G",
+        "B2_resign_by_F_K2",
+        "B3_by_stolen_K1",
+        "B4_by_T"
+      ],
+      "relay_records": [
+        "bind_F_K1",
+        "bind_F_K2",
+        "bind_T_KT"
+      ],
+      "expected": {
+        "tip": "B4_by_T",
+        "epochs": 4,
+        "status": "active",
+        "admins": [
+          "admin_M",
+          "added_by_thief_T"
+        ]
+      }
+    },
+    {
+      "name": "revoking the stolen key alone does not undo a version a live key has built on",
+      "versions": [
+        "G",
+        "B2_resign_by_F_K2",
+        "B3_by_stolen_K1",
+        "B4_by_T"
+      ],
+      "relay_records": [
+        "bind_F_K1",
+        "bind_F_K2",
+        "bind_T_KT",
+        "revoke_F_K1"
+      ],
+      "expected": {
+        "tip": "B4_by_T",
+        "epochs": 4,
+        "status": "active",
+        "admins": [
+          "admin_M",
+          "added_by_thief_T"
+        ]
+      }
+    },
+    {
+      "name": "after the revocation, the founder's fork from the live device outranks the stolen key's branch",
+      "versions": [
+        "G",
+        "B2_resign_by_F_K2",
+        "B3_by_stolen_K1",
+        "B4_by_T",
+        "F3_fork_by_F_K2"
+      ],
+      "relay_records": [
+        "bind_F_K1",
+        "bind_F_K2",
+        "bind_T_KT",
+        "revoke_F_K1"
+      ],
+      "expected": {
+        "tip": "F3_fork_by_F_K2",
+        "epochs": 3,
+        "status": "active",
+        "admins": [
+          "admin_M"
+        ]
+      }
+    },
+    {
+      "name": "before the revocation both branches are the live founder's, and the longer wins",
+      "versions": [
+        "G",
+        "B2_resign_by_F_K2",
+        "B3_by_stolen_K1",
+        "B4_by_T",
+        "F3_fork_by_F_K2"
+      ],
+      "relay_records": [
+        "bind_F_K1",
+        "bind_F_K2",
+        "bind_T_KT"
+      ],
+      "expected": {
+        "tip": "B4_by_T",
+        "epochs": 4,
+        "status": "active",
+        "admins": [
+          "admin_M",
+          "added_by_thief_T"
+        ]
+      }
+    },
+    {
+      "name": "the thief forks from the genesis with a stolen non-inbox key and grows a longer branch; without copies it wins",
+      "versions": [
+        "SG_by_F_KF0",
+        "SV2_by_K1",
+        "SV3_by_K1",
+        "SV4_by_K2",
+        "ST1_by_stolen_K1",
+        "ST2_by_T",
+        "ST3_by_T",
+        "ST4_by_T"
+      ],
+      "relay_records": [
+        "bind_F_KF0",
+        "bind_F_K1",
+        "bind_F_K2",
+        "bind_T_KT",
+        "revoke_F_K1"
+      ],
+      "expected": {
+        "tip": "ST4_by_T",
+        "epochs": 5,
+        "status": "active",
+        "admins": [
+          "admin_M",
+          "added_by_thief_T"
+        ]
+      }
+    },
+    {
+      "name": "with the live device's copies of the versions the stolen key signed, the founder's branch outranks it",
+      "versions": [
+        "SG_by_F_KF0",
+        "SV2_by_K1",
+        "SV3_by_K1",
+        "SV2_copy_by_K2",
+        "SV3_copy_by_K2",
+        "SV4_by_K2",
+        "ST1_by_stolen_K1",
+        "ST2_by_T",
+        "ST3_by_T",
+        "ST4_by_T"
+      ],
+      "relay_records": [
+        "bind_F_KF0",
+        "bind_F_K1",
+        "bind_F_K2",
+        "bind_T_KT",
+        "revoke_F_K1"
+      ],
+      "expected": {
+        "tip": "SV4_by_K2",
+        "epochs": 4,
+        "status": "active",
+        "admins": [
+          "admin_M"
+        ]
+      }
+    },
+    {
+      "name": "the thief's own genesis, signed with the stolen inbox key, wins on length while that key is live",
+      "versions": [
+        "G",
+        "GP_thief_genesis_by_K1",
+        "GP2_by_T",
+        "GP3_by_T",
+        "GN_new_genesis_by_K2"
+      ],
+      "relay_records": [
+        "bind_F_K1",
+        "bind_F_K2",
+        "bind_T_KT"
+      ],
+      "expected": {
+        "tip": "GP3_by_T",
+        "epochs": 3,
+        "status": "active",
+        "admins": [
+          "admin_M",
+          "added_by_thief_T"
+        ]
+      }
+    },
+    {
+      "name": "once the inbox key is revoked, the founder's new genesis from a live device outranks every genesis that key signed",
+      "versions": [
+        "G",
+        "GP_thief_genesis_by_K1",
+        "GP2_by_T",
+        "GP3_by_T",
+        "GN_new_genesis_by_K2"
+      ],
+      "relay_records": [
+        "bind_F_K1",
+        "bind_F_K2",
+        "bind_T_KT",
+        "revoke_F_K1"
+      ],
+      "expected": {
+        "tip": "GN_new_genesis_by_K2",
+        "epochs": 1,
+        "status": "active",
+        "admins": [
+          "admin_M"
+        ]
+      }
+    },
+    {
+      "name": "a genesis whose key no record binds does not verify",
+      "versions": [
+        "C0_legacy_unbound"
+      ],
+      "relay_records": [
+        "bind_L_K3"
+      ],
+      "expected": {
+        "tip": null
+      }
+    },
+    {
+      "name": "the founder re-signs it with a new genesis for the same channel_id",
+      "versions": [
+        "C0_legacy_unbound",
+        "C1_resigned_genesis"
+      ],
+      "relay_records": [
+        "bind_L_K3"
+      ],
+      "expected": {
+        "tip": "C1_resigned_genesis",
+        "epochs": 1,
+        "status": "active",
+        "admins": []
+      }
+    },
+    {
+      "name": "a did:oc version vouched under a retired host key still verifies, and its own revocation does not undo it",
+      "versions": [
+        "D1_by_S1",
+        "D2_by_S2"
+      ],
+      "relay_records": [
+        "session_S2",
+        "revoke_S1"
+      ],
+      "jwks": "jwks_rotated",
+      "expected": {
+        "tip": "D2_by_S2",
+        "epochs": 2,
+        "status": "active",
+        "admins": []
+      }
+    },
+    {
+      "name": "a version from a stolen session device counts until the auth host revokes the device",
+      "versions": [
+        "D1_by_S1",
+        "D2_by_S2",
+        "D3_by_stolen_S3"
+      ],
+      "relay_records": [
+        "session_S2",
+        "session_S3"
+      ],
+      "jwks": "jwks_rotated",
+      "expected": {
+        "tip": "D3_by_stolen_S3",
+        "epochs": 3,
+        "status": "active",
+        "admins": []
+      }
+    },
+    {
+      "name": "after the host revokes it, the channel ends at the version before",
+      "versions": [
+        "D1_by_S1",
+        "D2_by_S2",
+        "D3_by_stolen_S3"
+      ],
+      "relay_records": [
+        "session_S2",
+        "session_S3",
+        "host_revoke_S3"
+      ],
+      "jwks": "jwks_rotated",
+      "expected": {
+        "tip": "D2_by_S2",
+        "epochs": 2,
+        "status": "active",
+        "admins": []
+      }
+    },
+    {
+      "name": "a vouch the host issued after revoking the device binds it again; the earlier one stays revoked",
+      "versions": [
+        "D1_by_S1",
+        "D2_by_S2",
+        "D3_by_stolen_S3",
+        "D4_by_S3_revouched"
+      ],
+      "relay_records": [
+        "session_S2",
+        "session_S3_revouched",
+        "host_revoke_S3"
+      ],
+      "jwks": "jwks_rotated",
+      "expected": {
+        "tip": "D4_by_S3_revouched",
+        "epochs": 3,
+        "status": "active",
+        "admins": []
+      }
+    },
+    {
+      "name": "a vouch under a retired host key, issued after it was retired, binds nothing",
+      "versions": [
+        "D1_by_S1",
+        "D2x_by_S4"
+      ],
+      "relay_records": [
+        "session_S1"
+      ],
+      "jwks": "jwks_rotated",
+      "expected": {
+        "tip": "D1_by_S1",
+        "epochs": 1,
+        "status": "active",
+        "admins": []
+      }
+    },
+    {
+      "name": "if the host dropped the retired key, that version and every later one fail",
+      "versions": [
+        "D1_by_S1",
+        "D2_by_S2"
+      ],
+      "relay_records": [
+        "session_S2"
+      ],
+      "jwks": "jwks_dropped",
+      "expected": {
+        "tip": null
+      }
+    }
+  ],
+  "notes": "admins in expected name the inputs.addresses keys. epochs counts versions from the genesis to the tip. Reproduce with the reader clock at reader_now."
+}

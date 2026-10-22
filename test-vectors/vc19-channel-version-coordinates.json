@@ -1,0 +1,725 @@
+{
+  "description": "Per-version coordinates (SPEC §8.3.1, from 0.3.0). Every version is published at d = \"oc-lock-chat-ch:\" || descriptor_id with t = channel_id and, but for the genesis, s = supersedes, so a relay that keeps only the newest event per (pubkey, kind, d) keeps every version. A reader fetches {\"kinds\":[30110],\"#t\":[channel_id]} and, for channels published before 0.3.0, the legacy d-tag, and resolves over both answers, fetching any version a supersedes names by its exact d-tag. Under a flood it also reads, one key at a time, every key the founder and admins have ever bound, revoked keys included: the founder's under #t, then forward by #s.",
+  "spec": "§8.3.1",
+  "inputs": {
+    "addresses": {
+      "founder_F": "bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq",
+      "admin_M": "bc1qha7546x08qwudehuc724np522c2n65m4sseeae"
+    },
+    "records": {
+      "bind_F_K1": {
+        "kind": 30078,
+        "tags": [
+          [
+            "d",
+            "oc-lock:device:bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq"
+          ],
+          [
+            "addr",
+            "bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq"
+          ],
+          [
+            "device_id",
+            "f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1"
+          ],
+          [
+            "device_pk",
+            "a4e09292b651c278b9772c569f5fa9bb13d906b46ab68c9df9dc2b4409f8a209"
+          ],
+          [
+            "alg",
+            "x25519"
+          ],
+          [
+            "binding_sig",
+            "AkgwRQIhAIlYxrodAtf2fpe4vaNwrRUZwx6PUHt1dvCn4+Zv2Gj2AiBoypjdVprxbtZGlPVubMuT8batUBb0ATw/UEWey3vW/AEhAo11AN1MEmhdH1aLTCtQSOhTS4czGfOo2qYStGkTLsf3"
+          ]
+        ],
+        "content": "oc-lock:device-bind:v3\naddress: bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\ndevice_pk: a4e09292b651c278b9772c569f5fa9bb13d906b46ab68c9df9dc2b4409f8a209\nnostr_pk: 5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\ndevice_id: f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1\ncreated_at: 2026-10-01T00:00:00.000Z\n",
+        "created_at": 1790812800,
+        "pubkey": "5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33",
+        "id": "ad25432b4a826a5e85d7366372ecfec0b37d0a14e3c47d6a8d409c5f2abe360f",
+        "sig": "55db3068e7f8ad51af2012ae67909ad6f4720a8c00a52fa13c0e020a0ed811e942bfcffcbeab61b88159a278986a17109e7f121954c2b2cb1ed472b803166ddd"
+      },
+      "bind_M_KM": {
+        "kind": 30078,
+        "tags": [
+          [
+            "d",
+            "oc-lock:device:bc1qha7546x08qwudehuc724np522c2n65m4sseeae"
+          ],
+          [
+            "addr",
+            "bc1qha7546x08qwudehuc724np522c2n65m4sseeae"
+          ],
+          [
+            "device_id",
+            "a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3"
+          ],
+          [
+            "device_pk",
+            "5dfedd3b6bd47f6fa28ee15d969d5bb0ea53774d488bdaf9df1c6e0124b3ef22"
+          ],
+          [
+            "alg",
+            "x25519"
+          ],
+          [
+            "binding_sig",
+            "AkgwRQIhAIWEeVD5RYyNv6FVoEQHUJLswExqReX5ZITkR0UkhO/3AiAIE5XJaXbDqT9p1KvoGDcbTkNKWl3epTmHc2faFPOKYAEhA+EfQK9rQfSUv7wnxHoXjOVy6LjKaHzGfhKYUUhhrF5I"
+          ]
+        ],
+        "content": "oc-lock:device-bind:v3\naddress: bc1qha7546x08qwudehuc724np522c2n65m4sseeae\ndevice_pk: 5dfedd3b6bd47f6fa28ee15d969d5bb0ea53774d488bdaf9df1c6e0124b3ef22\nnostr_pk: 1f13d2c4bdb669ffb6bfee6872339392fd85a5d569269d45f57b0f583d21176b\ndevice_id: a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3\ncreated_at: 2026-10-01T00:00:00.000Z\n",
+        "created_at": 1790812800,
+        "pubkey": "1f13d2c4bdb669ffb6bfee6872339392fd85a5d569269d45f57b0f583d21176b",
+        "id": "1c0141204b326a7a13718eb261698d1d66cff5f3f28ebd977d31c57f78ba9c1a",
+        "sig": "c5c809d37a79c8009b54e37aac37b9c83cd01c3653973d78a7d631e400fb428bd8adf2e36d8ec00706b912ffc0f164220b46ec23ecb4fb6f93f318f262d0f1f9"
+      },
+      "bind_M_KM2": {
+        "kind": 30078,
+        "tags": [
+          [
+            "d",
+            "oc-lock:device:bc1qha7546x08qwudehuc724np522c2n65m4sseeae"
+          ],
+          [
+            "addr",
+            "bc1qha7546x08qwudehuc724np522c2n65m4sseeae"
+          ],
+          [
+            "device_id",
+            "a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4"
+          ],
+          [
+            "device_pk",
+            "97c3b10b4d6c133a78ea5dcc1cf6421d3f81ae37b1f628ce14ca6fce7730f333"
+          ],
+          [
+            "alg",
+            "x25519"
+          ],
+          [
+            "binding_sig",
+            "AkgwRQIhAIgNgQ0GEkxcjSw0pzsQYkZeDXQszS5PHCeDsxedf70iAiAjSW3/Y0VpCdEY5oET2CyMV3JZQoT2B822U861DuEM+AEhA+EfQK9rQfSUv7wnxHoXjOVy6LjKaHzGfhKYUUhhrF5I"
+          ]
+        ],
+        "content": "oc-lock:device-bind:v3\naddress: bc1qha7546x08qwudehuc724np522c2n65m4sseeae\ndevice_pk: 97c3b10b4d6c133a78ea5dcc1cf6421d3f81ae37b1f628ce14ca6fce7730f333\nnostr_pk: 2f177f9cd3c724c7d7df90132e30447d3b805434834e0acb48b12aef8de66f40\ndevice_id: a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4\ncreated_at: 2026-10-08T00:00:00.000Z\n",
+        "created_at": 1791417600,
+        "pubkey": "2f177f9cd3c724c7d7df90132e30447d3b805434834e0acb48b12aef8de66f40",
+        "id": "841ff24f9af9e905a58494d07edecf9781519b8fea23d9ee65991d18aacf7fd6",
+        "sig": "886f359cc2af51f397b0ae017d28ba94cc3e72e4e95e475f65bcffbcd73ff08a4fe7643b9e19d8da6794e95fafeadbfa120bc63dbd633b71ccc281956f4368ae"
+      },
+      "revoke_M_KM": {
+        "kind": 30078,
+        "tags": [
+          [
+            "d",
+            "oc-lock:device:bc1qha7546x08qwudehuc724np522c2n65m4sseeae"
+          ],
+          [
+            "addr",
+            "bc1qha7546x08qwudehuc724np522c2n65m4sseeae"
+          ],
+          [
+            "device_id",
+            "a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3"
+          ],
+          [
+            "device_pk",
+            "revoked"
+          ],
+          [
+            "alg",
+            "x25519"
+          ],
+          [
+            "binding_sig",
+            "AkgwRQIhAOp1EHnoT0ESJ3Qo10sSYvF8M/L23gowNImCl3I/ZoUzAiBUk8+pnpzZnqbnhsfwtGD3KW4QYCQf3OYrTTSneciF/AEhA+EfQK9rQfSUv7wnxHoXjOVy6LjKaHzGfhKYUUhhrF5I"
+          ]
+        ],
+        "content": "oc-lock:device-revoke:v2\naddress: bc1qha7546x08qwudehuc724np522c2n65m4sseeae\ndevice_id: a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3\nrevoked_at: 2026-10-10T00:00:00.000Z\n",
+        "created_at": 1791590400,
+        "pubkey": "1f13d2c4bdb669ffb6bfee6872339392fd85a5d569269d45f57b0f583d21176b",
+        "id": "cf625f410bebaf07a64e9b7649a4c2d56d495d0dc81ac0a9d20202055d80bd10",
+        "sig": "f2f07b2e0542d913b989cf600038ef4b06fede9110337aebb05670a640dcfba4b13221ca5c9d82d9c824636c8993ea9dd61bc86992eaf7b433c4ed98b87aa2d0"
+      }
+    },
+    "versions": {
+      "G": {
+        "kind": 30110,
+        "created_at": 1790899200,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:d8129b7f754c31ae827f4b0cd0a6005ae1cc5c9f75241e6d349680cf6be927de"
+          ],
+          [
+            "t",
+            "c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352"
+          ],
+          [
+            "descriptor_id",
+            "d8129b7f754c31ae827f4b0cd0a6005ae1cc5c9f75241e6d349680cf6be927de"
+          ],
+          [
+            "binding",
+            "{\"kind\":30078,\"tags\":[[\"d\",\"oc-lock:device:bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\"],[\"addr\",\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\"],[\"device_id\",\"f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1\"],[\"device_pk\",\"a4e09292b651c278b9772c569f5fa9bb13d906b46ab68c9df9dc2b4409f8a209\"],[\"alg\",\"x25519\"],[\"binding_sig\",\"AkgwRQIhAIlYxrodAtf2fpe4vaNwrRUZwx6PUHt1dvCn4+Zv2Gj2AiBoypjdVprxbtZGlPVubMuT8batUBb0ATw/UEWey3vW/AEhAo11AN1MEmhdH1aLTCtQSOhTS4czGfOo2qYStGkTLsf3\"]],\"content\":\"oc-lock:device-bind:v3\\naddress: bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\\ndevice_pk: a4e09292b651c278b9772c569f5fa9bb13d906b46ab68c9df9dc2b4409f8a209\\nnostr_pk: 5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\\ndevice_id: f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1\\ncreated_at: 2026-10-01T00:00:00.000Z\\n\",\"created_at\":1790812800,\"pubkey\":\"5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\",\"id\":\"ad25432b4a826a5e85d7366372ecfec0b37d0a14e3c47d6a8d409c5f2abe360f\",\"sig\":\"55db3068e7f8ad51af2012ae67909ad6f4720a8c00a52fa13c0e020a0ed811e942bfcffcbeab61b88159a278986a17109e7f121954c2b2cb1ed472b803166ddd\"}"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352\",\"slug\":\"town\",\"founder_address\":\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\",\"founder_inbox_pubkey\":\"5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[\"bc1qha7546x08qwudehuc724np522c2n65m4sseeae\"],\"moderators\":[],\"title\":\"Town\",\"description\":\"\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1790899200,\"supersedes\":null}",
+        "pubkey": "5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33",
+        "id": "4062e38f0053962f8720ab82fc3d532c61dddc1881698d5d35bf95654bee254c",
+        "sig": "424957df1585fb3c1289a1b323a50f9583e0fad0f20ab26e44a5c5c197d6c5bd1193c108a8338293e2dcd1fdc0da97cef5fc96df41b0ee0b2e1010df0d20df62"
+      },
+      "A2_by_M": {
+        "kind": 30110,
+        "created_at": 1790985600,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:3b41211f2d58492597fd9801106c2cce30896022798e941cb38a3621c4c08cd7"
+          ],
+          [
+            "t",
+            "c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352"
+          ],
+          [
+            "s",
+            "d8129b7f754c31ae827f4b0cd0a6005ae1cc5c9f75241e6d349680cf6be927de"
+          ],
+          [
+            "descriptor_id",
+            "3b41211f2d58492597fd9801106c2cce30896022798e941cb38a3621c4c08cd7"
+          ],
+          [
+            "binding",
+            "{\"kind\":30078,\"tags\":[[\"d\",\"oc-lock:device:bc1qha7546x08qwudehuc724np522c2n65m4sseeae\"],[\"addr\",\"bc1qha7546x08qwudehuc724np522c2n65m4sseeae\"],[\"device_id\",\"a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3\"],[\"device_pk\",\"5dfedd3b6bd47f6fa28ee15d969d5bb0ea53774d488bdaf9df1c6e0124b3ef22\"],[\"alg\",\"x25519\"],[\"binding_sig\",\"AkgwRQIhAIWEeVD5RYyNv6FVoEQHUJLswExqReX5ZITkR0UkhO/3AiAIE5XJaXbDqT9p1KvoGDcbTkNKWl3epTmHc2faFPOKYAEhA+EfQK9rQfSUv7wnxHoXjOVy6LjKaHzGfhKYUUhhrF5I\"]],\"content\":\"oc-lock:device-bind:v3\\naddress: bc1qha7546x08qwudehuc724np522c2n65m4sseeae\\ndevice_pk: 5dfedd3b6bd47f6fa28ee15d969d5bb0ea53774d488bdaf9df1c6e0124b3ef22\\nnostr_pk: 1f13d2c4bdb669ffb6bfee6872339392fd85a5d569269d45f57b0f583d21176b\\ndevice_id: a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3\\ncreated_at: 2026-10-01T00:00:00.000Z\\n\",\"created_at\":1790812800,\"pubkey\":\"1f13d2c4bdb669ffb6bfee6872339392fd85a5d569269d45f57b0f583d21176b\",\"id\":\"1c0141204b326a7a13718eb261698d1d66cff5f3f28ebd977d31c57f78ba9c1a\",\"sig\":\"c5c809d37a79c8009b54e37aac37b9c83cd01c3653973d78a7d631e400fb428bd8adf2e36d8ec00706b912ffc0f164220b46ec23ecb4fb6f93f318f262d0f1f9\"}"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352\",\"slug\":\"town\",\"founder_address\":\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\",\"founder_inbox_pubkey\":\"5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[\"bc1qha7546x08qwudehuc724np522c2n65m4sseeae\"],\"moderators\":[],\"title\":\"Town\",\"description\":\"edited by M\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1790985600,\"supersedes\":\"d8129b7f754c31ae827f4b0cd0a6005ae1cc5c9f75241e6d349680cf6be927de\"}",
+        "pubkey": "1f13d2c4bdb669ffb6bfee6872339392fd85a5d569269d45f57b0f583d21176b",
+        "id": "dd775c7ae91bc1e53d63fdc48ef72cf3b60b57198730b0aa376cc70345dc7d94",
+        "sig": "b8550aedb260fcca2c5886b877e580d98ed4f702d3a75275989718084243f23c9b1f5090a1cb2b521b78bd830fd90014ebfa96eac938f178f78b41a45009fb72"
+      },
+      "A3_close_by_F": {
+        "kind": 30110,
+        "created_at": 1791072000,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:1660183dbbd1145e88862379007e3cfd41d17f85d4f570a9c355eb4ccc455ef2"
+          ],
+          [
+            "t",
+            "c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352"
+          ],
+          [
+            "s",
+            "3b41211f2d58492597fd9801106c2cce30896022798e941cb38a3621c4c08cd7"
+          ],
+          [
+            "descriptor_id",
+            "1660183dbbd1145e88862379007e3cfd41d17f85d4f570a9c355eb4ccc455ef2"
+          ],
+          [
+            "binding",
+            "{\"kind\":30078,\"tags\":[[\"d\",\"oc-lock:device:bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\"],[\"addr\",\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\"],[\"device_id\",\"f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1\"],[\"device_pk\",\"a4e09292b651c278b9772c569f5fa9bb13d906b46ab68c9df9dc2b4409f8a209\"],[\"alg\",\"x25519\"],[\"binding_sig\",\"AkgwRQIhAIlYxrodAtf2fpe4vaNwrRUZwx6PUHt1dvCn4+Zv2Gj2AiBoypjdVprxbtZGlPVubMuT8batUBb0ATw/UEWey3vW/AEhAo11AN1MEmhdH1aLTCtQSOhTS4czGfOo2qYStGkTLsf3\"]],\"content\":\"oc-lock:device-bind:v3\\naddress: bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\\ndevice_pk: a4e09292b651c278b9772c569f5fa9bb13d906b46ab68c9df9dc2b4409f8a209\\nnostr_pk: 5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\\ndevice_id: f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1f1\\ncreated_at: 2026-10-01T00:00:00.000Z\\n\",\"created_at\":1790812800,\"pubkey\":\"5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\",\"id\":\"ad25432b4a826a5e85d7366372ecfec0b37d0a14e3c47d6a8d409c5f2abe360f\",\"sig\":\"55db3068e7f8ad51af2012ae67909ad6f4720a8c00a52fa13c0e020a0ed811e942bfcffcbeab61b88159a278986a17109e7f121954c2b2cb1ed472b803166ddd\"}"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352\",\"slug\":\"town\",\"founder_address\":\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\",\"founder_inbox_pubkey\":\"5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[],\"moderators\":[],\"title\":\"Town\",\"description\":\"edited by M\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1791072000,\"supersedes\":\"3b41211f2d58492597fd9801106c2cce30896022798e941cb38a3621c4c08cd7\",\"status\":\"closed\"}",
+        "pubkey": "5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33",
+        "id": "aadd4bb5b0cc94ffb4cf79f728edcb05bc6c2cd53778e4ca8dc97eecb62424a6",
+        "sig": "6263318f70e1e8e5148e10449cc2ec52bb56b45907a7241a8afd09009f0a057164a9e3c28c5f6ca38cf860ffd30351952184796d7bfae7b7656e62f6d4024948"
+      },
+      "R3_by_M_KM2": {
+        "kind": 30110,
+        "created_at": 1791504000,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:9fc351e10ba668f82b05a946ed3fb3c84488b3c889f5abbbb0b6dc9b818b9e42"
+          ],
+          [
+            "t",
+            "c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352"
+          ],
+          [
+            "s",
+            "3b41211f2d58492597fd9801106c2cce30896022798e941cb38a3621c4c08cd7"
+          ],
+          [
+            "descriptor_id",
+            "9fc351e10ba668f82b05a946ed3fb3c84488b3c889f5abbbb0b6dc9b818b9e42"
+          ],
+          [
+            "binding",
+            "{\"kind\":30078,\"tags\":[[\"d\",\"oc-lock:device:bc1qha7546x08qwudehuc724np522c2n65m4sseeae\"],[\"addr\",\"bc1qha7546x08qwudehuc724np522c2n65m4sseeae\"],[\"device_id\",\"a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4\"],[\"device_pk\",\"97c3b10b4d6c133a78ea5dcc1cf6421d3f81ae37b1f628ce14ca6fce7730f333\"],[\"alg\",\"x25519\"],[\"binding_sig\",\"AkgwRQIhAIgNgQ0GEkxcjSw0pzsQYkZeDXQszS5PHCeDsxedf70iAiAjSW3/Y0VpCdEY5oET2CyMV3JZQoT2B822U861DuEM+AEhA+EfQK9rQfSUv7wnxHoXjOVy6LjKaHzGfhKYUUhhrF5I\"]],\"content\":\"oc-lock:device-bind:v3\\naddress: bc1qha7546x08qwudehuc724np522c2n65m4sseeae\\ndevice_pk: 97c3b10b4d6c133a78ea5dcc1cf6421d3f81ae37b1f628ce14ca6fce7730f333\\nnostr_pk: 2f177f9cd3c724c7d7df90132e30447d3b805434834e0acb48b12aef8de66f40\\ndevice_id: a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4a4\\ncreated_at: 2026-10-08T00:00:00.000Z\\n\",\"created_at\":1791417600,\"pubkey\":\"2f177f9cd3c724c7d7df90132e30447d3b805434834e0acb48b12aef8de66f40\",\"id\":\"841ff24f9af9e905a58494d07edecf9781519b8fea23d9ee65991d18aacf7fd6\",\"sig\":\"886f359cc2af51f397b0ae017d28ba94cc3e72e4e95e475f65bcffbcd73ff08a4fe7643b9e19d8da6794e95fafeadbfa120bc63dbd633b71ccc281956f4368ae\"}"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352\",\"slug\":\"town\",\"founder_address\":\"bc1qan5dp8qdayxfs4wtflhzaesjlxp3mq3808yssq\",\"founder_inbox_pubkey\":\"5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[\"bc1qha7546x08qwudehuc724np522c2n65m4sseeae\"],\"moderators\":[],\"title\":\"Town\",\"description\":\"edited by M\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1791504000,\"supersedes\":\"3b41211f2d58492597fd9801106c2cce30896022798e941cb38a3621c4c08cd7\"}",
+        "pubkey": "2f177f9cd3c724c7d7df90132e30447d3b805434834e0acb48b12aef8de66f40",
+        "id": "4bcd2067e65dfe9a30a6fac139aea5f2125d4cde5b0f0a611dfce1cdc11c8858",
+        "sig": "62373275b8243d71a3b2ecb571dd2983021f8cc4280116f7fe0b3af18f747d1de2e97b4292a8bf2658eadf7e34c08bed30316008e739f43044c1ba117b90437b"
+      },
+      "C0_legacy": {
+        "kind": 30110,
+        "created_at": 1781049600,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:3Z-BZZDRbjUtj--F2lE4Ayzmdi-4GO_q5xmUFY1PwX4"
+          ],
+          [
+            "descriptor_id",
+            "aa6f7603bd8c1e031d07efc2073c8228899126d7fd4fcd1a6cf141b6b193ef89"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"02a8d5014ebe2c75c500418e55a64495b6eb03ac9d6a4f3ff51807da81cd60eb\",\"slug\":\"old\",\"founder_address\":\"bc1qt95lqr64arnwv42sgkd3n9q0ddpmxzj8hlqu42\",\"founder_inbox_pubkey\":\"af9b90e1a1f716cdb7529a7a28f0cfb3284519648a1b1e2de2219385dbc7a621\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[],\"moderators\":[],\"title\":\"Town\",\"description\":\"\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1781049600,\"supersedes\":null}",
+        "pubkey": "af9b90e1a1f716cdb7529a7a28f0cfb3284519648a1b1e2de2219385dbc7a621",
+        "id": "dbe7935c2fc1f052d2bdf203e80a239c82151bfe107f9d6a0db466468dbbdd04",
+        "sig": "a3391c1a726bb6e439a7275e61a7909cf01ba2fc33d9f5da6bb57a7ba9591c2dcec0bda80da4de9a790cdd540964ce901e03694dc32e13b2b0fdc8aa5714dccd"
+      },
+      "C1_resigned_genesis": {
+        "kind": 30110,
+        "created_at": 1792454400,
+        "tags": [
+          [
+            "d",
+            "oc-lock-chat-ch:1c06502a1aa2e5011c878e0b4b3a9b87e8e1a9f9ae505c57efac8c57d9a86e6d"
+          ],
+          [
+            "t",
+            "02a8d5014ebe2c75c500418e55a64495b6eb03ac9d6a4f3ff51807da81cd60eb"
+          ],
+          [
+            "descriptor_id",
+            "1c06502a1aa2e5011c878e0b4b3a9b87e8e1a9f9ae505c57efac8c57d9a86e6d"
+          ],
+          [
+            "binding",
+            "{\"kind\":30078,\"tags\":[[\"d\",\"oc-lock:device:bc1qt95lqr64arnwv42sgkd3n9q0ddpmxzj8hlqu42\"],[\"addr\",\"bc1qt95lqr64arnwv42sgkd3n9q0ddpmxzj8hlqu42\"],[\"device_id\",\"b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5\"],[\"device_pk\",\"50a61409b1ddd0325e9b16b700e719e9772c07000b1bd7786e907c653d20495d\"],[\"alg\",\"x25519\"],[\"binding_sig\",\"AkgwRQIhAI9kTumJ4sOnEhGKmYB9M7VjyVgNqysAg+1/RIILMTX5AiBv8pFbPpA35ToGFeQ5jeOqcO7SYl9s06KCIj+wQv7cWwEhA1xODexyFeJoM5OHMOXlBapiUE2oW6VxBqRrWiQE/J2O\"]],\"content\":\"oc-lock:device-bind:v3\\naddress: bc1qt95lqr64arnwv42sgkd3n9q0ddpmxzj8hlqu42\\ndevice_pk: 50a61409b1ddd0325e9b16b700e719e9772c07000b1bd7786e907c653d20495d\\nnostr_pk: 33e2759b81d433fe22bb93109956507eeac18776c83177a4564256d084b6e274\\ndevice_id: b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5\\ncreated_at: 2026-10-01T00:00:00.000Z\\n\",\"created_at\":1790812800,\"pubkey\":\"33e2759b81d433fe22bb93109956507eeac18776c83177a4564256d084b6e274\",\"id\":\"eecbd65691eb62814522cac793e7637d5e6d2a693d536738053882bba63d456d\",\"sig\":\"26495cbe22674b32709d21e797f7bf71bf1c902dfdf63685b90613966a1ef84a571f6df79cb38a00d760e291b1afa0b57229fa9c8c67b31215de1e33903010b4\"}"
+          ]
+        ],
+        "content": "{\"v\":1,\"channel_id\":\"02a8d5014ebe2c75c500418e55a64495b6eb03ac9d6a4f3ff51807da81cd60eb\",\"slug\":\"old\",\"founder_address\":\"bc1qt95lqr64arnwv42sgkd3n9q0ddpmxzj8hlqu42\",\"founder_inbox_pubkey\":\"33e2759b81d433fe22bb93109956507eeac18776c83177a4564256d084b6e274\",\"read\":\"public\",\"encryption\":null,\"write\":{\"policy\":\"founder\",\"utxo_floor_confs\":0,\"utxo_floor_sats\":0,\"allowlist_root\":null,\"rooted\":false},\"admins\":[],\"moderators\":[],\"title\":\"Town\",\"description\":\"\",\"avatar\":null,\"rules\":null,\"directory_opt_in\":false,\"created_at\":1792454400,\"supersedes\":null}",
+        "pubkey": "33e2759b81d433fe22bb93109956507eeac18776c83177a4564256d084b6e274",
+        "id": "7ec137a11f1270e3b824237a2f860a98c8d0adfe42f950470eaac2325c88561c",
+        "sig": "d324408c3af594130ab06249106c065b3ee80327ecbbf69a41cfc8da63ba2cbd8ceb911b0f59884518209a3dd8e4adb385fea303d9400d8f3df3742c741e88cc"
+      }
+    }
+  },
+  "expected": {
+    "town": {
+      "channel_id": "c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352",
+      "t_filter": {
+        "kinds": [
+          30110
+        ],
+        "#t": [
+          "c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352"
+        ]
+      },
+      "legacy_d_filter": {
+        "kinds": [
+          30110
+        ],
+        "#d": [
+          "oc-lock-chat-ch:l897yBvQWozkDy_Mxj_N__279XXTmxsuklvZJsKu7C0"
+        ]
+      },
+      "d_tags": {
+        "G": "oc-lock-chat-ch:d8129b7f754c31ae827f4b0cd0a6005ae1cc5c9f75241e6d349680cf6be927de",
+        "A2_by_M": "oc-lock-chat-ch:3b41211f2d58492597fd9801106c2cce30896022798e941cb38a3621c4c08cd7",
+        "A3_close_by_F": "oc-lock-chat-ch:1660183dbbd1145e88862379007e3cfd41d17f85d4f570a9c355eb4ccc455ef2",
+        "R3_by_M_KM2": "oc-lock-chat-ch:9fc351e10ba668f82b05a946ed3fb3c84488b3c889f5abbbb0b6dc9b818b9e42"
+      },
+      "t_filter_matches": [
+        "G",
+        "A2_by_M",
+        "A3_close_by_F",
+        "R3_by_M_KM2"
+      ],
+      "legacy_d_filter_matches": []
+    },
+    "old": {
+      "channel_id": "02a8d5014ebe2c75c500418e55a64495b6eb03ac9d6a4f3ff51807da81cd60eb",
+      "t_filter": {
+        "kinds": [
+          30110
+        ],
+        "#t": [
+          "02a8d5014ebe2c75c500418e55a64495b6eb03ac9d6a4f3ff51807da81cd60eb"
+        ]
+      },
+      "legacy_d_filter": {
+        "kinds": [
+          30110
+        ],
+        "#d": [
+          "oc-lock-chat-ch:3Z-BZZDRbjUtj--F2lE4Ayzmdi-4GO_q5xmUFY1PwX4"
+        ]
+      },
+      "t_filter_matches": [
+        "C1_resigned_genesis"
+      ],
+      "legacy_d_filter_matches": [
+        "C0_legacy"
+      ]
+    },
+    "kept_by_a_latest_per_coordinate_relay": [
+      "G",
+      "A2_by_M",
+      "A3_close_by_F",
+      "R3_by_M_KM2",
+      "C0_legacy",
+      "C1_resigned_genesis"
+    ],
+    "walk_back": {
+      "read": "A2_by_M",
+      "missing": "G",
+      "d_filter": {
+        "kinds": [
+          30110
+        ],
+        "#d": [
+          "oc-lock-chat-ch:d8129b7f754c31ae827f4b0cd0a6005ae1cc5c9f75241e6d349680cf6be927de"
+        ]
+      }
+    },
+    "flood": {
+      "junk": "Newer than every version, from keys no record binds: 2,500 kind-30110 events under #t = channel_id, 2,500 under #s = the genesis id, and 2,500 more under #t that parse as versions of this channel, each naming a parent no relay holds. The reference reader reads 2,000 events per relay under #t, so its open read stops at its bound.",
+      "founder": "founder_F",
+      "when_founder_unknown": "not_read",
+      "cases": [
+        {
+          "name": "an admin's version is found by the founder's keys and the walk by s",
+          "versions": [
+            "G",
+            "A2_by_M"
+          ],
+          "relay_records": [
+            "bind_F_K1",
+            "bind_M_KM"
+          ],
+          "bound_keys": {
+            "founder_F": [
+              "5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33"
+            ],
+            "admin_M": [
+              "1f13d2c4bdb669ffb6bfee6872339392fd85a5d569269d45f57b0f583d21176b"
+            ]
+          },
+          "reads": [
+            {
+              "from": "founder",
+              "filter": {
+                "kinds": [
+                  30110
+                ],
+                "#t": [
+                  "c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352"
+                ],
+                "authors": [
+                  "5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33"
+                ],
+                "limit": 500
+              },
+              "matches": [
+                "G"
+              ]
+            },
+            {
+              "from": "G",
+              "filter": {
+                "kinds": [
+                  30110
+                ],
+                "#s": [
+                  "d8129b7f754c31ae827f4b0cd0a6005ae1cc5c9f75241e6d349680cf6be927de"
+                ],
+                "authors": [
+                  "5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33"
+                ],
+                "limit": 500
+              },
+              "matches": []
+            },
+            {
+              "from": "G",
+              "filter": {
+                "kinds": [
+                  30110
+                ],
+                "#s": [
+                  "d8129b7f754c31ae827f4b0cd0a6005ae1cc5c9f75241e6d349680cf6be927de"
+                ],
+                "authors": [
+                  "1f13d2c4bdb669ffb6bfee6872339392fd85a5d569269d45f57b0f583d21176b"
+                ],
+                "limit": 500
+              },
+              "matches": [
+                "A2_by_M"
+              ]
+            },
+            {
+              "from": "A2_by_M",
+              "filter": {
+                "kinds": [
+                  30110
+                ],
+                "#s": [
+                  "3b41211f2d58492597fd9801106c2cce30896022798e941cb38a3621c4c08cd7"
+                ],
+                "authors": [
+                  "5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33"
+                ],
+                "limit": 500
+              },
+              "matches": []
+            },
+            {
+              "from": "A2_by_M",
+              "filter": {
+                "kinds": [
+                  30110
+                ],
+                "#s": [
+                  "3b41211f2d58492597fd9801106c2cce30896022798e941cb38a3621c4c08cd7"
+                ],
+                "authors": [
+                  "1f13d2c4bdb669ffb6bfee6872339392fd85a5d569269d45f57b0f583d21176b"
+                ],
+                "limit": 500
+              },
+              "matches": []
+            }
+          ],
+          "s_walks": [
+            "G",
+            "A2_by_M"
+          ],
+          "expected": {
+            "tip": "A2_by_M",
+            "epochs": 2
+          }
+        },
+        {
+          "name": "after the admin rotates, the version its revoked key signed is still read, and the chain reaches the re-signed version",
+          "versions": [
+            "G",
+            "A2_by_M",
+            "R3_by_M_KM2"
+          ],
+          "relay_records": [
+            "bind_F_K1",
+            "bind_M_KM2",
+            "revoke_M_KM"
+          ],
+          "bound_keys": {
+            "founder_F": [
+              "5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33"
+            ],
+            "admin_M": [
+              "1f13d2c4bdb669ffb6bfee6872339392fd85a5d569269d45f57b0f583d21176b",
+              "2f177f9cd3c724c7d7df90132e30447d3b805434834e0acb48b12aef8de66f40"
+            ]
+          },
+          "live_keys": {
+            "founder_F": [
+              "5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33"
+            ],
+            "admin_M": [
+              "2f177f9cd3c724c7d7df90132e30447d3b805434834e0acb48b12aef8de66f40"
+            ]
+          },
+          "reads": [
+            {
+              "from": "founder",
+              "filter": {
+                "kinds": [
+                  30110
+                ],
+                "#t": [
+                  "c2100c44bbadfc4438144f9f3689a41da7bfa36c3a1eb47948080f1d238b4352"
+                ],
+                "authors": [
+                  "5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33"
+                ],
+                "limit": 500
+              },
+              "matches": [
+                "G"
+              ]
+            },
+            {
+              "from": "G",
+              "filter": {
+                "kinds": [
+                  30110
+                ],
+                "#s": [
+                  "d8129b7f754c31ae827f4b0cd0a6005ae1cc5c9f75241e6d349680cf6be927de"
+                ],
+                "authors": [
+                  "5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33"
+                ],
+                "limit": 500
+              },
+              "matches": []
+            },
+            {
+              "from": "G",
+              "filter": {
+                "kinds": [
+                  30110
+                ],
+                "#s": [
+                  "d8129b7f754c31ae827f4b0cd0a6005ae1cc5c9f75241e6d349680cf6be927de"
+                ],
+                "authors": [
+                  "1f13d2c4bdb669ffb6bfee6872339392fd85a5d569269d45f57b0f583d21176b"
+                ],
+                "limit": 500
+              },
+              "matches": [
+                "A2_by_M"
+              ]
+            },
+            {
+              "from": "G",
+              "filter": {
+                "kinds": [
+                  30110
+                ],
+                "#s": [
+                  "d8129b7f754c31ae827f4b0cd0a6005ae1cc5c9f75241e6d349680cf6be927de"
+                ],
+                "authors": [
+                  "2f177f9cd3c724c7d7df90132e30447d3b805434834e0acb48b12aef8de66f40"
+                ],
+                "limit": 500
+              },
+              "matches": []
+            },
+            {
+              "from": "A2_by_M",
+              "filter": {
+                "kinds": [
+                  30110
+                ],
+                "#s": [
+                  "3b41211f2d58492597fd9801106c2cce30896022798e941cb38a3621c4c08cd7"
+                ],
+                "authors": [
+                  "5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33"
+                ],
+                "limit": 500
+              },
+              "matches": []
+            },
+            {
+              "from": "A2_by_M",
+              "filter": {
+                "kinds": [
+                  30110
+                ],
+                "#s": [
+                  "3b41211f2d58492597fd9801106c2cce30896022798e941cb38a3621c4c08cd7"
+                ],
+                "authors": [
+                  "1f13d2c4bdb669ffb6bfee6872339392fd85a5d569269d45f57b0f583d21176b"
+                ],
+                "limit": 500
+              },
+              "matches": []
+            },
+            {
+              "from": "A2_by_M",
+              "filter": {
+                "kinds": [
+                  30110
+                ],
+                "#s": [
+                  "3b41211f2d58492597fd9801106c2cce30896022798e941cb38a3621c4c08cd7"
+                ],
+                "authors": [
+                  "2f177f9cd3c724c7d7df90132e30447d3b805434834e0acb48b12aef8de66f40"
+                ],
+                "limit": 500
+              },
+              "matches": [
+                "R3_by_M_KM2"
+              ]
+            },
+            {
+              "from": "R3_by_M_KM2",
+              "filter": {
+                "kinds": [
+                  30110
+                ],
+                "#s": [
+                  "9fc351e10ba668f82b05a946ed3fb3c84488b3c889f5abbbb0b6dc9b818b9e42"
+                ],
+                "authors": [
+                  "5db8a795ec6fa54333c127f525c4c3d5a78e2f036f279f375933bf39f2734a33"
+                ],
+                "limit": 500
+              },
+              "matches": []
+            },
+            {
+              "from": "R3_by_M_KM2",
+              "filter": {
+                "kinds": [
+                  30110
+                ],
+                "#s": [
+                  "9fc351e10ba668f82b05a946ed3fb3c84488b3c889f5abbbb0b6dc9b818b9e42"
+                ],
+                "authors": [
+                  "1f13d2c4bdb669ffb6bfee6872339392fd85a5d569269d45f57b0f583d21176b"
+                ],
+                "limit": 500
+              },
+              "matches": []
+            },
+            {
+              "from": "R3_by_M_KM2",
+              "filter": {
+                "kinds": [
+                  30110
+                ],
+                "#s": [
+                  "9fc351e10ba668f82b05a946ed3fb3c84488b3c889f5abbbb0b6dc9b818b9e42"
+                ],
+                "authors": [
+                  "2f177f9cd3c724c7d7df90132e30447d3b805434834e0acb48b12aef8de66f40"
+                ],
+                "limit": 500
+              },
+              "matches": []
+            }
+          ],
+          "s_walks": [
+            "G",
+            "A2_by_M",
+            "R3_by_M_KM2"
+          ],
+          "expected": {
+            "tip": "R3_by_M_KM2",
+            "epochs": 3
+          },
+          "with_live_keys_only": {
+            "tip": "G",
+            "epochs": 1
+          },
+          "with_bind_record_keys_only": {
+            "tip": "G",
+            "epochs": 1
+          }
+        }
+      ]
+    }
+  },
+  "notes": "flood: the founder is founder_address of any version whose founder and slug derive the channel_id, or the address the reader came by. bound_keys are every inbox key the relay_records bind to each role holder, revoked or not, from the bind records and the keys that carried each verified revocation; reads lists every read the reader makes, one key each: the founder's keys under #t, then from each version walked, each key of the founder and of the admins that version names under #s. matches are the case's versions each filter returns; the junk matches none of the role holders' keys. s_walks are the versions walked from: none of the junk, since only those reads return versions to walk from. In the rotation case A2_by_M is signed by KM, which M revoked from KM itself after re-signing from KM2. That revocation has the pubkey, kind and d of bind_M_KM, so a relay that keeps the newest event per (pubkey, kind, d) holds it instead of bind_M_KM, as relay_records shows: KM is found as the key that carried the revocation. An earlier version stands on its binding, so the chain is G, A2_by_M, R3_by_M_KM2. Read with live keys only, or with keys from bind records only, the walk from G finds nothing and the reader would show G as current. Without the founder the reader has only the open read, which the junk fills to its bound, so it reports the channel as not read. walk_back: a reader that read A2_by_M but not the version it supersedes fetches that one by its exact d-tag. G and A3_close_by_F are signed by the same key; with one shared d-tag a relay that keeps the newest event per (pubkey, kind, d) would keep only A3, and the chain could not be walked back to G. With per-version d-tags it keeps both."
+}

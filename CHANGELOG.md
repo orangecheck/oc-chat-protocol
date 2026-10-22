@@ -4,6 +4,22 @@ All notable changes to the OC Chat protocol.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.3.0] — 2026-10-22
+
+Wire change for publishers of channel descriptors. Readers keep reading channels published before it.
+
+### Changed
+- **§8.3.1 one coordinate per descriptor version.** Each version of a kind-30110 descriptor, the genesis included, is published at `d = "oc-lock-chat-ch:" || descriptor_id` with a `t` tag equal to `channel_id`, and every version but the genesis with an `s` tag equal to `supersedes`. A reader fetches every version by `#t`, paging with `until` up to a stated bound, fetches any version a `supersedes` names by its exact d-tag, and reads the legacy salted d-tag for channels published before 0.3.0. It should also read the versions each of the founder's keys signed under `#t`, and walk forward from them by `#s` with each key of the founder and the admins each version names, one key per read, revoked keys included; it walks forward only from versions those reads returned. When an open read stops at its bound, the reader reports that the channel could not be read, never that it does not exist, unless a chain resolves and those reads were complete.
+- **§8.3.1 version bindings.** Every version event carries, in a `binding` tag, the kind-30078 device record that binds its key (an OC Lock v3 record, or a §8.6 session record with its vouch). A version with a later version after it on the chain is authorized by that binding; the last version also needs the binding to be live. A founder can re-sign a channel with a new genesis for the same `channel_id` when no version verifies or when the device holding `founder_inbox_pubkey` is revoked, and a client republishes the versions it signed before 0.3.0 at their own coordinate.
+- **§8.3.1 fork rule.** At a fork, and among the geneses of one `channel_id`, a version the founder signed with a live binding ranks first, one the founder signed with a binding since revoked second, any other third; branches through a lower-ranked version are overruled.
+- **§8.3.1 revoking a device.** A routine rotation re-signs the channels the device signed last. A device that may be in someone else's hands is never re-signed as it stands: the client shows every version it signed, republishes from a live device the confirmed versions it signed, and supersedes the confirmed version, or starts a new genesis when that device holds `founder_inbox_pubkey`.
+- **§8.3.8 close.** A client MUST NOT request NIP-09 deletion of any descriptor version; the close is itself a version.
+- **§8.6.** The auth host keeps every key it has signed vouches with in its JWKS, marked retired; a retired key verifies only a vouch issued before its `retired_at`, and a key that may be compromised is removed, never retired. A session device is revoked by its own key, or by the auth host with a signed `oc-chat:device-revoke:v1` statement that retires every bind of that device vouched at or before its `revoked_at` (both times the host's).
+- **§10, §11, §14** follow. **`vc14`** adds the version d-tag and `t` tag; **`vc15`** gives each version its own d-tag and `s` tag.
+
+### Added
+- **`vc19`** (per-version coordinates, and reading an admin's versions under thousands of newer events, one signed with a key since revoked) and **`vc20`** (version bindings, the fork rank, and did:oc revocation by the host).
+
 ## [0.2.1] — 2026-10-22
 
 Errata. No wire change.
