@@ -9,6 +9,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Fixed
 - **SECURITY S15** named `nostr.band` as an example of an indexer that keeps a handle after its tombstone. That service has not answered since 2026-09-03, so S15 now says "a search indexer". The consideration and its disclosure are unchanged.
 
+## [0.2.0] — 2026-10-22
+
+Follows OC Lock 2.2.0. No wire change.
+
+### Changed
+- **§0 device records.** A bind dated later than the reader's clock plus a skew allowance is not live yet, and a revocation is dated no earlier than the latest `created_at` among that device's binds, as OC Lock SPEC §3.5 now states.
+
 ## [0.1.1] — 2026-10-21
 
 Editorial. No wire or rule change.
