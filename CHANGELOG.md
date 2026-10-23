@@ -4,6 +4,16 @@ All notable changes to the OC Chat protocol.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.3.2] — 2026-10-22
+
+No wire change.
+
+### Changed
+- **§8.3.1 tips at a fork.** A tip is a version that nothing on a resolving chain supersedes. Among the tips the ranking leaves, a closed tip wins, then the longest chain, then the freshest `created_at` of the signed descriptor content, then the lowest `descriptor_id`. Every reader holding the same versions picks the same tip.
+- **§8.3.8.** Among the branches the §8.3.1 ranking leaves, a fork never undoes a close. The founder re-opens by superseding every closed tip.
+- **§8.3.8 authority.** `successor_channel_id`, like `status`, changes only by the founder. An admin-signed supersede whose `successor_channel_id` differs from its parent's is `E_CH_UNAUTHORIZED`, whatever the status.
+- **§11** follows. **`vc20`** adds the fork cases: a closed tip against a later edit and against a longer branch, a re-open against an edit, siblings with the same `created_at`, siblings whose event `created_at` runs against their signed one, a close on a branch through a revoked founder key, and two closes with one re-opened. It adds the successor cases: an admin's change to a closed channel's successor, and a successor an admin sets while the channel is active, with a close built on it and the founder's close beside it.
+
 ## [0.3.1] — 2026-10-22
 
 No wire change.
