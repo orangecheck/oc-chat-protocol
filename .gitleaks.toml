@@ -1,0 +1,7 @@
+# gitleaks: the default rules, minus what this repo publishes on purpose.
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Test vectors carry their keys so anyone can re-derive every result"
+paths = ['''^test-vectors/''']
