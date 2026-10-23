@@ -4,6 +4,14 @@ All notable changes to the OC Chat protocol.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.3.3] — 2026-10-23
+
+No wire change.
+
+### Changed
+- **§0, with OC Lock 2.3.0 §3.4.** From 2027-01-21T00:00:00Z by the reader's clock, a v2 device record binds no inbox key. A device re-binds as v3, which binds the same key.
+- **§8.2.5** and **§8.3.1** follow: a directory listing, or a channel version without a `binding` tag, whose key only a v2 record binds stops resolving from that date until its device re-binds.
+
 ## [0.3.2] — 2026-10-22
 
 No wire change.
