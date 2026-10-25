@@ -1,0 +1,37 @@
+{
+  "description": "A claim's anchor (SPEC §8.2.1, 0.4.0): the lowest block height among the proof's Bitcoin attestations that verify (OC Stamp SPEC §6.3: the header at that height has the attested message as its Merkle root, header bytes 36-68) and have at least 6 confirmations at the reader's tip. The proof here is a bare OpenTimestamps timestamp over claim_id (vc22) with two Bitcoin attestations; the headers are synthetic, with the Merkle roots the proof attests.",
+  "inputs": {
+    "claim_id": "29b95e96b127071e0f1b31e7bc56dc52765f0dfe3e50a0280519c3ed190fdc52",
+    "ots": "//AQIFvOxMXv5yqfZhS3/GjH+AgABYiWDXPXGQEDxpM48BD6nQj0IsAproBB/7SqIQcmCAAFiJYNc9cZAQPAkzg=",
+    "headers": {
+      "920000": "000000205f375d884f35a48bc9e5aa1d9f8d6de94ab0f6c1b6fcae7be4ba11e9b48b777119f88b48794ff7e98d0bd6538296e25538b8c9faa7b95b94813ce721dff2e7d64045bf6a19420317c0090e00",
+      "920006": "000000202f343b149fd39e91a03d842e5ea1c37960b712937c7c1d8027fdf903506dae7977bb3b35e7d2061c1f1e6dec88b1449755bc485ea41eb2fe4836b405cd10db444645bf6a19420317c6090e00"
+    },
+    "headers_with_wrong_low_root": {
+      "920000": "000000205f375d884f35a48bc9e5aa1d9f8d6de94ab0f6c1b6fcae7be4ba11e9b48b777147240e1016c810dcf48166891a385f464ad02af3f99cb3405fa00827c67153594045bf6a19420317c0090e00",
+      "920006": "000000202f343b149fd39e91a03d842e5ea1c37960b712937c7c1d8027fdf903506dae7977bb3b35e7d2061c1f1e6dec88b1449755bc485ea41eb2fe4836b405cd10db444645bf6a19420317c6090e00"
+    },
+    "other_digest": "b127ede22cc19af80c98a8c390fed4fd62d24882a31101eb3516769ef5a349cd"
+  },
+  "expected": {
+    "attestation_heights": [
+      920000,
+      920006
+    ],
+    "anchor_height": 920000,
+    "anchor_block_hash": "ee6abc46b2b7e4b2f9188821211963ba1f6ee810917212ff7810f792ad4b458e",
+    "anchor_height_when_low_header_mismatches": 920006,
+    "anchor_for_other_digest": null,
+    "anchored_at_tip": {
+      "920004": {
+        "confirmations": 5,
+        "anchored": false
+      },
+      "920005": {
+        "confirmations": 6,
+        "anchored": true
+      }
+    }
+  },
+  "notes": "A claim whose only verifying attestation has 5 confirmations is unanchored and holds nothing (§8.2.5 (1)). A proof over another digest anchors nothing."
+}
