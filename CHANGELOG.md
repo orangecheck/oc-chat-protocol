@@ -4,6 +4,15 @@ All notable changes to the OC Chat protocol.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.3.4] — 2026-10-24
+
+No wire change.
+
+### Changed
+- **§8.6 host revocations.** A resolver takes the device from the signed statement and MUST NOT refuse a host revocation for its `device_id`, `device_pk` or `auth` tag. It reads the statement's named lines by name, refuses one that names a field twice, and MUST NOT refuse one for a line it does not know, so the host can add a line. The JWS still covers every line, the statement still equals the content, and `did_oc` still equals the d-tag's and `addr`.
+- **§8.3.5.** A post that carries `removes` is a removal tombstone whatever its `body`. A client writes `body:""`; a reader MUST NOT refuse a removal for its body.
+- **§8.3.6.** The `slug` and `channel_id` rule applies to an opted-in listing. A tombstone withdraws its founder's claim whatever its `slug`, `channel_id` or `title` say, and a resolver MUST NOT drop it for them.
+
 ## [0.3.3] — 2026-10-23
 
 No wire change.
