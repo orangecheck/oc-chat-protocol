@@ -763,6 +763,8 @@ A client is OC Chat v0 compliant iff it:
 
 See [`SECURITY.md`](./SECURITY.md). In brief, OC Chat inherits OC Lock's guarantees (authenticity, confidentiality, identity binding) and gaps (no per-message forward secrecy, plaintext envelope metadata, no delivery guarantee) and adds: a beacon-trust posture for seals (not offline-verifiable in v0), a seal-existence metadata leak, and an offline-verifiable Lightning postage proof.
 
+A verifier that accepts messages sent by an OC Agent under a `lock:chat` delegation MUST take the recipient from each message's envelope and count and measure the messages it holds, never reading those values from the agent action's `scope_exercised` (OC Lock SPEC §7.5).
+
 ## 13. Versioning
 
 OC Chat versions with OC Lock's `envelope.v` (currently 2). New `kind` values and new optional blocks (`postage`, `seal` sub-fields) are additive; clients MUST preserve unknown fields when relaying and MAY ignore them when decrypting. Incompatible changes increment `envelope.v`.
