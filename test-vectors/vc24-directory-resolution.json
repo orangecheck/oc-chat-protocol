@@ -804,6 +804,76 @@
       }
     },
     {
+      "name": "an earlier-anchored listing for the holder's address under an unbound key is passed over",
+      "why": "M5: the address's binding read is made for the earlier record, kept, and the holder's own claim holds.",
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
+        {
+          "kind": "listing",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "kx",
+          "created_at": 1790000500,
+          "claim_id": "8f1aa6c4e6b5848b14eff984d110b4729eec8d48cc528c02840b9a09346de28d",
+          "anchor": 924950,
+          "coin": {
+            "confirmed_at": 924700,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
+          "claim_id": "ea517c63884d108a4330aecbeaced9d720bfcf967cb27517be18583412d1bd4a",
+          "anchor": 925000,
+          "coin": {
+            "confirmed_at": 924700,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
+          "claim_id": "61bd0a63ccebb967a6dd59396dd44d62475aeb909c55e5501e2696600f027c08",
+          "anchor": 925005,
+          "coin": {
+            "confirmed_at": 924000,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        }
+      ],
+      "expected": {
+        "result": "holds",
+        "holder": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+        "reads": [
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "coin ea517c63884d"
+        ]
+      }
+    },
+    {
       "name": "the audit finds a withheld earlier claim",
       "why": "§8.2.6: a fully valid claim found only on public relays, anchored before the directory answer, holds.",
       "addresses": {
