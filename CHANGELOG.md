@@ -4,6 +4,19 @@ All notable changes to the OC Chat protocol.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.3.5] — 2026-10-25
+
+No envelope change. The inbox operator's drain and acknowledgement take an optional proof.
+
+### Added
+- **§8.1.5 bootstrap proofs.** A device proves its bootstrap queue with a BIP-340 signature by its inbox key over the action (`drain` or `ack`), the `bootstrap_id` and a time. The operator verifies it within 600 seconds and stores no key. Once a queue holding messages has been proven, a drain without a proof gets nothing from it and an acknowledgement without one is refused. A queue never proven, and every per-conversation queue, answers by its id as before. Vector **`vc21`**.
+
+### Changed
+- **§8.1.4 (2).** The operator checks the inbox pubkey of a §8.1.5 proof and MUST NOT store it.
+- **§4.1.** The envelope's `from.address` counts toward the recipient's contact or UTXO policy only once its device signature verifies under a key bound to that address.
+- **§8.2.5.** A record that fails the binding check MUST NOT count toward a bound a resolver applies after that check. A bound applied before it SHOULD sit far above any honest number of claimants.
+- **§11** follows.
+
 ## [0.3.4] — 2026-10-24
 
 No wire change.

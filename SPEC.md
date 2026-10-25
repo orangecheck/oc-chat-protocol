@@ -91,7 +91,7 @@ Consequences a conforming implementation MUST honor:
 
 `kind="chat"`, no `postage`, no `seal`. An identity-mode envelope sealed to the recipient's device keys (OC Lock SPEC §4.2). Per-device X25519 authenticates the send; **the sender does NOT sign each message with BIP-322** — BIP-322 is performed once per device at device-record binding time (OC Lock SPEC §3.2). `sig.value` MAY therefore be a per-device key attestation rather than a wallet signature; clients that require wallet-grade sender proof MAY still populate it. Receiving is never gated by payment.
 
-Free-tier anti-spam is recipient policy, enforced by the recipient client, not the protocol: require a mutual contact, OR a BIP-322 proof of control of a funded/aged UTXO. Neither involves a payment.
+Free-tier anti-spam is recipient policy, enforced by the recipient client, not the protocol: require a mutual contact, OR a BIP-322 proof of control of a funded/aged UTXO. Neither involves a payment. The envelope's `from.address` counts for either only when its device signature verifies under a key a device record binds to that address; until then it names an address and proves nothing about it.
 
 A first message that does not clear the recipient's policy is **delivered and decrypted, never dropped** — it is placed in a distinct **filtered/pending** state and shown to the recipient set apart from the main inbox (the "Requests" surface), so the recipient always sees that someone reached them. Acceptance is a client-local, **explicit and revocable allowlist**: the recipient approving a sender (e.g. by opening their filtered conversation) lets that sender reach the inbox normally thereafter, and the recipient MAY revoke at any time. This allowlist is private — it MUST NOT be published, carried on the wire, or co-indexed with the directory listing (the §8.2.3 social-graph firewall). A recipient MAY signal acceptance to a sender only by replying; clients MUST NOT emit a separate "your request was opened" receipt (it would be a read-receipt-style metadata leak).
 
@@ -300,7 +300,7 @@ A sender reaching a recipient for the first time cannot yet compute `queue_id(c)
 bootstrap_id = base64url( SHA-256( utf8( "oc-lock-chat/inbox-bootstrap/v1:" || inbox_pubkey_hex ) ) )
 ```
 
-where `inbox_pubkey_hex` is the recipient's published §8 inbox pubkey (lowercase hex). The bootstrap queue carries the same recipient-linkability the relay `p` tag does (SECURITY S6) and MUST be disclosed as such; it is used only until a per-conversation queue is established.
+where `inbox_pubkey_hex` is the recipient's published §8 inbox pubkey (lowercase hex). The bootstrap queue carries the same recipient-linkability the relay `p` tag does (SECURITY S6) and MUST be disclosed as such; it is used only until a per-conversation queue is established. Anyone can deposit to it; draining and acknowledging it follow §8.1.5.
 
 ### 8.1.3 Handshake
 
@@ -311,11 +311,27 @@ To migrate a conversation off the bootstrap queue, each party advertises **its o
 A store-and-forward inbox operator MUST:
 
 1. Store the gift-wrap inner blob **byte-for-byte** — preserving the envelope `id`, `sig`, and ciphertext GCM tag, and preserving unknown fields (§13). A re-wrap fan-out (§3.3) is a detached `recipients[]` merge and MUST NOT recompute the signed `id`.
-2. Route **solely** on the opaque `queue_id` / `bootstrap_id`. It MUST NOT require, store, or index a Bitcoin address, a device pubkey, or any plaintext thread metadata.
+2. Route **solely** on the opaque `queue_id` / `bootstrap_id`. It MUST NOT require, store, or index a Bitcoin address, a device pubkey, or any plaintext thread metadata, except that it checks, and MUST NOT store, the inbox pubkey of a §8.1.5 proof.
 3. Hold **no** key material of any party.
 4. Treat the queue as **availability, not authority**: a draining recipient re-verifies authenticity from the artifact alone (BIP-322 device-record binding + `chat_envelope_id`), exactly as for a relay-delivered message. The operator endpoint is a NAMED trust anchor for *availability* and MUST be surfaced plainly.
 
 The Ed25519 substitution test passes by inheritance: the queue is an ordinary mailbox that asserts no Bitcoin claim of its own, but the authority of every message it holds derives from the BIP-322-rooted device record (§0), which collapses under substitution.
+
+### 8.1.5 Bootstrap proofs — NORMATIVE
+
+Anyone holding a device record can derive its `bootstrap_id` (§8.1.2), so that id alone cannot authorize reading or acknowledging the bootstrap queue. A device proves the queue is its own with a BIP-340 signature by its inbox key:
+
+```
+proof   = { "inbox_pubkey": <lowercase x-only hex>, "ts": <unix seconds>, "sig": <hex> }
+message = utf8( "oc-lock-chat/inbox-proof/v1:" || action || ":" || bootstrap_id || ":" || decimal(ts) )
+sig     = BIP-340( inbox_sk, SHA-256(message) )            // action is "drain" or "ack"
+```
+
+where `bootstrap_id` is derived from `inbox_pubkey` per §8.1.2. An operator checking a proof derives `bootstrap_id` from `inbox_pubkey`, verifies `sig` for the action requested, MUST refuse a proof whose `ts` is more than 600 seconds from its own clock, and MUST NOT store `inbox_pubkey`.
+
+The first valid proof for a bootstrap queue that holds messages marks the queue proven. From then on the operator MUST NOT return messages from that queue to a drain that carries no valid proof for it, and MUST refuse an acknowledgement of it that carries none (`E_QUEUE_ROUTE`), writing nothing. When it first marks a queue it SHOULD return again the messages acknowledged in that queue and not yet swept. A queue never proven, and every per-conversation queue (§8.1.1, unguessable without `queue_seed`), is drained and acknowledged by its id alone, so a client that sends no proofs keeps receiving. A conforming client SHOULD send a proof with every drain and acknowledgement of its bootstrap queue (vector `vc21`).
+
+A proof carries no Bitcoin claim: any Schnorr key proves its own queue. It keeps a party without the inbox key from reading or acknowledging a device's first contacts; the authority of the messages is still the BIP-322-rooted device record (§8.1.4 (4)).
 
 ## 8.2 Discoverability directory (opt-in) — NORMATIVE
 
@@ -365,7 +381,7 @@ To find a user, a client computes the `d`-tag from the queried handle, fetches t
 1. Keeps records whose `handle` matches and that pass §8.2.2 (1)–(2). The binding check comes **first**: a record not bound to the `address` it names belongs to nobody and carries no weight, including as a tombstone. A listing whose key only a v2 record binds stops resolving from 2027-01-21 (§0) until its device re-binds as v3, which binds the same key.
 2. Groups them by `address`. Each address's freshest `created_at` is that address's current state (a tombstone if it opted out). `created_at` is compared only within one address, never across addresses.
 3. Drops addresses whose current state is a tombstone, then those failing §8.2.2 (3).
-4. Resolves to the one remaining address, or to none: no address left is `E_DIR_REVOKED` (if any bound tombstone was seen) or `E_DIR_UNVERIFIED`; more than one is `E_DIR_CONTESTED`. A resolver MAY bound the number of distinct addresses it examines and treat a handle beyond that bound as contested.
+4. Resolves to the one remaining address, or to none: no address left is `E_DIR_REVOKED` (if any bound tombstone was seen) or `E_DIR_UNVERIFIED`; more than one is `E_DIR_CONTESTED`. A resolver MAY bound the number of distinct addresses it examines and treat a handle beyond that bound as contested. A record that fails (2) belongs to nobody and MUST NOT count toward a bound applied after the binding check; a bound applied before it counts addresses anyone can name, and SHOULD sit far above any honest number of claimants.
 
 On success the client surfaces `address` + profile + a trust tier so the user can start a thread. First-contact still passes the recipient's §4.1 anti-spam policy — **being listed is not a free-message bypass.** Privacy-sensitive resolution SHOULD query relays directly, NOT a third-party indexer (which would learn who-searches-for-whom). The relay/index operator is a NAMED availability anchor and MUST NOT be relied on as authority.
 
@@ -638,7 +654,7 @@ A client is OC Chat v0 compliant iff it:
 - [ ] Reuses OC Lock §4.2 wrapping verbatim for `content_key`.
 - [ ] Computes `chat_aad` and `chat_envelope_id` with `recipients=[]` for `kind ∈ {chat, chat-seal}` (§3) and reproduces the test vectors.
 - [ ] Carries `conversation_id`/`seq`/`parent_id` inside the encrypted payload and orders by the `parent_id` hash-chain, never by `created_at` (§5).
-- [ ] If it offers durable store-and-forward, derives `queue_id`/`bootstrap_id` per §8.1, routes the inbox solely on those opaque ids (no address/device-pubkey index), stores the blob byte-for-byte, and reproduces vector `vc06`.
+- [ ] If it offers durable store-and-forward, derives `queue_id`/`bootstrap_id` per §8.1, routes the inbox solely on those opaque ids (no address/device-pubkey index), stores the blob byte-for-byte, gates a proven bootstrap queue on §8.1.5 proofs, and reproduces vectors `vc06` and `vc21`.
 - [ ] If it offers the directory (§8.2), publishes a kind-30114 listing ONLY on explicit opt-in (default invisible), derives the salted-handle `d`-tag (vector `vc07`), refuses to resolve a handle unless the §8.2.2 gate passes (signature + kind-30078 binding + UTXO floor), enforces the §8.2.3 social-graph firewall, honors tombstones (vector `vc08`), and never exposes a bulk-dump endpoint.
 - [ ] For `pay-to-reach` (§6): carries `postage` in the `ChatBody` (§6.2), and on receive runs the full §6.3 verification — re-derives the description-hash binding `SHA-256(lnurl_metadata‖payerdata)` ITSELF over verbatim bytes, checks `SHA-256(preimage)==payment_hash` + amount + expiry + identifier + the local spent-ledger — routing a failing/replayed message to the filtered/pending state (delivered, never dropped), and NEVER claims transferable third-party proof.
 - [ ] Wraps to the beacon and performs release re-wrap as a detached `recipients[]` merge for `seal-til-block` (§7), and NEVER labels a v0 beacon seal "trustless".
