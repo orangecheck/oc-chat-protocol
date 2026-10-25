@@ -1,5 +1,5 @@
 {
-  "description": "Directory claim id (SPEC §8.2.1, 0.4.0): claim_id = SHA-256(canonical({v:1, handle: lower(handle), address, outpoint, nonce})), canonical per §0 (RFC 8785, LF-terminated). A reader recomputes it from the listing's own handle and address and the claim's outpoint and nonce, so the same outpoint, nonce and proof inside a listing for another address give another id, which the proof does not anchor. The legacy form (§8.2.8) takes nonce = the v1 listing's listing_id (vc08).",
+  "description": "Directory claim id (SPEC §8.2.1, 0.4.0): claim_id = SHA-256(canonical({v:1, handle: lower(handle), address, outpoint, nonce})), canonical per §0 (RFC 8785, LF-terminated). A reader recomputes it from the listing's own handle and address and the claim's outpoint and nonce, so the same outpoint, nonce and proof inside a listing for another address give another id, which the proof does not anchor. The legacy form (§8.2.8) takes nonce = the v1 listing's listing_id (vc08). A channel listing (§8.3.6) computes its claim_id the same way with address = founder_address, and its channel_id recomputes from founder_address and slug (§8.3.1, vc14).",
   "inputs": {
     "claim": {
       "handle": "Alice",
@@ -8,14 +8,32 @@
       "nonce": "48e6798f0656e06ca9c0203aecaec3e16377bd92eaa59c07f85ecee56244187e"
     },
     "other_address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
-    "legacy_v1_listing_id": "920d9909967bd734d145e5a12719b0e907430d12a3493430f8b0afcd7d3d0881"
+    "legacy_v1_listing_id": "920d9909967bd734d145e5a12719b0e907430d12a3493430f8b0afcd7d3d0881",
+    "channel_listing": {
+      "v": 2,
+      "handle": "builders",
+      "slug": "bitcoin-talk",
+      "channel_id": "96199b4355ca664a461d1e7bd466e58ae9697309ebc876970dd648475ea84639",
+      "founder_address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+      "founder_inbox_pubkey": "abd5c03b14d458675ee19c6da072374fddd7a77c09cf083197f018aa58613f17",
+      "title": "Bitcoin talk",
+      "claim": {
+        "outpoint": "4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b:0",
+        "nonce": "48e6798f0656e06ca9c0203aecaec3e16377bd92eaa59c07f85ecee56244187e",
+        "ots": "<proof over channel_claim_id>"
+      },
+      "opted_in": true,
+      "created_at": 1733600000
+    }
   },
   "expected": {
     "claim_canonical": "{\"address\":\"bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8\",\"handle\":\"alice\",\"nonce\":\"48e6798f0656e06ca9c0203aecaec3e16377bd92eaa59c07f85ecee56244187e\",\"outpoint\":\"4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b:0\",\"v\":1}\n",
     "claim_id": "29b95e96b127071e0f1b31e7bc56dc52765f0dfe3e50a0280519c3ed190fdc52",
     "claim_id_in_listing_for_other_address": "b127ede22cc19af80c98a8c390fed4fd62d24882a31101eb3516769ef5a349cd",
     "claim_id_differs_for_other_address": true,
-    "legacy_claim_id": "96cd82be386a99a512586898a8348145f6075a390a84e0181314ca062079bb3a"
+    "legacy_claim_id": "96cd82be386a99a512586898a8348145f6075a390a84e0181314ca062079bb3a",
+    "channel_id": "96199b4355ca664a461d1e7bd466e58ae9697309ebc876970dd648475ea84639",
+    "channel_claim_id": "29fe68f4138998917311fee11b90c320cac2bc06c085376048564a908ef3d646"
   },
   "notes": "handle is lowercased inside the claim. nonce is 32 bytes as 64 lowercase hex. outpoint is \"<txid hex>:<vout decimal>\"."
 }
