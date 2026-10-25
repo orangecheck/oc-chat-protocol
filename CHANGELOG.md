@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 No envelope change. The inbox operator's drain and acknowledgement take an optional proof.
 
 ### Added
-- **§8.1.5 bootstrap proofs.** A device proves its bootstrap queue with a BIP-340 signature by its inbox key over the action (`drain` or `ack`), the `bootstrap_id` and a time. The operator verifies it within 600 seconds and stores no key. Once a queue holding messages has been proven, a drain without a proof gets nothing from it and an acknowledgement without one is refused. An operator may drop the mark of a queue that holds no messages and has had no deposit for 30 days. A queue never proven, and every per-conversation queue, answers by its id as before. Vector **`vc21`**.
+- **§8.1.5 bootstrap proofs.** A device proves its bootstrap queue with a BIP-340 signature by its inbox key over the action (`drain` or `ack`), the `bootstrap_id` and a time, and for an ack the digest of the envelope ids it acknowledges. The operator verifies it within 600 seconds and stores no key. Once a queue holding messages has been proven, a drain without a proof gets nothing from it and an acknowledgement without one is refused. An operator may drop the mark of a queue that holds no messages and has had no deposit for 30 days. A queue never proven, and every per-conversation queue, answers by its id as before. Vector **`vc21`**.
 
 ### Changed
 - **§8.1.4 (2).** The operator checks the inbox pubkey of a §8.1.5 proof and MUST NOT store it.

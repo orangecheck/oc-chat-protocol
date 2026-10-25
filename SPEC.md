@@ -323,9 +323,12 @@ Anyone holding a device record can derive its `bootstrap_id` (§8.1.2), so that 
 
 ```
 proof   = { "inbox_pubkey": <lowercase x-only hex>, "ts": <unix seconds>, "sig": <hex> }
-message = utf8( "oc-lock-chat/inbox-proof/v1:" || action || ":" || bootstrap_id || ":" || decimal(ts) )
+message = utf8( "oc-lock-chat/inbox-proof/v1:" || action || ":" || bootstrap_id || ":" || decimal(ts) [ || ":" || ids ] )
+ids     = hex( SHA-256( utf8( join("\n", sorted(distinct(envelope_ids))) ) ) )   // an "ack" only
 sig     = BIP-340( inbox_sk, SHA-256(message) )            // action is "drain" or "ack"
 ```
+
+An ack's proof covers exactly the envelope ids of its request, so a proof seen once acknowledges nothing else.
 
 where `bootstrap_id` is derived from `inbox_pubkey` per §8.1.2. An operator checking a proof derives `bootstrap_id` from `inbox_pubkey`, verifies `sig` for the action requested, MUST refuse a proof whose `ts` is more than 600 seconds from its own clock, and MUST NOT store `inbox_pubkey`.
 

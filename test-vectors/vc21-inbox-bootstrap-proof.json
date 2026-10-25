@@ -1,12 +1,16 @@
 {
-  "description": "Bootstrap inbox proof (SPEC §8.1.5): a device proves its bootstrap queue with a BIP-340 signature by its inbox key over SHA-256(utf8('oc-lock-chat/inbox-proof/v1:' || action || ':' || bootstrap_id || ':' || decimal(ts))), action 'drain' or 'ack'. bootstrap_id is derived from inbox_pubkey per §8.1.2. Proves: the proof names its queue through the key alone, a drain proof is no ack proof, and a verifier at more than 600 s from ts refuses it.",
+  "description": "Bootstrap inbox proof (SPEC §8.1.5): a device proves its bootstrap queue with a BIP-340 signature by its inbox key over SHA-256(utf8('oc-lock-chat/inbox-proof/v1:' || action || ':' || bootstrap_id || ':' || decimal(ts))), action 'drain' or 'ack'; an ack also appends ':' || hex(SHA-256(utf8(the sorted, distinct envelope ids joined by '\\n'))). bootstrap_id is derived from inbox_pubkey per §8.1.2. Proves: the proof names its queue through the key alone, a drain proof is no ack proof, and a verifier at more than 600 s from ts refuses it.",
   "spec": "SPEC §8.1.2, §8.1.5",
   "inputs": {
     "inbox_sk": "031cf3e6827480ca1c891df7890439dbebdddd8d99704038be6566b4a3706f40",
     "ts": 1793145600,
     "aux_rand": "0000000000000000000000000000000000000000000000000000000000000000",
     "proof_label": "oc-lock-chat/inbox-proof/v1:",
-    "window_s": 600
+    "window_s": 600,
+    "envelope_ids": [
+      "5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b5b",
+      "0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e0e"
+    ]
   },
   "expected": {
     "inbox_pubkey": "e257094fbab34e7106502bda02312b1ec54471990064f79faad97002270f64d2",
@@ -17,13 +21,15 @@
       "sig": "c950be9123a93e8a4633adb8ff8b1e77d6c8f83ead64a8c8cb83b3f5e1919deccd25e70734002c883f5da0025679cd9e5a85bc45304e9f0817655ac07bb70103"
     },
     "ack": {
-      "message": "oc-lock-chat/inbox-proof/v1:ack:GDzEMTputi0dTSZikRMXXE4eN_1CSs9QZ6TizWoujiI:1793145600",
-      "digest": "6c063ae6567ae97b1bbcef753deda10afc9a2666298ae7efeeab7f665bbd938e",
-      "sig": "d2f8b7eb9c5d3828dafdb1255f0f189e96b643cfd7b22d4d079fe2c8bea9cf513791985187a5d0870983ff02a1458b0b65996de69adbb620b7aa71a1f46294c1"
+      "ids_digest": "730656528dbc3ad6daa52c395537c886698f71d248410566ed503e6a20f3e759",
+      "message": "oc-lock-chat/inbox-proof/v1:ack:GDzEMTputi0dTSZikRMXXE4eN_1CSs9QZ6TizWoujiI:1793145600:730656528dbc3ad6daa52c395537c886698f71d248410566ed503e6a20f3e759",
+      "digest": "841195f0971b186e957ce2d68978e044064a09dff9a60218db8198738d889de6",
+      "sig": "37b6292cb1a44e0561cc81f4a0d59b9b9c7d38e0b92114e5a03492c8f4eb304529f79e99f128df10f43d7fc4c35927db6546c72b1b714ee9709c031cbcbce588"
     },
     "drain_sig_verifies_as_ack": false,
     "verifies_at_ts_plus_600": true,
-    "verifies_at_ts_plus_601": false
+    "verifies_at_ts_plus_601": false,
+    "ack_sig_verifies_for_one_id_only": false
   },
-  "notes": "sig is BIP-340 with the given aux_rand, so it reproduces exactly; any valid BIP-340 signature over the digest is an equally valid proof. inbox_pubkey is the x-only public key of inbox_sk, lowercase hex. The operator checks inbox_pubkey and MUST NOT store it."
+  "notes": "sig is BIP-340 with the given aux_rand, so it reproduces exactly; any valid BIP-340 signature over the digest is an equally valid proof. inbox_pubkey is the x-only public key of inbox_sk, lowercase hex. The operator checks inbox_pubkey and MUST NOT store it. The ack proof covers exactly the envelope ids of its request, so a proof seen once acknowledges nothing else."
 }
