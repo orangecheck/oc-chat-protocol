@@ -1,5 +1,5 @@
 {
-  "description": "Directory resolution (SPEC §8.2.5-§8.2.6, 0.4.0) over checked facts: each claim's anchor (vc23), its binding read and its coin read already done, each read either answered or not. The reader walks live claims in (anchor, claim_id) order; the first whose binding and coin pass holds; a read without an answer before the holder is E_DIR_UNRESOLVED; the public audit walks earlier public-only claims with 16 coin reads and only ever adds a holder. `reads` lists the claims read, in order.",
+  "description": "Directory resolution (SPEC §8.2.5-§8.2.6, 0.4.0) over checked facts: each record's signing key, each address's binding read (the keys it binds, or no answer), each claim's anchor (vc23) and coin read. The reader walks live listings in (anchor, claim_id) order; the first time it meets an address it reads which keys are bound, and the address's state is its freshest record signed by a bound key; a listing whose address state carries its claim, not ended by a bound tombstone, has its coin read, and the first that passes holds. A read without an answer before the holder is E_DIR_UNRESOLVED. A record found only on public relays is an audit claim with bounds of its own; the first audit claim the walk cannot finish ends the audit. `reads` lists the reads made, in order.",
   "inputs": {
     "tip": 930000,
     "floor": {
@@ -9,6 +9,7 @@
     "bounds": {
       "binding_reads": 256,
       "coin_reads": 64,
+      "audit_binding_reads": 64,
       "audit_coin_reads": 16
     }
   },
@@ -16,12 +17,28 @@
     {
       "name": "later funded claimant ignored",
       "why": "The first anchored claim that passes holds; the later one is never read.",
-      "claims": [
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
         {
+          "kind": "listing",
           "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
           "claim_id": "1d16dc93597d32307caec3be496c16c09c8d6b4caf6574f01c42af2d7044bec9",
           "anchor": 925000,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924700,
             "value": 50000,
@@ -30,10 +47,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
           "claim_id": "d243431a8700ddbdd661a1ad6a18d4cc413164b366976af814d48ff017262913",
           "anchor": 925002,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 875000,
             "value": 900000000,
@@ -46,19 +65,42 @@
         "result": "holds",
         "holder": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
         "reads": [
-          "1d16dc93597d32307caec3be496c16c09c8d6b4caf6574f01c42af2d7044bec9"
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "coin 1d16dc93597d"
         ]
       }
     },
     {
       "name": "unanchored claims cost no read",
       "why": "A pending proof, or an anchor with 5 confirmations, is dropped before any read (§8.2.5 (1)).",
-      "claims": [
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        },
+        "bc1qunanchored": {
+          "binding": "answered",
+          "bound_keys": [
+            "ku"
+          ]
+        }
+      },
+      "records": [
         {
+          "kind": "listing",
           "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
           "claim_id": "45ec12997a44aa76ba7de17d752ce69b529d4f8e603a85407d37906b4bea7534",
           "anchor": null,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 875000,
             "value": 50000,
@@ -67,10 +109,12 @@
           "source": "directory"
         },
         {
-          "address": "bc1qunanchored5confsxxxxxxxxxxxxxxxxxxxxxxxx",
+          "kind": "listing",
+          "address": "bc1qunanchored",
+          "key": "ku",
+          "created_at": 1790000000,
           "claim_id": "9180d7169afb73448bc5e6198277b63b08abfd8325009b8656cdf0a53a50d8d6",
           "anchor": 929996,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 875000,
             "value": 50000,
@@ -79,10 +123,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
           "claim_id": "2fb8327a251ac435f11b694d3c6b0ebbcdb43625011bceb52ab30b9b1c4daac2",
           "anchor": 925010,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924700,
             "value": 50000,
@@ -95,19 +141,36 @@
         "result": "holds",
         "holder": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
         "reads": [
-          "2fb8327a251ac435f11b694d3c6b0ebbcdb43625011bceb52ab30b9b1c4daac2"
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "coin 2fb8327a251a"
         ]
       }
     },
     {
       "name": "a spend with 6 confirmations releases the handle",
       "why": "§8.2.2 (3): the coin has moved, so the next claim holds.",
-      "claims": [
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
         {
+          "kind": "listing",
           "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
           "claim_id": "862eee4d0c637a7656fedf887004e59310126da5b24b7cbc5b1cd3d60ba1ff0e",
           "anchor": 925000,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924700,
             "value": 50000,
@@ -118,10 +181,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
           "claim_id": "5e63d2f83b44a501c22b272fb01ad118eb04cc2c0bbb3e718ab3505765735279",
           "anchor": 925005,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924000,
             "value": 50000,
@@ -134,20 +199,38 @@
         "result": "holds",
         "holder": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
         "reads": [
-          "862eee4d0c637a7656fedf887004e59310126da5b24b7cbc5b1cd3d60ba1ff0e",
-          "5e63d2f83b44a501c22b272fb01ad118eb04cc2c0bbb3e718ab3505765735279"
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "coin 862eee4d0c63",
+          "binding bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "coin 5e63d2f83b44"
         ]
       }
     },
     {
       "name": "a spend in the mempool or with 5 confirmations does not",
       "why": "§8.2.2 (3): only a spend with 6 confirmations counts; a mempool spend has 0.",
-      "claims": [
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
         {
+          "kind": "listing",
           "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
           "claim_id": "1085deca107270c9168004540d097d0e57552b65c94a494c4364d1a8ab0f3bce",
           "anchor": 925000,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924700,
             "value": 50000,
@@ -158,10 +241,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
           "claim_id": "8af48232fad671cf01aed75a18f63ce8c5d37d92f4471507d0b9810db89cd40a",
           "anchor": 925005,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924000,
             "value": 50000,
@@ -174,19 +259,36 @@
         "result": "holds",
         "holder": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
         "reads": [
-          "1085deca107270c9168004540d097d0e57552b65c94a494c4364d1a8ab0f3bce"
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "coin 1085deca1072"
         ]
       }
     },
     {
       "name": "coins confirmed at anchor-144 pass",
       "why": "confirmed_at <= anchor - dir_floor_confs.",
-      "claims": [
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
         {
+          "kind": "listing",
           "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
           "claim_id": "f683fb5eafe3aabda06f19cf270323ed5081a2e49d628159bd173fd3568aeb11",
           "anchor": 925000,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924856,
             "value": 50000,
@@ -195,10 +297,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
           "claim_id": "86d8a00adb587d1b33cf422498a05ddd1d624ff1da4bf5ee60a15125866d0c2e",
           "anchor": 925005,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924000,
             "value": 50000,
@@ -211,19 +315,36 @@
         "result": "holds",
         "holder": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
         "reads": [
-          "f683fb5eafe3aabda06f19cf270323ed5081a2e49d628159bd173fd3568aeb11"
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "coin f683fb5eafe3"
         ]
       }
     },
     {
       "name": "coins confirmed at anchor-143 fail",
       "why": "Too young at the anchor: fails for good, and the next claim holds.",
-      "claims": [
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
         {
+          "kind": "listing",
           "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
           "claim_id": "f6ee87990592e01fa599666d9e642926569674d2c0dc59d0d97707a5e0c5a8e8",
           "anchor": 925000,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924857,
             "value": 50000,
@@ -232,10 +353,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
           "claim_id": "dd03a2ccfba9dfeb7b8607bb65535befcb78cdf877dfe32a85716a9a15d85645",
           "anchor": 925005,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924000,
             "value": 50000,
@@ -248,28 +371,48 @@
         "result": "holds",
         "holder": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
         "reads": [
-          "f6ee87990592e01fa599666d9e642926569674d2c0dc59d0d97707a5e0c5a8e8",
-          "dd03a2ccfba9dfeb7b8607bb65535befcb78cdf877dfe32a85716a9a15d85645"
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "coin f6ee87990592",
+          "binding bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "coin dd03a2ccfba9"
         ]
       }
     },
     {
-      "name": "no answer before the holder",
-      "why": "§8.2.5 (5): passing over an unread claim would hand the handle to a later one.",
-      "claims": [
+      "name": "no coin answer before the holder",
+      "why": "§8.2.5 (4): passing over an unread claim would hand the handle to a later one.",
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
         {
+          "kind": "listing",
           "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
           "claim_id": "b5548382791b9535e3bbe95b68b50b6e66d54083ba0526f5284bac4d5ee3122c",
           "anchor": 925000,
-          "binding": "bound",
           "coin": "no-answer",
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
           "claim_id": "a2415ded02509bceda953169b4ee4d76ffdfc43377c5a517ff0daa82b426840a",
           "anchor": 925005,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924000,
             "value": 50000,
@@ -282,19 +425,34 @@
         "result": "E_DIR_UNRESOLVED",
         "holder": null,
         "reads": [
-          "b5548382791b9535e3bbe95b68b50b6e66d54083ba0526f5284bac4d5ee3122c"
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "coin b5548382791b"
         ]
       }
     },
     {
       "name": "no binding answer before the holder",
       "why": "The same for a binding read.",
-      "claims": [
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "no-answer",
+          "bound_keys": []
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
         {
+          "kind": "listing",
           "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
           "claim_id": "af14c35ca5581c517f3ce94c999a67927030e0429a3bacce5f95c7b50ca2d948",
           "anchor": 925000,
-          "binding": "no-answer",
           "coin": {
             "confirmed_at": 924700,
             "value": 50000,
@@ -303,10 +461,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
           "claim_id": "a04140d8fa440127ba29a2d9e11af775ef9d3e84225d4d10a59a2fc88e3060e1",
           "anchor": 925005,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924000,
             "value": 50000,
@@ -319,19 +479,35 @@
         "result": "E_DIR_UNRESOLVED",
         "holder": null,
         "reads": [
-          "af14c35ca5581c517f3ce94c999a67927030e0429a3bacce5f95c7b50ca2d948"
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8"
         ]
       }
     },
     {
       "name": "same-block tie goes to the lower claim_id",
-      "why": "§8.2.5 (3).",
-      "claims": [
+      "why": "§8.2.5 (2).",
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
         {
+          "kind": "listing",
           "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
           "claim_id": "ed627bad6e2d7065f6a33489a5152df6def7aaf1d8f855a257a1b6f2a276ea70",
           "anchor": 925000,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924700,
             "value": 50000,
@@ -340,10 +516,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
           "claim_id": "87833a3c54f9d0ae679ebfff51d7902894ee0a0961f6d5b7b84b5e892637507e",
           "anchor": 925000,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924700,
             "value": 50000,
@@ -356,20 +534,36 @@
         "result": "holds",
         "holder": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
         "reads": [
-          "87833a3c54f9d0ae679ebfff51d7902894ee0a0961f6d5b7b84b5e892637507e"
+          "binding bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "coin 87833a3c54f9"
         ]
       }
     },
     {
-      "name": "an ended claim never counts again",
-      "why": "§8.2.4: a counted tombstone named this claim_id; the same claim in a later listing is dropped.",
-      "claims": [
+      "name": "a tombstone signed by a bound key ends the claim",
+      "why": "§8.2.4: the next claim holds.",
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
         {
+          "kind": "listing",
           "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
           "claim_id": "bd8bdb4e488ef7a1b87142ba7a817aec31aaf5fbe1022c03494bd2ab05d611d4",
           "anchor": 925000,
-          "ended": true,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924700,
             "value": 50000,
@@ -378,10 +572,20 @@
           "source": "directory"
         },
         {
+          "kind": "tombstone",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000100,
+          "ends": "bd8bdb4e488ef7a1b87142ba7a817aec31aaf5fbe1022c03494bd2ab05d611d4",
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
           "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
           "claim_id": "093470c5f8fefe613c14fca095049d4cb87bda57353a6972ee625e8742c8ee1c",
           "anchor": 925005,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924000,
             "value": 50000,
@@ -394,19 +598,236 @@
         "result": "holds",
         "holder": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
         "reads": [
-          "093470c5f8fefe613c14fca095049d4cb87bda57353a6972ee625e8742c8ee1c"
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "binding bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "coin 093470c5f8fe"
+        ]
+      }
+    },
+    {
+      "name": "the same claim in a listing after its tombstone stays ended",
+      "why": "§8.2.4: an ended claim_id never counts again.",
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
+        {
+          "kind": "listing",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000200,
+          "claim_id": "4364b29fbbd751aa1b07ab41cf7b162bab2f8d8fb3f3bf8010b1f96799da0ce6",
+          "anchor": 925000,
+          "coin": {
+            "confirmed_at": 924700,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "tombstone",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000100,
+          "ends": "4364b29fbbd751aa1b07ab41cf7b162bab2f8d8fb3f3bf8010b1f96799da0ce6",
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
+          "claim_id": "ff4bf84c0ce6804dcf43990be916aa600c37697ab87d211476ab36ddff53853b",
+          "anchor": 925005,
+          "coin": {
+            "confirmed_at": 924000,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        }
+      ],
+      "expected": {
+        "result": "holds",
+        "holder": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+        "reads": [
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "binding bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "coin ff4bf84c0ce6"
+        ]
+      }
+    },
+    {
+      "name": "a forged tombstone under an unbound key ends nothing",
+      "why": "M6: claim_ids are public; only a bound key can end one.",
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
+        {
+          "kind": "listing",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
+          "claim_id": "3f511064fcec2e671fef07e8bac6746eec877a21b1da440716bc378e4c89b0cc",
+          "anchor": 925000,
+          "coin": {
+            "confirmed_at": 924700,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "tombstone",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "kx",
+          "created_at": 1790000100,
+          "ends": "3f511064fcec2e671fef07e8bac6746eec877a21b1da440716bc378e4c89b0cc",
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
+          "claim_id": "941cb66595d24378f1783010529f74ed9dcf38669bded38ae908b868bb9efbc7",
+          "anchor": 925005,
+          "coin": {
+            "confirmed_at": 924000,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        }
+      ],
+      "expected": {
+        "result": "holds",
+        "holder": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+        "reads": [
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "coin 3f511064fcec"
+        ]
+      }
+    },
+    {
+      "name": "a forged newer listing for the holder's address under an unbound key",
+      "why": "M5: a record signed by an unbound key is nobody's, including as the address's state.",
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
+        {
+          "kind": "listing",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
+          "claim_id": "1bf60c6cdd9ba98d37bb2ce7e1259e4c73807753d92c82e28f30367621128101",
+          "anchor": 925000,
+          "coin": {
+            "confirmed_at": 924700,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "kx",
+          "created_at": 1790000500,
+          "claim_id": "2d7ff3cc450a0f6a7dc7377b2239b0f5369d236eb38df5e8e0454af5ed4deb8b",
+          "anchor": 929990,
+          "coin": {
+            "confirmed_at": 924700,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
+          "claim_id": "cbb3f6d3bde3a97882ff8b76479e262f9c5feee4cf3d31425751ef266c7056f2",
+          "anchor": 925005,
+          "coin": {
+            "confirmed_at": 924000,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        }
+      ],
+      "expected": {
+        "result": "holds",
+        "holder": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+        "reads": [
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "coin 1bf60c6cdd9b"
         ]
       }
     },
     {
       "name": "the audit finds a withheld earlier claim",
       "why": "§8.2.6: a fully valid claim found only on public relays, anchored before the directory answer, holds.",
-      "claims": [
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
         {
+          "kind": "listing",
           "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
           "claim_id": "9dd1d515650c67730cd0778d8118809980c962e44cd6639960ae56168f6dec21",
           "anchor": 924990,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924500,
             "value": 50000,
@@ -415,10 +836,12 @@
           "source": "public"
         },
         {
+          "kind": "listing",
           "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
           "claim_id": "a50404c1500ec7e8a421cbb8a8a51b75758b96809f1dec1445aba5470e315be2",
           "anchor": 925000,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924000,
             "value": 50000,
@@ -431,28 +854,46 @@
         "result": "holds",
         "holder": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
         "reads": [
-          "a50404c1500ec7e8a421cbb8a8a51b75758b96809f1dec1445aba5470e315be2",
-          "9dd1d515650c67730cd0778d8118809980c962e44cd6639960ae56168f6dec21"
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "coin 9dd1d515650c"
         ]
       }
     },
     {
       "name": "an audit it cannot finish leaves the directory answer",
       "why": "§8.2.6: public records never turn a directory answer into E_DIR_UNRESOLVED.",
-      "claims": [
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
         {
+          "kind": "listing",
           "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
           "claim_id": "58e4b601767ba3e014394f2b895e4e4ca6e6c87372ce5f566ad1497073d822f3",
           "anchor": 924990,
-          "binding": "bound",
           "coin": "no-answer",
           "source": "public"
         },
         {
+          "kind": "listing",
           "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
           "claim_id": "d3860c8fb76d827825617fc0fdc726b1cf9595d1c6acc29072236430b996227e",
           "anchor": 925000,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924000,
             "value": 50000,
@@ -465,33 +906,125 @@
         "result": "holds",
         "holder": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
         "reads": [
-          "d3860c8fb76d827825617fc0fdc726b1cf9595d1c6acc29072236430b996227e",
-          "58e4b601767ba3e014394f2b895e4e4ca6e6c87372ce5f566ad1497073d822f3"
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "coin 58e4b601767b",
+          "binding bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "coin d3860c8fb76d"
+        ]
+      }
+    },
+    {
+      "name": "a directory walk that stops unresolved lets no later audit claim hold",
+      "why": "§8.2.6: M1 still holds when the audit has a valid later claim.",
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        },
+        "bc1qaudit": {
+          "binding": "answered",
+          "bound_keys": [
+            "kc"
+          ]
+        }
+      },
+      "records": [
+        {
+          "kind": "listing",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
+          "claim_id": "503fd007a61e634ce10ab4b99dadad52a3729b2606fc2a4dd78cab9534570e96",
+          "anchor": 925000,
+          "coin": "no-answer",
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qaudit",
+          "key": "kc",
+          "created_at": 1790000000,
+          "claim_id": "714db73fd324e3b2db16a5b7555bb98198fe527691161174c55c19881c39e6d7",
+          "anchor": 925003,
+          "coin": {
+            "confirmed_at": 924000,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
+          "claim_id": "cfe743b51e1c127c3cf41b042d7a2c41f91c5e4e2a585484a1dea7b6fac8f9b1",
+          "anchor": 925005,
+          "coin": {
+            "confirmed_at": 924000,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        }
+      ],
+      "expected": {
+        "result": "E_DIR_UNRESOLVED",
+        "holder": null,
+        "reads": [
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "coin 503fd007a61e"
         ]
       }
     },
     {
       "name": "the legacy entry",
       "why": "§8.2.8: the reader treats exactly this v1 listing as carrying the shipped claim (vc22 legacy_claim_id).",
-      "claims": [
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
         {
+          "kind": "listing",
           "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
           "claim_id": "96cd82be386a99a512586898a8348145f6075a390a84e0181314ca062079bb3a",
           "anchor": 925000,
-          "legacy_v1_listing_id": "920d9909967bd734d145e5a12719b0e907430d12a3493430f8b0afcd7d3d0881",
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924700,
             "value": 50000,
             "spend": null
           },
-          "source": "directory"
+          "source": "directory",
+          "legacy_v1_listing_id": "920d9909967bd734d145e5a12719b0e907430d12a3493430f8b0afcd7d3d0881"
         },
         {
+          "kind": "listing",
           "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
           "claim_id": "6ec3ba2a152fd6332a088a265c6fa97acfc1d78046a2c690a18e76de683a0d6c",
           "anchor": 925005,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924000,
             "value": 50000,
@@ -504,19 +1037,426 @@
         "result": "holds",
         "holder": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
         "reads": [
-          "96cd82be386a99a512586898a8348145f6075a390a84e0181314ca062079bb3a"
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "coin 96cd82be386a"
         ]
       }
     },
     {
       "name": "65 failing claims before the holder reach the bound",
-      "why": "§8.2.5 (6): 64 coin reads, then E_DIR_UNRESOLVED, never contested.",
-      "claims": [
+      "why": "§8.2.5 (5): 64 coin reads, then E_DIR_UNRESOLVED, never contested.",
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        },
+        "bc1qpad00": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp0"
+          ]
+        },
+        "bc1qpad01": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp1"
+          ]
+        },
+        "bc1qpad02": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp2"
+          ]
+        },
+        "bc1qpad03": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp3"
+          ]
+        },
+        "bc1qpad04": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp4"
+          ]
+        },
+        "bc1qpad05": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp5"
+          ]
+        },
+        "bc1qpad06": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp6"
+          ]
+        },
+        "bc1qpad07": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp7"
+          ]
+        },
+        "bc1qpad08": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp8"
+          ]
+        },
+        "bc1qpad09": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp9"
+          ]
+        },
+        "bc1qpad10": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp10"
+          ]
+        },
+        "bc1qpad11": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp11"
+          ]
+        },
+        "bc1qpad12": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp12"
+          ]
+        },
+        "bc1qpad13": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp13"
+          ]
+        },
+        "bc1qpad14": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp14"
+          ]
+        },
+        "bc1qpad15": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp15"
+          ]
+        },
+        "bc1qpad16": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp16"
+          ]
+        },
+        "bc1qpad17": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp17"
+          ]
+        },
+        "bc1qpad18": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp18"
+          ]
+        },
+        "bc1qpad19": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp19"
+          ]
+        },
+        "bc1qpad20": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp20"
+          ]
+        },
+        "bc1qpad21": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp21"
+          ]
+        },
+        "bc1qpad22": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp22"
+          ]
+        },
+        "bc1qpad23": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp23"
+          ]
+        },
+        "bc1qpad24": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp24"
+          ]
+        },
+        "bc1qpad25": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp25"
+          ]
+        },
+        "bc1qpad26": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp26"
+          ]
+        },
+        "bc1qpad27": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp27"
+          ]
+        },
+        "bc1qpad28": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp28"
+          ]
+        },
+        "bc1qpad29": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp29"
+          ]
+        },
+        "bc1qpad30": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp30"
+          ]
+        },
+        "bc1qpad31": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp31"
+          ]
+        },
+        "bc1qpad32": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp32"
+          ]
+        },
+        "bc1qpad33": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp33"
+          ]
+        },
+        "bc1qpad34": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp34"
+          ]
+        },
+        "bc1qpad35": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp35"
+          ]
+        },
+        "bc1qpad36": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp36"
+          ]
+        },
+        "bc1qpad37": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp37"
+          ]
+        },
+        "bc1qpad38": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp38"
+          ]
+        },
+        "bc1qpad39": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp39"
+          ]
+        },
+        "bc1qpad40": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp40"
+          ]
+        },
+        "bc1qpad41": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp41"
+          ]
+        },
+        "bc1qpad42": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp42"
+          ]
+        },
+        "bc1qpad43": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp43"
+          ]
+        },
+        "bc1qpad44": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp44"
+          ]
+        },
+        "bc1qpad45": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp45"
+          ]
+        },
+        "bc1qpad46": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp46"
+          ]
+        },
+        "bc1qpad47": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp47"
+          ]
+        },
+        "bc1qpad48": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp48"
+          ]
+        },
+        "bc1qpad49": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp49"
+          ]
+        },
+        "bc1qpad50": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp50"
+          ]
+        },
+        "bc1qpad51": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp51"
+          ]
+        },
+        "bc1qpad52": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp52"
+          ]
+        },
+        "bc1qpad53": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp53"
+          ]
+        },
+        "bc1qpad54": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp54"
+          ]
+        },
+        "bc1qpad55": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp55"
+          ]
+        },
+        "bc1qpad56": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp56"
+          ]
+        },
+        "bc1qpad57": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp57"
+          ]
+        },
+        "bc1qpad58": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp58"
+          ]
+        },
+        "bc1qpad59": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp59"
+          ]
+        },
+        "bc1qpad60": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp60"
+          ]
+        },
+        "bc1qpad61": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp61"
+          ]
+        },
+        "bc1qpad62": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp62"
+          ]
+        },
+        "bc1qpad63": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp63"
+          ]
+        },
+        "bc1qpad64": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp64"
+          ]
+        }
+      },
+      "records": [
         {
+          "kind": "listing",
           "address": "bc1qpad00",
+          "key": "kp0",
+          "created_at": 1790000000,
           "claim_id": "5477d82290a8f973307441bd7614d414ebe597cfba0d989899be49b1c7f1da12",
           "anchor": 924900,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924890,
             "value": 50000,
@@ -525,10 +1465,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad01",
+          "key": "kp1",
+          "created_at": 1790000000,
           "claim_id": "ac271e6696d6b12ab2ce1d8db94ffe48a057f10aa0de45da43561443d7c39a77",
           "anchor": 924901,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924891,
             "value": 50000,
@@ -537,10 +1479,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad02",
+          "key": "kp2",
+          "created_at": 1790000000,
           "claim_id": "b1cfa56a490b329469f517dff548943087c6524b639b72a6d945625d63e46ef6",
           "anchor": 924902,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924892,
             "value": 50000,
@@ -549,10 +1493,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad03",
+          "key": "kp3",
+          "created_at": 1790000000,
           "claim_id": "5b3641282e50ec958bed650cd729f166fed04ac7a4db20143df5044cc0ce8061",
           "anchor": 924903,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924893,
             "value": 50000,
@@ -561,10 +1507,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad04",
+          "key": "kp4",
+          "created_at": 1790000000,
           "claim_id": "4425a0abbce64811d65672b59132880e7263f6786d96eafa58850837dfd6711a",
           "anchor": 924904,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924894,
             "value": 50000,
@@ -573,10 +1521,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad05",
+          "key": "kp5",
+          "created_at": 1790000000,
           "claim_id": "a6eb3d7431ba990d7fbbbe51f0c46aa57922b84240b883c175e943d0153759fe",
           "anchor": 924905,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924895,
             "value": 50000,
@@ -585,10 +1535,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad06",
+          "key": "kp6",
+          "created_at": 1790000000,
           "claim_id": "a9b3dcf179ed76b800080e801ef701295d4fe4ff97fa44c9a17f73261cba3144",
           "anchor": 924906,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924896,
             "value": 50000,
@@ -597,10 +1549,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad07",
+          "key": "kp7",
+          "created_at": 1790000000,
           "claim_id": "bea4c768b46a17eaeb91e912fa1ee8051bae2b04495a18bfc66a56be10dd87a0",
           "anchor": 924907,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924897,
             "value": 50000,
@@ -609,10 +1563,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad08",
+          "key": "kp8",
+          "created_at": 1790000000,
           "claim_id": "3a4a5bed88e2f6a44b4618b9d5c0f0a3c12c37cf537d55bc8372f366c7dbd5f4",
           "anchor": 924908,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924898,
             "value": 50000,
@@ -621,10 +1577,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad09",
+          "key": "kp9",
+          "created_at": 1790000000,
           "claim_id": "c5023fc4246b5e9e36801798c66e91c04f5d642ea1dc04b39af1b5a27eb1cc7d",
           "anchor": 924909,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924899,
             "value": 50000,
@@ -633,10 +1591,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad10",
+          "key": "kp10",
+          "created_at": 1790000000,
           "claim_id": "97e89cb8d20f80c48ab02887a4c53334b8371c01ad27474175ac59b7438cdc1c",
           "anchor": 924910,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924900,
             "value": 50000,
@@ -645,10 +1605,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad11",
+          "key": "kp11",
+          "created_at": 1790000000,
           "claim_id": "2ec82b73d46ebc6ce63db466f0a53409b710d86217d9b3d844602069d31c81f5",
           "anchor": 924911,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924901,
             "value": 50000,
@@ -657,10 +1619,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad12",
+          "key": "kp12",
+          "created_at": 1790000000,
           "claim_id": "6b1e4f3567e9be00b33716ecb7b17b7b65b7911a559e0c347ca023eb4b5dad82",
           "anchor": 924912,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924902,
             "value": 50000,
@@ -669,10 +1633,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad13",
+          "key": "kp13",
+          "created_at": 1790000000,
           "claim_id": "235f7c1310202a179637661e48b535f41b321d800778f841ea75464c44d0fbfe",
           "anchor": 924913,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924903,
             "value": 50000,
@@ -681,10 +1647,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad14",
+          "key": "kp14",
+          "created_at": 1790000000,
           "claim_id": "ab6f255f9f55fc9d5b5f5a5d35e7afc747d221ad64ab70d7af66103a3a50e879",
           "anchor": 924914,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924904,
             "value": 50000,
@@ -693,10 +1661,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad15",
+          "key": "kp15",
+          "created_at": 1790000000,
           "claim_id": "e199359587832e61e6ff7ea3f72655a3e5e57e40e75e09237a12238c9de489e1",
           "anchor": 924915,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924905,
             "value": 50000,
@@ -705,10 +1675,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad16",
+          "key": "kp16",
+          "created_at": 1790000000,
           "claim_id": "d7f8c2abc7333a3eee70197378a196bb96cdd23a81b97ac54355be532bece311",
           "anchor": 924916,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924906,
             "value": 50000,
@@ -717,10 +1689,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad17",
+          "key": "kp17",
+          "created_at": 1790000000,
           "claim_id": "c531abd43580b416ee1d267a0b1715be2c93d87a627f4529b81fde2d98cb23ba",
           "anchor": 924917,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924907,
             "value": 50000,
@@ -729,10 +1703,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad18",
+          "key": "kp18",
+          "created_at": 1790000000,
           "claim_id": "08f5bf19edee58661d360f029a1fe95157605da389d2727e705d584c624ddf90",
           "anchor": 924918,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924908,
             "value": 50000,
@@ -741,10 +1717,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad19",
+          "key": "kp19",
+          "created_at": 1790000000,
           "claim_id": "9a8237756ca40ac3d93166812aa1557c1d4e1fc4804781aa71c61d059feaf8b2",
           "anchor": 924919,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924909,
             "value": 50000,
@@ -753,10 +1731,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad20",
+          "key": "kp20",
+          "created_at": 1790000000,
           "claim_id": "a78ee79b532b7d30b719514bc47fa8feb994fe875e551f5e4df8c35539b81736",
           "anchor": 924920,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924910,
             "value": 50000,
@@ -765,10 +1745,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad21",
+          "key": "kp21",
+          "created_at": 1790000000,
           "claim_id": "312bd887dc4181209bf0328702bf50f93d50843eb862a2cbc53d7d8e7e7f31ae",
           "anchor": 924921,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924911,
             "value": 50000,
@@ -777,10 +1759,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad22",
+          "key": "kp22",
+          "created_at": 1790000000,
           "claim_id": "deaa0ebf498126ea0da778a50a093e7fa8f008d07a9d18bb48aaef14d6a62bd5",
           "anchor": 924922,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924912,
             "value": 50000,
@@ -789,10 +1773,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad23",
+          "key": "kp23",
+          "created_at": 1790000000,
           "claim_id": "6b5444d278324575160eeac2578d46f31910644829ad5314b5ea08908a193292",
           "anchor": 924923,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924913,
             "value": 50000,
@@ -801,10 +1787,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad24",
+          "key": "kp24",
+          "created_at": 1790000000,
           "claim_id": "58bd2ffb1560fc5d4307b4344206deafd15dadd177c203ca5576ea8b4ae9cf38",
           "anchor": 924924,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924914,
             "value": 50000,
@@ -813,10 +1801,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad25",
+          "key": "kp25",
+          "created_at": 1790000000,
           "claim_id": "8226a6e2d65ef09daa1d3424a7d476772b78acdb488d82caae416abf283ec765",
           "anchor": 924925,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924915,
             "value": 50000,
@@ -825,10 +1815,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad26",
+          "key": "kp26",
+          "created_at": 1790000000,
           "claim_id": "9c111426c23150d55429160dd084d5770fc88378e1606331e88c422041d1c635",
           "anchor": 924926,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924916,
             "value": 50000,
@@ -837,10 +1829,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad27",
+          "key": "kp27",
+          "created_at": 1790000000,
           "claim_id": "e38f45875aa868b77a0e3270d85b6316de08cbf55b87092fd31f709d74bc9853",
           "anchor": 924927,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924917,
             "value": 50000,
@@ -849,10 +1843,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad28",
+          "key": "kp28",
+          "created_at": 1790000000,
           "claim_id": "59e9d64202175bf6e3f15c735998f67e89108dd905c532bbc417a86762df2b77",
           "anchor": 924928,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924918,
             "value": 50000,
@@ -861,10 +1857,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad29",
+          "key": "kp29",
+          "created_at": 1790000000,
           "claim_id": "2c123f9725d13fb74bb2a68995577e21e99a5effa53faa87382397326bb4583f",
           "anchor": 924929,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924919,
             "value": 50000,
@@ -873,10 +1871,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad30",
+          "key": "kp30",
+          "created_at": 1790000000,
           "claim_id": "95948dc44a5333d2aeb6b34237667427e1d0b0af3a69d3ab8e7f44fec6e7793e",
           "anchor": 924930,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924920,
             "value": 50000,
@@ -885,10 +1885,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad31",
+          "key": "kp31",
+          "created_at": 1790000000,
           "claim_id": "5bc40d82f1750356d4ec34ff1203f5f60de04e3970070d292b987c1d16940b14",
           "anchor": 924931,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924921,
             "value": 50000,
@@ -897,10 +1899,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad32",
+          "key": "kp32",
+          "created_at": 1790000000,
           "claim_id": "42ad153b24c564b184e39c045543c31d98166a9478c4574675796d847d915c97",
           "anchor": 924932,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924922,
             "value": 50000,
@@ -909,10 +1913,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad33",
+          "key": "kp33",
+          "created_at": 1790000000,
           "claim_id": "6c2a874664ffc581325261260673e5db0a79c690a9144977f82650be8efd2ec4",
           "anchor": 924933,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924923,
             "value": 50000,
@@ -921,10 +1927,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad34",
+          "key": "kp34",
+          "created_at": 1790000000,
           "claim_id": "9fe215549e2d33321f1d1c176022db3e26aa2948e0ddf308d0603c1f407d0c81",
           "anchor": 924934,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924924,
             "value": 50000,
@@ -933,10 +1941,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad35",
+          "key": "kp35",
+          "created_at": 1790000000,
           "claim_id": "22c4578a83fe1e736c70e6850f268c5755ea131e42d4a4cb6fb9a24c45fec9a6",
           "anchor": 924935,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924925,
             "value": 50000,
@@ -945,10 +1955,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad36",
+          "key": "kp36",
+          "created_at": 1790000000,
           "claim_id": "e0c3fb84fb84089b379c068ffe5ac1e9499719b9e58eb000aa3dd1a7daf49968",
           "anchor": 924936,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924926,
             "value": 50000,
@@ -957,10 +1969,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad37",
+          "key": "kp37",
+          "created_at": 1790000000,
           "claim_id": "e2fd0b6c1aea3d5404b8ab93920f7849dd2cbe795d3673e00a6f28f9f4aa94ac",
           "anchor": 924937,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924927,
             "value": 50000,
@@ -969,10 +1983,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad38",
+          "key": "kp38",
+          "created_at": 1790000000,
           "claim_id": "7780e1883ca1483358449983e4d9bc627888b73fcc40f53f4c7c6d68ed1978d1",
           "anchor": 924938,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924928,
             "value": 50000,
@@ -981,10 +1997,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad39",
+          "key": "kp39",
+          "created_at": 1790000000,
           "claim_id": "5080d43e8b83742e3a803d410101a1ddbfec3ea09d47729fef22e19f8ba74b4c",
           "anchor": 924939,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924929,
             "value": 50000,
@@ -993,10 +2011,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad40",
+          "key": "kp40",
+          "created_at": 1790000000,
           "claim_id": "1cc9214e1dd0eb94c963fba10057c20472f21cd0e5c7b902976dd273cee4df0b",
           "anchor": 924940,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924930,
             "value": 50000,
@@ -1005,10 +2025,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad41",
+          "key": "kp41",
+          "created_at": 1790000000,
           "claim_id": "f6c6985de114f72eddc4e952b6eacf27a23b1a05c97723bbf770343f99c2412b",
           "anchor": 924941,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924931,
             "value": 50000,
@@ -1017,10 +2039,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad42",
+          "key": "kp42",
+          "created_at": 1790000000,
           "claim_id": "d8429327cd74a2be18f1608dba7fd06464e539027d7cddade443962497bf79f6",
           "anchor": 924942,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924932,
             "value": 50000,
@@ -1029,10 +2053,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad43",
+          "key": "kp43",
+          "created_at": 1790000000,
           "claim_id": "293f9b6659bdc4f9982fa69646299a51f830fd136047df62d08c1c4d9736b27d",
           "anchor": 924943,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924933,
             "value": 50000,
@@ -1041,10 +2067,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad44",
+          "key": "kp44",
+          "created_at": 1790000000,
           "claim_id": "153857956a457799c0e9c03dc1a33295ce68cfc7226c18c37d4fd61c225a6c04",
           "anchor": 924944,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924934,
             "value": 50000,
@@ -1053,10 +2081,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad45",
+          "key": "kp45",
+          "created_at": 1790000000,
           "claim_id": "9f5a49d9ef7017680428f5745756caa1f6bb8c82a702cd3944b463b431e00b0e",
           "anchor": 924945,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924935,
             "value": 50000,
@@ -1065,10 +2095,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad46",
+          "key": "kp46",
+          "created_at": 1790000000,
           "claim_id": "070663ede6029017d846abc223f0de4eb1f44b24fa73b8b34c1f47606dac9512",
           "anchor": 924946,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924936,
             "value": 50000,
@@ -1077,10 +2109,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad47",
+          "key": "kp47",
+          "created_at": 1790000000,
           "claim_id": "b4f3d6f04944bc782412a779df36d8483a4949b40c3f6a170630367159e74473",
           "anchor": 924947,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924937,
             "value": 50000,
@@ -1089,10 +2123,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad48",
+          "key": "kp48",
+          "created_at": 1790000000,
           "claim_id": "28a9e2aabe4da550c33ac6a9de29cd6f0f3d6df9d542bd716133d3335e9461eb",
           "anchor": 924948,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924938,
             "value": 50000,
@@ -1101,10 +2137,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad49",
+          "key": "kp49",
+          "created_at": 1790000000,
           "claim_id": "5be8a68c09c96e5e497f672f4d9ac859fbdb1bd1c552178aa7e5712ab5978fcd",
           "anchor": 924949,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924939,
             "value": 50000,
@@ -1113,10 +2151,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad50",
+          "key": "kp50",
+          "created_at": 1790000000,
           "claim_id": "7bd37269455bb2ecc2fc31a2313e1eb8ae7bb3aade5f01e6b827bfd7e4c7a15c",
           "anchor": 924950,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924940,
             "value": 50000,
@@ -1125,10 +2165,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad51",
+          "key": "kp51",
+          "created_at": 1790000000,
           "claim_id": "e8cc3c7f374fedd9120368a94229be6ab638743d4ef72c00b3c71b847b023597",
           "anchor": 924951,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924941,
             "value": 50000,
@@ -1137,10 +2179,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad52",
+          "key": "kp52",
+          "created_at": 1790000000,
           "claim_id": "68085595590d396263b007bdef7e2a1b665afb32cf92996e6883e22f330cef6a",
           "anchor": 924952,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924942,
             "value": 50000,
@@ -1149,10 +2193,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad53",
+          "key": "kp53",
+          "created_at": 1790000000,
           "claim_id": "67a4e9b023e163c34a33f9efb99a1451f1dee78f0226747c398ff0e4f69ba5f3",
           "anchor": 924953,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924943,
             "value": 50000,
@@ -1161,10 +2207,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad54",
+          "key": "kp54",
+          "created_at": 1790000000,
           "claim_id": "c83813282ec0cf165d8e8ee3cdb32be5ef9424efb2d210824265b48422a2625a",
           "anchor": 924954,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924944,
             "value": 50000,
@@ -1173,10 +2221,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad55",
+          "key": "kp55",
+          "created_at": 1790000000,
           "claim_id": "3f07289f9de6dbc851bf478a258cccb368768e9318308ab2dac31613b0d7b46c",
           "anchor": 924955,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924945,
             "value": 50000,
@@ -1185,10 +2235,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad56",
+          "key": "kp56",
+          "created_at": 1790000000,
           "claim_id": "1b0015e23561f69673494009cb174e75ce9ed6564e180dfad7c63952236f248d",
           "anchor": 924956,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924946,
             "value": 50000,
@@ -1197,10 +2249,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad57",
+          "key": "kp57",
+          "created_at": 1790000000,
           "claim_id": "afee5ab6041418b5b623a14ff84c47bd87583070b4ad5e557283ebede635c574",
           "anchor": 924957,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924947,
             "value": 50000,
@@ -1209,10 +2263,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad58",
+          "key": "kp58",
+          "created_at": 1790000000,
           "claim_id": "21dac419ae70b88d5e3ed7e49d21df78352df9c87617558d62aa87a22bad6800",
           "anchor": 924958,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924948,
             "value": 50000,
@@ -1221,10 +2277,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad59",
+          "key": "kp59",
+          "created_at": 1790000000,
           "claim_id": "c96bd970c88e9f2fddcd8a2059bf4d07aad56851ec77b75b63c841150e379a98",
           "anchor": 924959,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924949,
             "value": 50000,
@@ -1233,10 +2291,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad60",
+          "key": "kp60",
+          "created_at": 1790000000,
           "claim_id": "bdd52ae1ea9c4a3f06264c1830f3d12a2bdab4b60afc3ed972ee29e3a3a3dd9a",
           "anchor": 924960,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924950,
             "value": 50000,
@@ -1245,10 +2305,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad61",
+          "key": "kp61",
+          "created_at": 1790000000,
           "claim_id": "6c4647ce9c684da0356dd8a659345ad7983df144416acf35de26c7007f2bc2da",
           "anchor": 924961,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924951,
             "value": 50000,
@@ -1257,10 +2319,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad62",
+          "key": "kp62",
+          "created_at": 1790000000,
           "claim_id": "c676425fba4979b15500bd40e62dfa247cfabc8ea16359a756beb3887a1ca9c2",
           "anchor": 924962,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924952,
             "value": 50000,
@@ -1269,10 +2333,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad63",
+          "key": "kp63",
+          "created_at": 1790000000,
           "claim_id": "44669ce395d9bac384e38196d3fbb4e87d38b3941448f3a41b3bae1133a98605",
           "anchor": 924963,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924953,
             "value": 50000,
@@ -1281,10 +2347,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad64",
+          "key": "kp64",
+          "created_at": 1790000000,
           "claim_id": "2411510ce434922d9f38258c21e2c2210de620f8d1ab3210c9c60613f56aa73d",
           "anchor": 924964,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924954,
             "value": 50000,
@@ -1293,10 +2361,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
           "claim_id": "41fd6175e58b6e10a0fe0efaea5af642836ea71d1a020ca469ae504fa7f800c9",
           "anchor": 925000,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924700,
             "value": 50000,
@@ -1309,82 +2379,553 @@
         "result": "E_DIR_UNRESOLVED",
         "holder": null,
         "reads": [
-          "5477d82290a8f973307441bd7614d414ebe597cfba0d989899be49b1c7f1da12",
-          "ac271e6696d6b12ab2ce1d8db94ffe48a057f10aa0de45da43561443d7c39a77",
-          "b1cfa56a490b329469f517dff548943087c6524b639b72a6d945625d63e46ef6",
-          "5b3641282e50ec958bed650cd729f166fed04ac7a4db20143df5044cc0ce8061",
-          "4425a0abbce64811d65672b59132880e7263f6786d96eafa58850837dfd6711a",
-          "a6eb3d7431ba990d7fbbbe51f0c46aa57922b84240b883c175e943d0153759fe",
-          "a9b3dcf179ed76b800080e801ef701295d4fe4ff97fa44c9a17f73261cba3144",
-          "bea4c768b46a17eaeb91e912fa1ee8051bae2b04495a18bfc66a56be10dd87a0",
-          "3a4a5bed88e2f6a44b4618b9d5c0f0a3c12c37cf537d55bc8372f366c7dbd5f4",
-          "c5023fc4246b5e9e36801798c66e91c04f5d642ea1dc04b39af1b5a27eb1cc7d",
-          "97e89cb8d20f80c48ab02887a4c53334b8371c01ad27474175ac59b7438cdc1c",
-          "2ec82b73d46ebc6ce63db466f0a53409b710d86217d9b3d844602069d31c81f5",
-          "6b1e4f3567e9be00b33716ecb7b17b7b65b7911a559e0c347ca023eb4b5dad82",
-          "235f7c1310202a179637661e48b535f41b321d800778f841ea75464c44d0fbfe",
-          "ab6f255f9f55fc9d5b5f5a5d35e7afc747d221ad64ab70d7af66103a3a50e879",
-          "e199359587832e61e6ff7ea3f72655a3e5e57e40e75e09237a12238c9de489e1",
-          "d7f8c2abc7333a3eee70197378a196bb96cdd23a81b97ac54355be532bece311",
-          "c531abd43580b416ee1d267a0b1715be2c93d87a627f4529b81fde2d98cb23ba",
-          "08f5bf19edee58661d360f029a1fe95157605da389d2727e705d584c624ddf90",
-          "9a8237756ca40ac3d93166812aa1557c1d4e1fc4804781aa71c61d059feaf8b2",
-          "a78ee79b532b7d30b719514bc47fa8feb994fe875e551f5e4df8c35539b81736",
-          "312bd887dc4181209bf0328702bf50f93d50843eb862a2cbc53d7d8e7e7f31ae",
-          "deaa0ebf498126ea0da778a50a093e7fa8f008d07a9d18bb48aaef14d6a62bd5",
-          "6b5444d278324575160eeac2578d46f31910644829ad5314b5ea08908a193292",
-          "58bd2ffb1560fc5d4307b4344206deafd15dadd177c203ca5576ea8b4ae9cf38",
-          "8226a6e2d65ef09daa1d3424a7d476772b78acdb488d82caae416abf283ec765",
-          "9c111426c23150d55429160dd084d5770fc88378e1606331e88c422041d1c635",
-          "e38f45875aa868b77a0e3270d85b6316de08cbf55b87092fd31f709d74bc9853",
-          "59e9d64202175bf6e3f15c735998f67e89108dd905c532bbc417a86762df2b77",
-          "2c123f9725d13fb74bb2a68995577e21e99a5effa53faa87382397326bb4583f",
-          "95948dc44a5333d2aeb6b34237667427e1d0b0af3a69d3ab8e7f44fec6e7793e",
-          "5bc40d82f1750356d4ec34ff1203f5f60de04e3970070d292b987c1d16940b14",
-          "42ad153b24c564b184e39c045543c31d98166a9478c4574675796d847d915c97",
-          "6c2a874664ffc581325261260673e5db0a79c690a9144977f82650be8efd2ec4",
-          "9fe215549e2d33321f1d1c176022db3e26aa2948e0ddf308d0603c1f407d0c81",
-          "22c4578a83fe1e736c70e6850f268c5755ea131e42d4a4cb6fb9a24c45fec9a6",
-          "e0c3fb84fb84089b379c068ffe5ac1e9499719b9e58eb000aa3dd1a7daf49968",
-          "e2fd0b6c1aea3d5404b8ab93920f7849dd2cbe795d3673e00a6f28f9f4aa94ac",
-          "7780e1883ca1483358449983e4d9bc627888b73fcc40f53f4c7c6d68ed1978d1",
-          "5080d43e8b83742e3a803d410101a1ddbfec3ea09d47729fef22e19f8ba74b4c",
-          "1cc9214e1dd0eb94c963fba10057c20472f21cd0e5c7b902976dd273cee4df0b",
-          "f6c6985de114f72eddc4e952b6eacf27a23b1a05c97723bbf770343f99c2412b",
-          "d8429327cd74a2be18f1608dba7fd06464e539027d7cddade443962497bf79f6",
-          "293f9b6659bdc4f9982fa69646299a51f830fd136047df62d08c1c4d9736b27d",
-          "153857956a457799c0e9c03dc1a33295ce68cfc7226c18c37d4fd61c225a6c04",
-          "9f5a49d9ef7017680428f5745756caa1f6bb8c82a702cd3944b463b431e00b0e",
-          "070663ede6029017d846abc223f0de4eb1f44b24fa73b8b34c1f47606dac9512",
-          "b4f3d6f04944bc782412a779df36d8483a4949b40c3f6a170630367159e74473",
-          "28a9e2aabe4da550c33ac6a9de29cd6f0f3d6df9d542bd716133d3335e9461eb",
-          "5be8a68c09c96e5e497f672f4d9ac859fbdb1bd1c552178aa7e5712ab5978fcd",
-          "7bd37269455bb2ecc2fc31a2313e1eb8ae7bb3aade5f01e6b827bfd7e4c7a15c",
-          "e8cc3c7f374fedd9120368a94229be6ab638743d4ef72c00b3c71b847b023597",
-          "68085595590d396263b007bdef7e2a1b665afb32cf92996e6883e22f330cef6a",
-          "67a4e9b023e163c34a33f9efb99a1451f1dee78f0226747c398ff0e4f69ba5f3",
-          "c83813282ec0cf165d8e8ee3cdb32be5ef9424efb2d210824265b48422a2625a",
-          "3f07289f9de6dbc851bf478a258cccb368768e9318308ab2dac31613b0d7b46c",
-          "1b0015e23561f69673494009cb174e75ce9ed6564e180dfad7c63952236f248d",
-          "afee5ab6041418b5b623a14ff84c47bd87583070b4ad5e557283ebede635c574",
-          "21dac419ae70b88d5e3ed7e49d21df78352df9c87617558d62aa87a22bad6800",
-          "c96bd970c88e9f2fddcd8a2059bf4d07aad56851ec77b75b63c841150e379a98",
-          "bdd52ae1ea9c4a3f06264c1830f3d12a2bdab4b60afc3ed972ee29e3a3a3dd9a",
-          "6c4647ce9c684da0356dd8a659345ad7983df144416acf35de26c7007f2bc2da",
-          "c676425fba4979b15500bd40e62dfa247cfabc8ea16359a756beb3887a1ca9c2",
-          "44669ce395d9bac384e38196d3fbb4e87d38b3941448f3a41b3bae1133a98605"
+          "binding bc1qpad00",
+          "coin 5477d82290a8",
+          "binding bc1qpad01",
+          "coin ac271e6696d6",
+          "binding bc1qpad02",
+          "coin b1cfa56a490b",
+          "binding bc1qpad03",
+          "coin 5b3641282e50",
+          "binding bc1qpad04",
+          "coin 4425a0abbce6",
+          "binding bc1qpad05",
+          "coin a6eb3d7431ba",
+          "binding bc1qpad06",
+          "coin a9b3dcf179ed",
+          "binding bc1qpad07",
+          "coin bea4c768b46a",
+          "binding bc1qpad08",
+          "coin 3a4a5bed88e2",
+          "binding bc1qpad09",
+          "coin c5023fc4246b",
+          "binding bc1qpad10",
+          "coin 97e89cb8d20f",
+          "binding bc1qpad11",
+          "coin 2ec82b73d46e",
+          "binding bc1qpad12",
+          "coin 6b1e4f3567e9",
+          "binding bc1qpad13",
+          "coin 235f7c131020",
+          "binding bc1qpad14",
+          "coin ab6f255f9f55",
+          "binding bc1qpad15",
+          "coin e19935958783",
+          "binding bc1qpad16",
+          "coin d7f8c2abc733",
+          "binding bc1qpad17",
+          "coin c531abd43580",
+          "binding bc1qpad18",
+          "coin 08f5bf19edee",
+          "binding bc1qpad19",
+          "coin 9a8237756ca4",
+          "binding bc1qpad20",
+          "coin a78ee79b532b",
+          "binding bc1qpad21",
+          "coin 312bd887dc41",
+          "binding bc1qpad22",
+          "coin deaa0ebf4981",
+          "binding bc1qpad23",
+          "coin 6b5444d27832",
+          "binding bc1qpad24",
+          "coin 58bd2ffb1560",
+          "binding bc1qpad25",
+          "coin 8226a6e2d65e",
+          "binding bc1qpad26",
+          "coin 9c111426c231",
+          "binding bc1qpad27",
+          "coin e38f45875aa8",
+          "binding bc1qpad28",
+          "coin 59e9d6420217",
+          "binding bc1qpad29",
+          "coin 2c123f9725d1",
+          "binding bc1qpad30",
+          "coin 95948dc44a53",
+          "binding bc1qpad31",
+          "coin 5bc40d82f175",
+          "binding bc1qpad32",
+          "coin 42ad153b24c5",
+          "binding bc1qpad33",
+          "coin 6c2a874664ff",
+          "binding bc1qpad34",
+          "coin 9fe215549e2d",
+          "binding bc1qpad35",
+          "coin 22c4578a83fe",
+          "binding bc1qpad36",
+          "coin e0c3fb84fb84",
+          "binding bc1qpad37",
+          "coin e2fd0b6c1aea",
+          "binding bc1qpad38",
+          "coin 7780e1883ca1",
+          "binding bc1qpad39",
+          "coin 5080d43e8b83",
+          "binding bc1qpad40",
+          "coin 1cc9214e1dd0",
+          "binding bc1qpad41",
+          "coin f6c6985de114",
+          "binding bc1qpad42",
+          "coin d8429327cd74",
+          "binding bc1qpad43",
+          "coin 293f9b6659bd",
+          "binding bc1qpad44",
+          "coin 153857956a45",
+          "binding bc1qpad45",
+          "coin 9f5a49d9ef70",
+          "binding bc1qpad46",
+          "coin 070663ede602",
+          "binding bc1qpad47",
+          "coin b4f3d6f04944",
+          "binding bc1qpad48",
+          "coin 28a9e2aabe4d",
+          "binding bc1qpad49",
+          "coin 5be8a68c09c9",
+          "binding bc1qpad50",
+          "coin 7bd37269455b",
+          "binding bc1qpad51",
+          "coin e8cc3c7f374f",
+          "binding bc1qpad52",
+          "coin 68085595590d",
+          "binding bc1qpad53",
+          "coin 67a4e9b023e1",
+          "binding bc1qpad54",
+          "coin c83813282ec0",
+          "binding bc1qpad55",
+          "coin 3f07289f9de6",
+          "binding bc1qpad56",
+          "coin 1b0015e23561",
+          "binding bc1qpad57",
+          "coin afee5ab60414",
+          "binding bc1qpad58",
+          "coin 21dac419ae70",
+          "binding bc1qpad59",
+          "coin c96bd970c88e",
+          "binding bc1qpad60",
+          "coin bdd52ae1ea9c",
+          "binding bc1qpad61",
+          "coin 6c4647ce9c68",
+          "binding bc1qpad62",
+          "coin c676425fba49",
+          "binding bc1qpad63",
+          "coin 44669ce395d9",
+          "binding bc1qpad64"
         ]
       }
     },
     {
       "name": "the same 65 anchored after the holder are never read",
       "why": "Claims after the holder are never read.",
-      "claims": [
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        },
+        "bc1qpad00": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp0"
+          ]
+        },
+        "bc1qpad01": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp1"
+          ]
+        },
+        "bc1qpad02": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp2"
+          ]
+        },
+        "bc1qpad03": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp3"
+          ]
+        },
+        "bc1qpad04": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp4"
+          ]
+        },
+        "bc1qpad05": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp5"
+          ]
+        },
+        "bc1qpad06": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp6"
+          ]
+        },
+        "bc1qpad07": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp7"
+          ]
+        },
+        "bc1qpad08": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp8"
+          ]
+        },
+        "bc1qpad09": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp9"
+          ]
+        },
+        "bc1qpad10": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp10"
+          ]
+        },
+        "bc1qpad11": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp11"
+          ]
+        },
+        "bc1qpad12": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp12"
+          ]
+        },
+        "bc1qpad13": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp13"
+          ]
+        },
+        "bc1qpad14": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp14"
+          ]
+        },
+        "bc1qpad15": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp15"
+          ]
+        },
+        "bc1qpad16": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp16"
+          ]
+        },
+        "bc1qpad17": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp17"
+          ]
+        },
+        "bc1qpad18": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp18"
+          ]
+        },
+        "bc1qpad19": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp19"
+          ]
+        },
+        "bc1qpad20": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp20"
+          ]
+        },
+        "bc1qpad21": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp21"
+          ]
+        },
+        "bc1qpad22": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp22"
+          ]
+        },
+        "bc1qpad23": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp23"
+          ]
+        },
+        "bc1qpad24": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp24"
+          ]
+        },
+        "bc1qpad25": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp25"
+          ]
+        },
+        "bc1qpad26": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp26"
+          ]
+        },
+        "bc1qpad27": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp27"
+          ]
+        },
+        "bc1qpad28": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp28"
+          ]
+        },
+        "bc1qpad29": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp29"
+          ]
+        },
+        "bc1qpad30": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp30"
+          ]
+        },
+        "bc1qpad31": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp31"
+          ]
+        },
+        "bc1qpad32": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp32"
+          ]
+        },
+        "bc1qpad33": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp33"
+          ]
+        },
+        "bc1qpad34": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp34"
+          ]
+        },
+        "bc1qpad35": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp35"
+          ]
+        },
+        "bc1qpad36": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp36"
+          ]
+        },
+        "bc1qpad37": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp37"
+          ]
+        },
+        "bc1qpad38": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp38"
+          ]
+        },
+        "bc1qpad39": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp39"
+          ]
+        },
+        "bc1qpad40": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp40"
+          ]
+        },
+        "bc1qpad41": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp41"
+          ]
+        },
+        "bc1qpad42": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp42"
+          ]
+        },
+        "bc1qpad43": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp43"
+          ]
+        },
+        "bc1qpad44": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp44"
+          ]
+        },
+        "bc1qpad45": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp45"
+          ]
+        },
+        "bc1qpad46": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp46"
+          ]
+        },
+        "bc1qpad47": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp47"
+          ]
+        },
+        "bc1qpad48": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp48"
+          ]
+        },
+        "bc1qpad49": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp49"
+          ]
+        },
+        "bc1qpad50": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp50"
+          ]
+        },
+        "bc1qpad51": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp51"
+          ]
+        },
+        "bc1qpad52": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp52"
+          ]
+        },
+        "bc1qpad53": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp53"
+          ]
+        },
+        "bc1qpad54": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp54"
+          ]
+        },
+        "bc1qpad55": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp55"
+          ]
+        },
+        "bc1qpad56": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp56"
+          ]
+        },
+        "bc1qpad57": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp57"
+          ]
+        },
+        "bc1qpad58": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp58"
+          ]
+        },
+        "bc1qpad59": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp59"
+          ]
+        },
+        "bc1qpad60": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp60"
+          ]
+        },
+        "bc1qpad61": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp61"
+          ]
+        },
+        "bc1qpad62": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp62"
+          ]
+        },
+        "bc1qpad63": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp63"
+          ]
+        },
+        "bc1qpad64": {
+          "binding": "answered",
+          "bound_keys": [
+            "kp64"
+          ]
+        }
+      },
+      "records": [
         {
+          "kind": "listing",
           "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
           "claim_id": "36aece9a616918c021148ce49841c0804baf26ac497428c252331a2823cb9872",
           "anchor": 925000,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924700,
             "value": 50000,
@@ -1393,10 +2934,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad00",
+          "key": "kp0",
+          "created_at": 1790000000,
           "claim_id": "5477d82290a8f973307441bd7614d414ebe597cfba0d989899be49b1c7f1da12",
           "anchor": 925001,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924991,
             "value": 50000,
@@ -1405,10 +2948,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad01",
+          "key": "kp1",
+          "created_at": 1790000000,
           "claim_id": "ac271e6696d6b12ab2ce1d8db94ffe48a057f10aa0de45da43561443d7c39a77",
           "anchor": 925002,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924992,
             "value": 50000,
@@ -1417,10 +2962,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad02",
+          "key": "kp2",
+          "created_at": 1790000000,
           "claim_id": "b1cfa56a490b329469f517dff548943087c6524b639b72a6d945625d63e46ef6",
           "anchor": 925003,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924993,
             "value": 50000,
@@ -1429,10 +2976,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad03",
+          "key": "kp3",
+          "created_at": 1790000000,
           "claim_id": "5b3641282e50ec958bed650cd729f166fed04ac7a4db20143df5044cc0ce8061",
           "anchor": 925004,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924994,
             "value": 50000,
@@ -1441,10 +2990,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad04",
+          "key": "kp4",
+          "created_at": 1790000000,
           "claim_id": "4425a0abbce64811d65672b59132880e7263f6786d96eafa58850837dfd6711a",
           "anchor": 925005,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924995,
             "value": 50000,
@@ -1453,10 +3004,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad05",
+          "key": "kp5",
+          "created_at": 1790000000,
           "claim_id": "a6eb3d7431ba990d7fbbbe51f0c46aa57922b84240b883c175e943d0153759fe",
           "anchor": 925006,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924996,
             "value": 50000,
@@ -1465,10 +3018,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad06",
+          "key": "kp6",
+          "created_at": 1790000000,
           "claim_id": "a9b3dcf179ed76b800080e801ef701295d4fe4ff97fa44c9a17f73261cba3144",
           "anchor": 925007,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924997,
             "value": 50000,
@@ -1477,10 +3032,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad07",
+          "key": "kp7",
+          "created_at": 1790000000,
           "claim_id": "bea4c768b46a17eaeb91e912fa1ee8051bae2b04495a18bfc66a56be10dd87a0",
           "anchor": 925008,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924998,
             "value": 50000,
@@ -1489,10 +3046,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad08",
+          "key": "kp8",
+          "created_at": 1790000000,
           "claim_id": "3a4a5bed88e2f6a44b4618b9d5c0f0a3c12c37cf537d55bc8372f366c7dbd5f4",
           "anchor": 925009,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 924999,
             "value": 50000,
@@ -1501,10 +3060,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad09",
+          "key": "kp9",
+          "created_at": 1790000000,
           "claim_id": "c5023fc4246b5e9e36801798c66e91c04f5d642ea1dc04b39af1b5a27eb1cc7d",
           "anchor": 925010,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925000,
             "value": 50000,
@@ -1513,10 +3074,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad10",
+          "key": "kp10",
+          "created_at": 1790000000,
           "claim_id": "97e89cb8d20f80c48ab02887a4c53334b8371c01ad27474175ac59b7438cdc1c",
           "anchor": 925011,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925001,
             "value": 50000,
@@ -1525,10 +3088,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad11",
+          "key": "kp11",
+          "created_at": 1790000000,
           "claim_id": "2ec82b73d46ebc6ce63db466f0a53409b710d86217d9b3d844602069d31c81f5",
           "anchor": 925012,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925002,
             "value": 50000,
@@ -1537,10 +3102,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad12",
+          "key": "kp12",
+          "created_at": 1790000000,
           "claim_id": "6b1e4f3567e9be00b33716ecb7b17b7b65b7911a559e0c347ca023eb4b5dad82",
           "anchor": 925013,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925003,
             "value": 50000,
@@ -1549,10 +3116,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad13",
+          "key": "kp13",
+          "created_at": 1790000000,
           "claim_id": "235f7c1310202a179637661e48b535f41b321d800778f841ea75464c44d0fbfe",
           "anchor": 925014,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925004,
             "value": 50000,
@@ -1561,10 +3130,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad14",
+          "key": "kp14",
+          "created_at": 1790000000,
           "claim_id": "ab6f255f9f55fc9d5b5f5a5d35e7afc747d221ad64ab70d7af66103a3a50e879",
           "anchor": 925015,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925005,
             "value": 50000,
@@ -1573,10 +3144,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad15",
+          "key": "kp15",
+          "created_at": 1790000000,
           "claim_id": "e199359587832e61e6ff7ea3f72655a3e5e57e40e75e09237a12238c9de489e1",
           "anchor": 925016,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925006,
             "value": 50000,
@@ -1585,10 +3158,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad16",
+          "key": "kp16",
+          "created_at": 1790000000,
           "claim_id": "d7f8c2abc7333a3eee70197378a196bb96cdd23a81b97ac54355be532bece311",
           "anchor": 925017,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925007,
             "value": 50000,
@@ -1597,10 +3172,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad17",
+          "key": "kp17",
+          "created_at": 1790000000,
           "claim_id": "c531abd43580b416ee1d267a0b1715be2c93d87a627f4529b81fde2d98cb23ba",
           "anchor": 925018,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925008,
             "value": 50000,
@@ -1609,10 +3186,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad18",
+          "key": "kp18",
+          "created_at": 1790000000,
           "claim_id": "08f5bf19edee58661d360f029a1fe95157605da389d2727e705d584c624ddf90",
           "anchor": 925019,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925009,
             "value": 50000,
@@ -1621,10 +3200,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad19",
+          "key": "kp19",
+          "created_at": 1790000000,
           "claim_id": "9a8237756ca40ac3d93166812aa1557c1d4e1fc4804781aa71c61d059feaf8b2",
           "anchor": 925020,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925010,
             "value": 50000,
@@ -1633,10 +3214,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad20",
+          "key": "kp20",
+          "created_at": 1790000000,
           "claim_id": "a78ee79b532b7d30b719514bc47fa8feb994fe875e551f5e4df8c35539b81736",
           "anchor": 925021,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925011,
             "value": 50000,
@@ -1645,10 +3228,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad21",
+          "key": "kp21",
+          "created_at": 1790000000,
           "claim_id": "312bd887dc4181209bf0328702bf50f93d50843eb862a2cbc53d7d8e7e7f31ae",
           "anchor": 925022,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925012,
             "value": 50000,
@@ -1657,10 +3242,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad22",
+          "key": "kp22",
+          "created_at": 1790000000,
           "claim_id": "deaa0ebf498126ea0da778a50a093e7fa8f008d07a9d18bb48aaef14d6a62bd5",
           "anchor": 925023,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925013,
             "value": 50000,
@@ -1669,10 +3256,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad23",
+          "key": "kp23",
+          "created_at": 1790000000,
           "claim_id": "6b5444d278324575160eeac2578d46f31910644829ad5314b5ea08908a193292",
           "anchor": 925024,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925014,
             "value": 50000,
@@ -1681,10 +3270,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad24",
+          "key": "kp24",
+          "created_at": 1790000000,
           "claim_id": "58bd2ffb1560fc5d4307b4344206deafd15dadd177c203ca5576ea8b4ae9cf38",
           "anchor": 925025,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925015,
             "value": 50000,
@@ -1693,10 +3284,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad25",
+          "key": "kp25",
+          "created_at": 1790000000,
           "claim_id": "8226a6e2d65ef09daa1d3424a7d476772b78acdb488d82caae416abf283ec765",
           "anchor": 925026,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925016,
             "value": 50000,
@@ -1705,10 +3298,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad26",
+          "key": "kp26",
+          "created_at": 1790000000,
           "claim_id": "9c111426c23150d55429160dd084d5770fc88378e1606331e88c422041d1c635",
           "anchor": 925027,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925017,
             "value": 50000,
@@ -1717,10 +3312,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad27",
+          "key": "kp27",
+          "created_at": 1790000000,
           "claim_id": "e38f45875aa868b77a0e3270d85b6316de08cbf55b87092fd31f709d74bc9853",
           "anchor": 925028,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925018,
             "value": 50000,
@@ -1729,10 +3326,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad28",
+          "key": "kp28",
+          "created_at": 1790000000,
           "claim_id": "59e9d64202175bf6e3f15c735998f67e89108dd905c532bbc417a86762df2b77",
           "anchor": 925029,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925019,
             "value": 50000,
@@ -1741,10 +3340,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad29",
+          "key": "kp29",
+          "created_at": 1790000000,
           "claim_id": "2c123f9725d13fb74bb2a68995577e21e99a5effa53faa87382397326bb4583f",
           "anchor": 925030,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925020,
             "value": 50000,
@@ -1753,10 +3354,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad30",
+          "key": "kp30",
+          "created_at": 1790000000,
           "claim_id": "95948dc44a5333d2aeb6b34237667427e1d0b0af3a69d3ab8e7f44fec6e7793e",
           "anchor": 925031,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925021,
             "value": 50000,
@@ -1765,10 +3368,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad31",
+          "key": "kp31",
+          "created_at": 1790000000,
           "claim_id": "5bc40d82f1750356d4ec34ff1203f5f60de04e3970070d292b987c1d16940b14",
           "anchor": 925032,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925022,
             "value": 50000,
@@ -1777,10 +3382,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad32",
+          "key": "kp32",
+          "created_at": 1790000000,
           "claim_id": "42ad153b24c564b184e39c045543c31d98166a9478c4574675796d847d915c97",
           "anchor": 925033,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925023,
             "value": 50000,
@@ -1789,10 +3396,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad33",
+          "key": "kp33",
+          "created_at": 1790000000,
           "claim_id": "6c2a874664ffc581325261260673e5db0a79c690a9144977f82650be8efd2ec4",
           "anchor": 925034,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925024,
             "value": 50000,
@@ -1801,10 +3410,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad34",
+          "key": "kp34",
+          "created_at": 1790000000,
           "claim_id": "9fe215549e2d33321f1d1c176022db3e26aa2948e0ddf308d0603c1f407d0c81",
           "anchor": 925035,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925025,
             "value": 50000,
@@ -1813,10 +3424,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad35",
+          "key": "kp35",
+          "created_at": 1790000000,
           "claim_id": "22c4578a83fe1e736c70e6850f268c5755ea131e42d4a4cb6fb9a24c45fec9a6",
           "anchor": 925036,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925026,
             "value": 50000,
@@ -1825,10 +3438,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad36",
+          "key": "kp36",
+          "created_at": 1790000000,
           "claim_id": "e0c3fb84fb84089b379c068ffe5ac1e9499719b9e58eb000aa3dd1a7daf49968",
           "anchor": 925037,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925027,
             "value": 50000,
@@ -1837,10 +3452,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad37",
+          "key": "kp37",
+          "created_at": 1790000000,
           "claim_id": "e2fd0b6c1aea3d5404b8ab93920f7849dd2cbe795d3673e00a6f28f9f4aa94ac",
           "anchor": 925038,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925028,
             "value": 50000,
@@ -1849,10 +3466,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad38",
+          "key": "kp38",
+          "created_at": 1790000000,
           "claim_id": "7780e1883ca1483358449983e4d9bc627888b73fcc40f53f4c7c6d68ed1978d1",
           "anchor": 925039,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925029,
             "value": 50000,
@@ -1861,10 +3480,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad39",
+          "key": "kp39",
+          "created_at": 1790000000,
           "claim_id": "5080d43e8b83742e3a803d410101a1ddbfec3ea09d47729fef22e19f8ba74b4c",
           "anchor": 925040,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925030,
             "value": 50000,
@@ -1873,10 +3494,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad40",
+          "key": "kp40",
+          "created_at": 1790000000,
           "claim_id": "1cc9214e1dd0eb94c963fba10057c20472f21cd0e5c7b902976dd273cee4df0b",
           "anchor": 925041,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925031,
             "value": 50000,
@@ -1885,10 +3508,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad41",
+          "key": "kp41",
+          "created_at": 1790000000,
           "claim_id": "f6c6985de114f72eddc4e952b6eacf27a23b1a05c97723bbf770343f99c2412b",
           "anchor": 925042,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925032,
             "value": 50000,
@@ -1897,10 +3522,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad42",
+          "key": "kp42",
+          "created_at": 1790000000,
           "claim_id": "d8429327cd74a2be18f1608dba7fd06464e539027d7cddade443962497bf79f6",
           "anchor": 925043,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925033,
             "value": 50000,
@@ -1909,10 +3536,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad43",
+          "key": "kp43",
+          "created_at": 1790000000,
           "claim_id": "293f9b6659bdc4f9982fa69646299a51f830fd136047df62d08c1c4d9736b27d",
           "anchor": 925044,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925034,
             "value": 50000,
@@ -1921,10 +3550,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad44",
+          "key": "kp44",
+          "created_at": 1790000000,
           "claim_id": "153857956a457799c0e9c03dc1a33295ce68cfc7226c18c37d4fd61c225a6c04",
           "anchor": 925045,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925035,
             "value": 50000,
@@ -1933,10 +3564,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad45",
+          "key": "kp45",
+          "created_at": 1790000000,
           "claim_id": "9f5a49d9ef7017680428f5745756caa1f6bb8c82a702cd3944b463b431e00b0e",
           "anchor": 925046,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925036,
             "value": 50000,
@@ -1945,10 +3578,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad46",
+          "key": "kp46",
+          "created_at": 1790000000,
           "claim_id": "070663ede6029017d846abc223f0de4eb1f44b24fa73b8b34c1f47606dac9512",
           "anchor": 925047,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925037,
             "value": 50000,
@@ -1957,10 +3592,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad47",
+          "key": "kp47",
+          "created_at": 1790000000,
           "claim_id": "b4f3d6f04944bc782412a779df36d8483a4949b40c3f6a170630367159e74473",
           "anchor": 925048,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925038,
             "value": 50000,
@@ -1969,10 +3606,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad48",
+          "key": "kp48",
+          "created_at": 1790000000,
           "claim_id": "28a9e2aabe4da550c33ac6a9de29cd6f0f3d6df9d542bd716133d3335e9461eb",
           "anchor": 925049,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925039,
             "value": 50000,
@@ -1981,10 +3620,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad49",
+          "key": "kp49",
+          "created_at": 1790000000,
           "claim_id": "5be8a68c09c96e5e497f672f4d9ac859fbdb1bd1c552178aa7e5712ab5978fcd",
           "anchor": 925050,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925040,
             "value": 50000,
@@ -1993,10 +3634,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad50",
+          "key": "kp50",
+          "created_at": 1790000000,
           "claim_id": "7bd37269455bb2ecc2fc31a2313e1eb8ae7bb3aade5f01e6b827bfd7e4c7a15c",
           "anchor": 925051,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925041,
             "value": 50000,
@@ -2005,10 +3648,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad51",
+          "key": "kp51",
+          "created_at": 1790000000,
           "claim_id": "e8cc3c7f374fedd9120368a94229be6ab638743d4ef72c00b3c71b847b023597",
           "anchor": 925052,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925042,
             "value": 50000,
@@ -2017,10 +3662,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad52",
+          "key": "kp52",
+          "created_at": 1790000000,
           "claim_id": "68085595590d396263b007bdef7e2a1b665afb32cf92996e6883e22f330cef6a",
           "anchor": 925053,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925043,
             "value": 50000,
@@ -2029,10 +3676,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad53",
+          "key": "kp53",
+          "created_at": 1790000000,
           "claim_id": "67a4e9b023e163c34a33f9efb99a1451f1dee78f0226747c398ff0e4f69ba5f3",
           "anchor": 925054,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925044,
             "value": 50000,
@@ -2041,10 +3690,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad54",
+          "key": "kp54",
+          "created_at": 1790000000,
           "claim_id": "c83813282ec0cf165d8e8ee3cdb32be5ef9424efb2d210824265b48422a2625a",
           "anchor": 925055,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925045,
             "value": 50000,
@@ -2053,10 +3704,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad55",
+          "key": "kp55",
+          "created_at": 1790000000,
           "claim_id": "3f07289f9de6dbc851bf478a258cccb368768e9318308ab2dac31613b0d7b46c",
           "anchor": 925056,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925046,
             "value": 50000,
@@ -2065,10 +3718,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad56",
+          "key": "kp56",
+          "created_at": 1790000000,
           "claim_id": "1b0015e23561f69673494009cb174e75ce9ed6564e180dfad7c63952236f248d",
           "anchor": 925057,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925047,
             "value": 50000,
@@ -2077,10 +3732,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad57",
+          "key": "kp57",
+          "created_at": 1790000000,
           "claim_id": "afee5ab6041418b5b623a14ff84c47bd87583070b4ad5e557283ebede635c574",
           "anchor": 925058,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925048,
             "value": 50000,
@@ -2089,10 +3746,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad58",
+          "key": "kp58",
+          "created_at": 1790000000,
           "claim_id": "21dac419ae70b88d5e3ed7e49d21df78352df9c87617558d62aa87a22bad6800",
           "anchor": 925059,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925049,
             "value": 50000,
@@ -2101,10 +3760,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad59",
+          "key": "kp59",
+          "created_at": 1790000000,
           "claim_id": "c96bd970c88e9f2fddcd8a2059bf4d07aad56851ec77b75b63c841150e379a98",
           "anchor": 925060,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925050,
             "value": 50000,
@@ -2113,10 +3774,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad60",
+          "key": "kp60",
+          "created_at": 1790000000,
           "claim_id": "bdd52ae1ea9c4a3f06264c1830f3d12a2bdab4b60afc3ed972ee29e3a3a3dd9a",
           "anchor": 925061,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925051,
             "value": 50000,
@@ -2125,10 +3788,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad61",
+          "key": "kp61",
+          "created_at": 1790000000,
           "claim_id": "6c4647ce9c684da0356dd8a659345ad7983df144416acf35de26c7007f2bc2da",
           "anchor": 925062,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925052,
             "value": 50000,
@@ -2137,10 +3802,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad62",
+          "key": "kp62",
+          "created_at": 1790000000,
           "claim_id": "c676425fba4979b15500bd40e62dfa247cfabc8ea16359a756beb3887a1ca9c2",
           "anchor": 925063,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925053,
             "value": 50000,
@@ -2149,10 +3816,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad63",
+          "key": "kp63",
+          "created_at": 1790000000,
           "claim_id": "44669ce395d9bac384e38196d3fbb4e87d38b3941448f3a41b3bae1133a98605",
           "anchor": 925064,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925054,
             "value": 50000,
@@ -2161,10 +3830,12 @@
           "source": "directory"
         },
         {
+          "kind": "listing",
           "address": "bc1qpad64",
+          "key": "kp64",
+          "created_at": 1790000000,
           "claim_id": "2411510ce434922d9f38258c21e2c2210de620f8d1ab3210c9c60613f56aa73d",
           "anchor": 925065,
-          "binding": "bound",
           "coin": {
             "confirmed_at": 925055,
             "value": 50000,
@@ -2177,10 +3848,11 @@
         "result": "holds",
         "holder": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
         "reads": [
-          "36aece9a616918c021148ce49841c0804baf26ac497428c252331a2823cb9872"
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "coin 36aece9a6169"
         ]
       }
     }
   ],
-  "notes": "coin.confirmed_at is the height the claim's outpoint confirmed at; spend.confirmations is the spending transaction's depth (0 = mempool). Addresses in the padding cases are labels, not addresses."
+  "notes": "coin.confirmed_at is the height the claim's outpoint confirmed at; spend.confirmations is the spending transaction's depth (0 = mempool). Keys and the addresses in the padding cases are labels."
 }
