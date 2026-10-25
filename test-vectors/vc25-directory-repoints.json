@@ -1,5 +1,5 @@
 {
-  "description": "Re-points (SPEC §8.2.9, 0.4.0). repoint_id = SHA-256(canonical({v:1, claim: claim_id, prev, outpoint, nonce})). A reader takes re-points only from the address's state (a listing signed by a bound key) and follows the coin chain from the claim's own coin: among the re-points whose prev is the current coin, in (anchor, repoint_id) order, the first valid one moves the claim. Valid: anchored with 6 confirmations, no later than prev's spend height + dir_repoint_blocks, and its coin pays to the address and cleared the floor at the re-point's own anchor. The claim stands while its current coin is unspent or its spend has fewer than dir_repoint_blocks + 6 confirmations. Every coin read counts toward the coin bound. The cases use the vc24 walk; `reads` lists the reads made, in order ('repoint' is the read of a re-point's coin).",
+  "description": "Re-points (SPEC §8.2.9, 0.4.0). repoint_id = SHA-256(canonical({v:1, claim: claim_id, prev, outpoint, nonce})). A reader takes re-points only from the address's state (a listing signed by a bound key). The list is one chain in order, at most 16: the first prev is the claim's outpoint, each later prev the outpoint before it; a list that does not chain, or has more than 16, is dropped before any read. The reader follows it from the claim's own coin; each valid link moves the claim, and the first link that is not valid ends the chain where it stands. Valid: anchored with 6 confirmations, no later than prev's spend height + dir_repoint_blocks (an unanchored or late link ends the chain without a read), and its coin pays to the address and cleared the floor at the re-point's own anchor. The claim stands while its current coin is unspent or its spend has fewer than dir_repoint_blocks + 6 confirmations. Every coin read counts toward the coin bound. The cases use the vc24 walk, which walks each claim once; `reads` lists the reads made, in order ('repoint' is the read of a re-point's coin).",
   "inputs": {
     "tip": 930000,
     "floor": {
@@ -274,8 +274,8 @@
       }
     },
     {
-      "name": "a re-point too early for its coin is passed over; a later one to the same coin counts",
-      "why": "At S + 10 the new coin has 11 confirmations, short of dir_floor_confs: that re-point is invalid. A second one with a new nonce, anchored at S + 200, is valid. Each costs a coin read.",
+      "name": "a re-point too early for its coin ends the chain where it stands",
+      "why": "At S + 10 the new coin has 11 confirmations, short of dir_floor_confs: that link is invalid, so the claim stays on its spent coin and the link after it is never read. The window has passed, so the next claim holds. A holder in this place publishes a list without the failed link (case 1).",
       "addresses": {
         "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
           "binding": "answered",
@@ -321,10 +321,10 @@
               }
             },
             {
-              "repoint_id": "3f351c2d437ae61ce2c330d43f5be8f6b48ac6219dacbc00e73deffc10b387ae",
-              "prev": "e9036d76e53b49b9af09729c520e4171ece657b639146e09a35cc7a9d0951357:0",
-              "outpoint": "65685db5d5732bd64bfe8c04019e8e08759cebf3524b84d45d2d89e57ed960e5:0",
-              "nonce": "fbe00a6c64821e39b67e6a58ef113b0da458b394c3dbb884f3dd3ea2850d2289",
+              "repoint_id": "79dcefa2614662f8fff3eefb1299c28f083eb4e42523fb20bf01257d8a38da1e",
+              "prev": "65685db5d5732bd64bfe8c04019e8e08759cebf3524b84d45d2d89e57ed960e5:0",
+              "outpoint": "16473d56ff99fc3a713dc769e922f2dc40a2cf8e4927bebe2d209f64808f135a:0",
+              "nonce": "bd270368325f3d23ad8bab2c63e284c16ae8d6b88dda028e0f8502e33a6b4250",
               "anchor": 928201,
               "coin": {
                 "confirmed_at": 928001,
@@ -352,12 +352,13 @@
       ],
       "expected": {
         "result": "holds",
-        "holder": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+        "holder": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
         "reads": [
           "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
           "coin 38bc8f2226ad",
           "repoint 27373bba7293",
-          "repoint 3f351c2d437a"
+          "binding bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "coin b681ae2c9c95"
         ]
       }
     },
@@ -811,8 +812,8 @@
       }
     },
     {
-      "name": "the chain takes the first valid re-point and does not go back",
-      "why": "Both re-points from the first coin are valid; the earlier-anchored one moves the claim. Its coin was spent 1500 confirmations ago with no re-point from it, so the claim is ended; the other branch is never read.",
+      "name": "links after a failed one cost no read",
+      "why": "Sixteen re-points, all in time; the first pays to another address. The chain ends there after one read: the fifteen after it cost nothing, so junk in a list cannot drain the coin-read bound.",
       "addresses": {
         "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
           "binding": "answered",
@@ -839,34 +840,201 @@
             "confirmed_at": 924700,
             "value": 50000,
             "spend": {
-              "confirmations": 3000
+              "confirmations": 2000
             }
           },
           "source": "directory",
           "outpoint": "4dce7452c169f92b520feecbc7c52765631bdec589efd6770a0d0add62e7caa5:0",
           "repoints": [
             {
-              "repoint_id": "a2d532cafb0de3fe9b5da1ccb053ff5f4e5e1b2c3fd6097df37bd4e64676ab45",
+              "repoint_id": "4de4c0580a6344e962e85d04979f9f71bbf122851a9761b4a0e09e18bf6a2a1c",
               "prev": "4dce7452c169f92b520feecbc7c52765631bdec589efd6770a0d0add62e7caa5:0",
               "outpoint": "af71f6123acb135f140fc886c0391075eb9eb8b4bcf90340ce9ad714d9368550:0",
-              "nonce": "3df6517844929bb5d1ca15ef6f468cc932658da6089cfcbdffbe024c19bf0574",
-              "anchor": 927201,
+              "nonce": "c5626f8789065a1620c0a0d7ad1572e738b5cc4e96ff6e425ef60a2e04ebb5a6",
+              "anchor": 925050,
               "coin": {
-                "confirmed_at": 927001,
+                "confirmed_at": 920000,
                 "value": 50000,
-                "spend": {
-                  "confirmations": 1500
-                }
+                "spend": null,
+                "pays_to": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh"
               }
             },
             {
-              "repoint_id": "f5826ca956bd4888375b99b12c0daae640c93005767c45d8b621111f23e1fc89",
-              "prev": "4dce7452c169f92b520feecbc7c52765631bdec589efd6770a0d0add62e7caa5:0",
+              "repoint_id": "042f6d247894904143df8078ef53924fc054e0c347adc209445cd30577c72b65",
+              "prev": "af71f6123acb135f140fc886c0391075eb9eb8b4bcf90340ce9ad714d9368550:0",
               "outpoint": "547c686dedbd1fafe179b9175a7e3003d50ad3224368572a0cf037881e8647d9:0",
-              "nonce": "e0cee21f15485ef3515ddf21f86671d6b96457f2bee69d5f4f90ac161c144af8",
-              "anchor": 927301,
+              "nonce": "2f37fd4596511adefafb71ee4c498f5e59005bc6d4879025ae79c43061693aa6",
+              "anchor": 925051,
               "coin": {
-                "confirmed_at": 927001,
+                "confirmed_at": 920000,
+                "value": 50000,
+                "spend": null
+              }
+            },
+            {
+              "repoint_id": "75e4ecff9cae016bcbcd5994419d2a1780352b273ab54a42702297ef63f9c22b",
+              "prev": "547c686dedbd1fafe179b9175a7e3003d50ad3224368572a0cf037881e8647d9:0",
+              "outpoint": "fa705ebcf5c2f723221ed75ebfaf6a80ec0f2525aa085e2ef459c7387be7a852:0",
+              "nonce": "867f188ec7e8e8f6470609b77888ccd82bf51ec4d5854af8bef0969881565936",
+              "anchor": 925052,
+              "coin": {
+                "confirmed_at": 920000,
+                "value": 50000,
+                "spend": null
+              }
+            },
+            {
+              "repoint_id": "9ff7f8e0d6019e0a07ada4a4c29aa32a9e2226729856163eebaf980828e7aba9",
+              "prev": "fa705ebcf5c2f723221ed75ebfaf6a80ec0f2525aa085e2ef459c7387be7a852:0",
+              "outpoint": "d4c60520f8043edb1a410801cd3178d7d7f5f19f10be5dbb470bd3bf5e7aac30:0",
+              "nonce": "9eaee2a7b2124a079f15dc0c6c4b7f93dafd936802d180d668c1788d2d5dc273",
+              "anchor": 925053,
+              "coin": {
+                "confirmed_at": 920000,
+                "value": 50000,
+                "spend": null
+              }
+            },
+            {
+              "repoint_id": "db5963acda83b7d416b7776ee12fac0d30c41a5ed1ced97ad68763d0209f9d96",
+              "prev": "d4c60520f8043edb1a410801cd3178d7d7f5f19f10be5dbb470bd3bf5e7aac30:0",
+              "outpoint": "379fe71096fab4ea3ccb179fa1bc8b9cdeac27ec89b0222abc8a99690324652a:0",
+              "nonce": "85367120166b9ecf680b21757a3fc9edd0452ac9c29f95f3161156b64011ed99",
+              "anchor": 925054,
+              "coin": {
+                "confirmed_at": 920000,
+                "value": 50000,
+                "spend": null
+              }
+            },
+            {
+              "repoint_id": "0ed6beed03e3b32530c27f6c4b2a899554ee72846f425c938ab25778e46df8f7",
+              "prev": "379fe71096fab4ea3ccb179fa1bc8b9cdeac27ec89b0222abc8a99690324652a:0",
+              "outpoint": "7a371eb37e9c586f52700b1b82e0ef3a6fc7bbbf4b63d2f7fe6052ad24a40e5d:0",
+              "nonce": "e6bfc0422f44e4ee36ae8b1c2fb3f73da855af48180822250215354adbed7c55",
+              "anchor": 925055,
+              "coin": {
+                "confirmed_at": 920000,
+                "value": 50000,
+                "spend": null
+              }
+            },
+            {
+              "repoint_id": "02d339896a35bdcda1e91f331d66d07266709926c3a0512e9491577852923318",
+              "prev": "7a371eb37e9c586f52700b1b82e0ef3a6fc7bbbf4b63d2f7fe6052ad24a40e5d:0",
+              "outpoint": "ecc8b1d3abc2cb0e32939d706f6bcea476f9c69960ef0b42ca2fd8f821a542f8:0",
+              "nonce": "ee52843b1fc19b07f40d4990edcfa506424eea03212542e94347ff51acedadd2",
+              "anchor": 925056,
+              "coin": {
+                "confirmed_at": 920000,
+                "value": 50000,
+                "spend": null
+              }
+            },
+            {
+              "repoint_id": "ef839c74d93f0ed270eb35b9bc46d4f1b42dfd296a62367f5bba25cf69324f6f",
+              "prev": "ecc8b1d3abc2cb0e32939d706f6bcea476f9c69960ef0b42ca2fd8f821a542f8:0",
+              "outpoint": "5f2c61d1eff7e24384d95c6483330d1519537b1ce50f41cd078d8314dd55128d:0",
+              "nonce": "2a27d63f64fd62e04ee3aa918b1ace82f84a6c23581f48e8c8af83b91e4c1e1c",
+              "anchor": 925057,
+              "coin": {
+                "confirmed_at": 920000,
+                "value": 50000,
+                "spend": null
+              }
+            },
+            {
+              "repoint_id": "1c64e210bcb244926a6174116fd107ea0da910273d516b059fc6fc4ea487cc3d",
+              "prev": "5f2c61d1eff7e24384d95c6483330d1519537b1ce50f41cd078d8314dd55128d:0",
+              "outpoint": "89a9d9a4a4a75c2dcdea8e453b7f45c4afc87de243f4c16ad7e84f570f4b7e29:0",
+              "nonce": "f7c4a72176f533728536af6d21caebdc63d3e87b3632c20a5df4a51523ae10ea",
+              "anchor": 925058,
+              "coin": {
+                "confirmed_at": 920000,
+                "value": 50000,
+                "spend": null
+              }
+            },
+            {
+              "repoint_id": "9e218dae72897edadc9b888fdaafc53154d336bf11662b19e2c415eb41d0f3c4",
+              "prev": "89a9d9a4a4a75c2dcdea8e453b7f45c4afc87de243f4c16ad7e84f570f4b7e29:0",
+              "outpoint": "809a7eeef61f430a1e1d11525ad6ad4a191b24595321380b7bc2ecc764f4759f:0",
+              "nonce": "00429d72a23d02e1338afb3ecd5e14dd9497b285d92d37e56a142c278a5c1793",
+              "anchor": 925059,
+              "coin": {
+                "confirmed_at": 920000,
+                "value": 50000,
+                "spend": null
+              }
+            },
+            {
+              "repoint_id": "73aa93a20b3780f580aeab13f516df2b56324c68a36b6fb37f35f79e5acbb506",
+              "prev": "809a7eeef61f430a1e1d11525ad6ad4a191b24595321380b7bc2ecc764f4759f:0",
+              "outpoint": "2b8093dc0e7d99f7837b9c58867812865eb8e399bd7cb563fe80641921da8d35:0",
+              "nonce": "35a43fe87b506a4ae803d609297e14e6cc5aa8f61058c1238b39efd307e12df5",
+              "anchor": 925060,
+              "coin": {
+                "confirmed_at": 920000,
+                "value": 50000,
+                "spend": null
+              }
+            },
+            {
+              "repoint_id": "1e1677bfcf6f5c1e67ade6ea14ac94520c0dce9dc8b4a76dee0106c3d8864904",
+              "prev": "2b8093dc0e7d99f7837b9c58867812865eb8e399bd7cb563fe80641921da8d35:0",
+              "outpoint": "c0cfc7db9a913b66b26a607394424b61320bdcbe7990003c69b77ed746095a12:0",
+              "nonce": "5f3fe8b960d2c832f46cca9d07d3da3a35bec91ddd7b434f3d4a6b7d8e14f640",
+              "anchor": 925061,
+              "coin": {
+                "confirmed_at": 920000,
+                "value": 50000,
+                "spend": null
+              }
+            },
+            {
+              "repoint_id": "ca5c7f35a465091299932ab9104dfddd8c5a8d2cb5d3c6d37048b7cb2ecccd92",
+              "prev": "c0cfc7db9a913b66b26a607394424b61320bdcbe7990003c69b77ed746095a12:0",
+              "outpoint": "260423f4d58e688e42b21582b2a9513ab7f8875e24b3a2b9af04a81716a712fd:0",
+              "nonce": "b9c36a44f58129aa2e3e5b18dd4c3422c83a963ebd85efbe4d999475d0d50eeb",
+              "anchor": 925062,
+              "coin": {
+                "confirmed_at": 920000,
+                "value": 50000,
+                "spend": null
+              }
+            },
+            {
+              "repoint_id": "0bbb1e4b8837b1228c382804178e045136c5ec94b1e2f32a9edb0d79edcc0678",
+              "prev": "260423f4d58e688e42b21582b2a9513ab7f8875e24b3a2b9af04a81716a712fd:0",
+              "outpoint": "d529a6922ad93d8a66be044e85d1b72ae820214d52394d9d795b9996e0454dc3:0",
+              "nonce": "68b98d6613f9e035772ba752fd528b6eb0464cff7f19aaa4120db6f0a766542d",
+              "anchor": 925063,
+              "coin": {
+                "confirmed_at": 920000,
+                "value": 50000,
+                "spend": null
+              }
+            },
+            {
+              "repoint_id": "84912eec7559fa6217f636c69ee3da01b373a3593e837e7be966bd85291a2a08",
+              "prev": "d529a6922ad93d8a66be044e85d1b72ae820214d52394d9d795b9996e0454dc3:0",
+              "outpoint": "94cb9d6ff236fb03ad95b99a8ed0f77381eddcfd775b41828941e2276895c2d9:0",
+              "nonce": "da18a60a82c111e73c359e1c6f38f0dd94ad0511f6dfcd7e69cb43ed756ef5cd",
+              "anchor": 925064,
+              "coin": {
+                "confirmed_at": 920000,
+                "value": 50000,
+                "spend": null
+              }
+            },
+            {
+              "repoint_id": "8715efe4d80bea3ff8b33009ee20e9f4871952cf44515dc76eef6a6922232a6e",
+              "prev": "94cb9d6ff236fb03ad95b99a8ed0f77381eddcfd775b41828941e2276895c2d9:0",
+              "outpoint": "8754914c7a2e41a4e6ab0923799e0e514b287f23562a7b84cd43ba69b3009e7a:0",
+              "nonce": "8492f15672d297c69042e1299a57944036b0f887a284d40141a90ee1440949e7",
+              "anchor": 925065,
+              "coin": {
+                "confirmed_at": 920000,
                 "value": 50000,
                 "spend": null
               }
@@ -895,12 +1063,362 @@
         "reads": [
           "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
           "coin 8cfdfca4b63d",
-          "repoint a2d532cafb0d",
+          "repoint 4de4c0580a63",
           "binding bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
           "coin f0c7a70fd3c0"
         ]
       }
+    },
+    {
+      "name": "a list that does not chain is dropped before any read",
+      "why": "The second re-point's prev is not the first one's outpoint: the listing is dropped in §8.2.5 (1), Alice's address is never read, and the next claim holds.",
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
+        {
+          "kind": "listing",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
+          "claim_id": "ea8284a54ff3bf3f2ee29e43dc285023b1805d4f1e35325efca4b8f2c4c3f655",
+          "anchor": 925000,
+          "coin": {
+            "confirmed_at": 924700,
+            "value": 50000,
+            "spend": {
+              "confirmations": 2000
+            }
+          },
+          "source": "directory",
+          "outpoint": "9400ee8591b630732033f3743c7fda21cf84807e30879f4caeb65532446eb48d:0",
+          "repoints": [
+            {
+              "repoint_id": "8119e0cb86ed4676e0ddeb2692f24943f926f70bbf2cf5822040ddfe7a4175e7",
+              "prev": "9400ee8591b630732033f3743c7fda21cf84807e30879f4caeb65532446eb48d:0",
+              "outpoint": "cecb13d55beaa3524f13e1f5969119b5a7d2cf650f673e108566290381a5d7b2:0",
+              "nonce": "04a3942d97ec7cf3add9ea0eed4e6cfa5c75ac43835fe6c2b288ba888268de9c",
+              "anchor": 928201,
+              "coin": {
+                "confirmed_at": 928001,
+                "value": 50000,
+                "spend": null
+              }
+            },
+            {
+              "repoint_id": "f2fa8dd5ac150f4576da4cd38236ba7efe3198a322d62c7da59a4356416f0948",
+              "prev": "9400ee8591b630732033f3743c7fda21cf84807e30879f4caeb65532446eb48d:0",
+              "outpoint": "d9e785adcdf3a202bdbb9f5332cc980ef7daa8e571b79850c99efb8d0b4f1deb:0",
+              "nonce": "a8525b1f6bab6c5a218d8e822067ca5bb4bf3d9068677d53304a1fd7752a7150",
+              "anchor": 928301,
+              "coin": {
+                "confirmed_at": 928001,
+                "value": 50000,
+                "spend": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
+          "claim_id": "2524b59a2b10053fc2530c121b802d87e9a86675829b1e5bc5c973d70c14b647",
+          "anchor": 925005,
+          "coin": {
+            "confirmed_at": 924000,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory",
+          "outpoint": "2738cbef8edd7e44b243b20d7610864018ff4b7302be79b42b0484033fbc5aac:0"
+        }
+      ],
+      "expected": {
+        "result": "holds",
+        "holder": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+        "reads": [
+          "binding bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "coin 2524b59a2b10"
+        ]
+      }
+    },
+    {
+      "name": "seventeen re-points are dropped before any read",
+      "why": "At most 16 re-points per claim (§8.2.9): the listing is dropped in §8.2.5 (1).",
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
+        {
+          "kind": "listing",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
+          "claim_id": "85de1a29be58b3593556d648fbd1aba4ef402fb74f05f48b3f6a3aad1a0fe9f4",
+          "anchor": 925000,
+          "coin": {
+            "confirmed_at": 924700,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory",
+          "outpoint": "87c9aaebeae7b0a3b7206dba2c542c4c729f34db170cf2cd2a77102e0eae666b:0",
+          "repoints": [
+            {
+              "repoint_id": "a0359f6b768dc91cc3801eea81b0a469fa4eddc259f8658d8305643e0ed145ac",
+              "prev": "87c9aaebeae7b0a3b7206dba2c542c4c729f34db170cf2cd2a77102e0eae666b:0",
+              "outpoint": "eca8c89b8127a203fd8dd6af4acb8cdb288ddcf21e1cf9f16b4ddf03b6658e55:0",
+              "nonce": "89d84072b3e01d8afe35426613dc000930450f614585ec2d7be24583020102b2",
+              "anchor": 925010,
+              "coin": {
+                "confirmed_at": 920000,
+                "value": 50000,
+                "spend": null
+              }
+            },
+            {
+              "repoint_id": "45d8b20e533cfbccfe3ce37e28275167df2f4f2bb28fe4a86e31a24e25881a12",
+              "prev": "eca8c89b8127a203fd8dd6af4acb8cdb288ddcf21e1cf9f16b4ddf03b6658e55:0",
+              "outpoint": "47c5828340f9b84a6b402e0d4a35f5bbfebd8d6666003aa85d4417f9bb22b850:0",
+              "nonce": "1c4d73dfa4ebcfa024877f768d992ce3c3cd7dcde93be08acfdb91599057b700",
+              "anchor": 925011,
+              "coin": {
+                "confirmed_at": 920000,
+                "value": 50000,
+                "spend": null
+              }
+            },
+            {
+              "repoint_id": "f99a439d27ef5f362187d56529b06de8969a10a4208167715ad6359cb14d4dc3",
+              "prev": "47c5828340f9b84a6b402e0d4a35f5bbfebd8d6666003aa85d4417f9bb22b850:0",
+              "outpoint": "90b75129f341402ee732085c0b383d1c693898bbb7190baf22f7f06744902791:0",
+              "nonce": "8ac675e53c0ed1bec376d58904f19739e153543e29f0898c452232d8b1d933bc",
+              "anchor": 925012,
+              "coin": {
+                "confirmed_at": 920000,
+                "value": 50000,
+                "spend": null
+              }
+            },
+            {
+              "repoint_id": "61b895d0f1a5c994bdc9fb8acff45661862ca3e81079332f59c349536c2f61bf",
+              "prev": "90b75129f341402ee732085c0b383d1c693898bbb7190baf22f7f06744902791:0",
+              "outpoint": "6f834aac83b996a9cbaaea7b837288e15c900e19389e47d0729155685256fda0:0",
+              "nonce": "7d53c473d8c7aa722c42a9f43891f1ca3555ff739303e945158c6f6816aad5c8",
+              "anchor": 925013,
+              "coin": {
+                "confirmed_at": 920000,
+                "value": 50000,
+                "spend": null
+              }
+            },
+            {
+              "repoint_id": "314a91aa9e638c7d39f6c75a2e3513de9ea715f69024bd9121090c2a3723a339",
+              "prev": "6f834aac83b996a9cbaaea7b837288e15c900e19389e47d0729155685256fda0:0",
+              "outpoint": "8f56fe5650d9b24c4b02564b8442e7c457effb957cd0ee5b255249b43549985a:0",
+              "nonce": "713c18f08e996875a3f92593a84476322599b34fb4fd3eae988645e21ae22714",
+              "anchor": 925014,
+              "coin": {
+                "confirmed_at": 920000,
+                "value": 50000,
+                "spend": null
+              }
+            },
+            {
+              "repoint_id": "376eadf3a6a2b5270cdef3c4fd5790386a0e2e4445a7ace8dd39d169bb27af91",
+              "prev": "8f56fe5650d9b24c4b02564b8442e7c457effb957cd0ee5b255249b43549985a:0",
+              "outpoint": "036001b5fcd80b263084cc6f9c0980ec893fb39df941df3b264861306ae8c8df:0",
+              "nonce": "02a3a5dd74f628a84497fa906e3839088d61a85d158caade1e67f827fefb6632",
+              "anchor": 925015,
+              "coin": {
+                "confirmed_at": 920000,
+                "value": 50000,
+                "spend": null
+              }
+            },
+            {
+              "repoint_id": "5b4f20418cf4ad1f0348fcdc572bf579ce8d24101198639db246aebe0768c155",
+              "prev": "036001b5fcd80b263084cc6f9c0980ec893fb39df941df3b264861306ae8c8df:0",
+              "outpoint": "fef9a2206d557df8879cb84e03af7f84f92d03b31f3d14236b994ec7bc3c8c35:0",
+              "nonce": "dc2783532bdcd8593574752eae7f485091267a5db9e67f4d4d50f5a1ebc197b0",
+              "anchor": 925016,
+              "coin": {
+                "confirmed_at": 920000,
+                "value": 50000,
+                "spend": null
+              }
+            },
+            {
+              "repoint_id": "890287373d6155540ce73afe259e958672af52dacf07b0e4f3265b442cc7f2be",
+              "prev": "fef9a2206d557df8879cb84e03af7f84f92d03b31f3d14236b994ec7bc3c8c35:0",
+              "outpoint": "af7c1d494b24f6bd416b8533e46b54852e0f4564b022d96ce6c02712708a4831:0",
+              "nonce": "32e75e44e86b0ba5b405c91531c662cb593f2dc3789ea7e4ab8c76416088d690",
+              "anchor": 925017,
+              "coin": {
+                "confirmed_at": 920000,
+                "value": 50000,
+                "spend": null
+              }
+            },
+            {
+              "repoint_id": "754d3d91e4cadb8e51906b47395423124c8f73cf35833db8b285200c98a004e4",
+              "prev": "af7c1d494b24f6bd416b8533e46b54852e0f4564b022d96ce6c02712708a4831:0",
+              "outpoint": "f98e0c79caa6e50bcc10828a253d0efbd4edc6c0bfcdb172866ed9acbcc74773:0",
+              "nonce": "de1170db94dce2640ddd9288c71c0113c5a52d4cb23b109ef78fdb3de362021f",
+              "anchor": 925018,
+              "coin": {
+                "confirmed_at": 920000,
+                "value": 50000,
+                "spend": null
+              }
+            },
+            {
+              "repoint_id": "615aa90edcff0f804fe74ce540d5cf82763bb035174830c3da96b1d4d5b84848",
+              "prev": "f98e0c79caa6e50bcc10828a253d0efbd4edc6c0bfcdb172866ed9acbcc74773:0",
+              "outpoint": "8259cea2191b4c519ee92b95443605c8feea216880811c41d68233e47e52511c:0",
+              "nonce": "d3934c2f634b8db044f86ff22668fab96e11cef0fca1e2b905f05bef4607b3be",
+              "anchor": 925019,
+              "coin": {
+                "confirmed_at": 920000,
+                "value": 50000,
+                "spend": null
+              }
+            },
+            {
+              "repoint_id": "64edbbe805fcdb560389e4f45ba8c1d04ea5e843d158a9fd0b89937dfcbb183f",
+              "prev": "8259cea2191b4c519ee92b95443605c8feea216880811c41d68233e47e52511c:0",
+              "outpoint": "16b9ec0cddec07325131e20dd2cb44baf3d424c563f9118cd1132b351f6b90cb:0",
+              "nonce": "41c837df62586ea4c220c79d69a361355c4967f1b5872f22372ef9a2f2f27433",
+              "anchor": 925020,
+              "coin": {
+                "confirmed_at": 920000,
+                "value": 50000,
+                "spend": null
+              }
+            },
+            {
+              "repoint_id": "6764abc9a924d4a3cc016720cfb2ba27d4102d361946709f07708a649ec24b05",
+              "prev": "16b9ec0cddec07325131e20dd2cb44baf3d424c563f9118cd1132b351f6b90cb:0",
+              "outpoint": "6747614ad561b39779643aea8f2924bdf00f0d7bd7bff191e8013d5f7d778fd5:0",
+              "nonce": "2fb8dc415266ccb91153f34ca1dc8aab2969d843b2500ba5b04855cc64246fa4",
+              "anchor": 925021,
+              "coin": {
+                "confirmed_at": 920000,
+                "value": 50000,
+                "spend": null
+              }
+            },
+            {
+              "repoint_id": "d0b7dd99fab866e49fb23e9d3a3d4e826d0bbcc85673b8369db60ffac9710bb6",
+              "prev": "6747614ad561b39779643aea8f2924bdf00f0d7bd7bff191e8013d5f7d778fd5:0",
+              "outpoint": "af632396445e8ecadf1aeb117e6c1c5a8da3fc222e2a5d6e00de1a148dec05c7:0",
+              "nonce": "41435a6ea04368d177e07c4661f8e2f40cd2198f236fbd3052756a6ed35e6cfd",
+              "anchor": 925022,
+              "coin": {
+                "confirmed_at": 920000,
+                "value": 50000,
+                "spend": null
+              }
+            },
+            {
+              "repoint_id": "9da8979a6784cae16ab71859517a5672fa5312fcde1c65693da0d4af16bf0d61",
+              "prev": "af632396445e8ecadf1aeb117e6c1c5a8da3fc222e2a5d6e00de1a148dec05c7:0",
+              "outpoint": "fd05d5320fa7c9f4e71fbabb9dba6c376f5ccb88982d13de40c0175ff1b22f89:0",
+              "nonce": "95f7b17af7769ff3c60bef50afdad83da9abc125bdd1768f24b51ce41d15e765",
+              "anchor": 925023,
+              "coin": {
+                "confirmed_at": 920000,
+                "value": 50000,
+                "spend": null
+              }
+            },
+            {
+              "repoint_id": "c0d0a08fa757796c8dcf3714d08ac2c321c88ae9b8f354170f6f0aeca4fc4345",
+              "prev": "fd05d5320fa7c9f4e71fbabb9dba6c376f5ccb88982d13de40c0175ff1b22f89:0",
+              "outpoint": "dbf71d49b3b2d0907c8cd34759ace94c5c11e57ed68c45f962c6c80b6fdfedcf:0",
+              "nonce": "2b26397042ed29b05334a80cf904e3b7b275555e1e66b2491044554b7d2d06e3",
+              "anchor": 925024,
+              "coin": {
+                "confirmed_at": 920000,
+                "value": 50000,
+                "spend": null
+              }
+            },
+            {
+              "repoint_id": "870fd65a4cb4853a8becbb75082179b3a8e1231e90f7f943c067f648fabea9ee",
+              "prev": "dbf71d49b3b2d0907c8cd34759ace94c5c11e57ed68c45f962c6c80b6fdfedcf:0",
+              "outpoint": "09097d89368b66470786f248a831edced191b598fc503123da339b0c7ed4270a:0",
+              "nonce": "f23d4346ad5542764f8c5b51378d5df01ca2330d2a845c0c6b28aeb0675a0a5e",
+              "anchor": 925025,
+              "coin": {
+                "confirmed_at": 920000,
+                "value": 50000,
+                "spend": null
+              }
+            },
+            {
+              "repoint_id": "ff319b477a16775c7b95c22efa989753f376c727dfd145dcd7a6d9c53b7661d1",
+              "prev": "09097d89368b66470786f248a831edced191b598fc503123da339b0c7ed4270a:0",
+              "outpoint": "800ed7c37f5a2f3454ac7344bd1e0d820934f57fdb1dbb79c401dfd08c62241c:0",
+              "nonce": "abee8a1e24ae9c3357adea273fa583a3f11c011a10082d567a668d0e83fc2b2b",
+              "anchor": 925026,
+              "coin": {
+                "confirmed_at": 920000,
+                "value": 50000,
+                "spend": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
+          "claim_id": "4686342022c1c88e85cb825b614c73bc549e7a517cee86c21922f3ff48e4e5ea",
+          "anchor": 925005,
+          "coin": {
+            "confirmed_at": 924000,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory",
+          "outpoint": "1d41757d65a94d6c75633dbd9b4633255bd3fb893a834ad126347c43cae5a7e7:0"
+        }
+      ],
+      "expected": {
+        "result": "holds",
+        "holder": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+        "reads": [
+          "binding bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "coin 4686342022c1"
+        ]
+      }
     }
   ],
-  "notes": "Outpoints are synthetic txids; anchors are heights (vc23 shows how a proof gives one). A listing whose claim carries more than 16 re-points, or one not of the §8.2.9 shape, is dropped before the walk (§8.2.5 (1))."
+  "notes": "Outpoints are synthetic txids; anchors are heights (vc23 shows how a proof gives one)."
 }
