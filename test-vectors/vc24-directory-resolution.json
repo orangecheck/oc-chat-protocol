@@ -4,7 +4,8 @@
     "tip": 930000,
     "floor": {
       "dir_floor_confs": 144,
-      "dir_floor_sats": 1
+      "dir_floor_sats": 1,
+      "dir_repoint_blocks": 1008
     },
     "bounds": {
       "binding_reads": 256,
@@ -147,8 +148,8 @@
       }
     },
     {
-      "name": "a spend with 6 confirmations releases the handle",
-      "why": "§8.2.2 (3): the coin has moved, so the next claim holds.",
+      "name": "a spend releases the handle once the re-point window has passed",
+      "why": "§8.2.2 (3): the coin moved and dir_repoint_blocks + 6 = 1014 confirmations passed with no re-point (§8.2.9), so the next claim holds.",
       "addresses": {
         "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
           "binding": "answered",
@@ -175,7 +176,7 @@
             "confirmed_at": 924700,
             "value": 50000,
             "spend": {
-              "confirmations": 6
+              "confirmations": 1014
             }
           },
           "source": "directory"
@@ -207,8 +208,8 @@
       }
     },
     {
-      "name": "a spend in the mempool or with 5 confirmations does not",
-      "why": "§8.2.2 (3): only a spend with 6 confirmations counts; a mempool spend has 0.",
+      "name": "a spend inside the re-point window does not",
+      "why": "§8.2.2 (3): at 1013 confirmations the holder can still re-point (§8.2.9); a spend in the mempool (0) counts even less.",
       "addresses": {
         "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
           "binding": "answered",
@@ -235,7 +236,7 @@
             "confirmed_at": 924700,
             "value": 50000,
             "spend": {
-              "confirmations": 5
+              "confirmations": 1013
             }
           },
           "source": "directory"
@@ -10767,5 +10768,5 @@
       }
     }
   ],
-  "notes": "coin.confirmed_at is the height the claim's outpoint confirmed at; spend.confirmations is the spending transaction's depth (0 = mempool). Keys and the addresses in the padding cases are labels."
+  "notes": "coin.confirmed_at is the height the claim's outpoint confirmed at; spend.confirmations is the spending transaction's depth (0 = mempool); a spend ends a claim at dir_repoint_blocks + 6 confirmations (§8.2.2 (3)). Keys and the addresses in the padding cases are labels. Re-points are in vc25."
 }

@@ -1,0 +1,906 @@
+{
+  "description": "Re-points (SPEC §8.2.9, 0.4.0). repoint_id = SHA-256(canonical({v:1, claim: claim_id, prev, outpoint, nonce})). A reader takes re-points only from the address's state (a listing signed by a bound key) and follows the coin chain from the claim's own coin: among the re-points whose prev is the current coin, in (anchor, repoint_id) order, the first valid one moves the claim. Valid: anchored with 6 confirmations, no later than prev's spend height + dir_repoint_blocks, and its coin pays to the address and cleared the floor at the re-point's own anchor. The claim stands while its current coin is unspent or its spend has fewer than dir_repoint_blocks + 6 confirmations. Every coin read counts toward the coin bound. The cases use the vc24 walk; `reads` lists the reads made, in order ('repoint' is the read of a re-point's coin).",
+  "inputs": {
+    "tip": 930000,
+    "floor": {
+      "dir_floor_confs": 144,
+      "dir_floor_sats": 1,
+      "dir_repoint_blocks": 1008
+    },
+    "bounds": {
+      "binding_reads": 256,
+      "coin_reads": 64,
+      "audit_binding_reads": 64,
+      "audit_coin_reads": 16
+    },
+    "repoint_id": {
+      "claim_id": "29b95e96b127071e0f1b31e7bc56dc52765f0dfe3e50a0280519c3ed190fdc52",
+      "prev": "4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b:0",
+      "outpoint": "f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16:1",
+      "nonce": "da4691e6951ed4fc33c439e1d4da568090a25e25c6b3609f376a0167e950ef88"
+    },
+    "other_claim_id": "b127ede22cc19af80c98a8c390fed4fd62d24882a31101eb3516769ef5a349cd"
+  },
+  "expected_repoint_id": {
+    "repoint_canonical": "{\"claim\":\"29b95e96b127071e0f1b31e7bc56dc52765f0dfe3e50a0280519c3ed190fdc52\",\"nonce\":\"da4691e6951ed4fc33c439e1d4da568090a25e25c6b3609f376a0167e950ef88\",\"outpoint\":\"f4184fc596403b9d638783cf57adfe4c75c605f6356fbc91338530e9831e9e16:1\",\"prev\":\"4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b:0\",\"v\":1}\n",
+    "repoint_id": "fe5c54306de47f5bd5dcf4c453c7d2c8e77d7c01b8f30362f29fe3b5a8a501ea",
+    "repoint_id_for_other_claim": "46725026c1f9f204b4a5182c547ea93b577eb8e9fd8a1f320437dc032df6aefc",
+    "differs_for_other_claim": true
+  },
+  "cases": [
+    {
+      "name": "a re-point in time keeps the handle",
+      "why": "The coin was spent at S; the re-point is anchored at S + 300, no later than S + dir_repoint_blocks, and moves the claim to the spend's own output, which confirmed at S and so cleared the floor at the re-point's anchor. The claim keeps its place; the later claim is never read.",
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
+        {
+          "kind": "listing",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
+          "claim_id": "1d148d75dff5b5192c826cae6c8cec181ff1fc68eb3d2416f140a98d0270c8fe",
+          "anchor": 925000,
+          "coin": {
+            "confirmed_at": 924700,
+            "value": 50000,
+            "spend": {
+              "confirmations": 2000
+            }
+          },
+          "source": "directory",
+          "outpoint": "914dc8fa2ec40381cbcf11b0aa1a74be882fcc8a190d55ea2a2250514312ef56:0",
+          "repoints": [
+            {
+              "repoint_id": "f7bbe65a9d4a8daf0ac866368835789c9ef4988a1c7f996815c54edee30e291c",
+              "prev": "914dc8fa2ec40381cbcf11b0aa1a74be882fcc8a190d55ea2a2250514312ef56:0",
+              "outpoint": "084ab59f30f0bc419ab38dc16592c807f3c9a3e6aff1d9badad4b41805056c34:0",
+              "nonce": "d52919baedf9ec24cbbce7685aaab47f77455617b11a4e0ece11c174cb71b47d",
+              "anchor": 928301,
+              "coin": {
+                "confirmed_at": 928001,
+                "value": 50000,
+                "spend": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
+          "claim_id": "9f0640d9098b00abc03922d25602a52952a97d563b584b838b67848e753ffe4c",
+          "anchor": 925005,
+          "coin": {
+            "confirmed_at": 924000,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory",
+          "outpoint": "d6b8d8e7df351a6aa6505f0544ca777b0536d1b58b80d96a3f063a885db9ea6b:0"
+        }
+      ],
+      "expected": {
+        "result": "holds",
+        "holder": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+        "reads": [
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "coin 1d148d75dff5",
+          "repoint f7bbe65a9d4a"
+        ]
+      }
+    },
+    {
+      "name": "a late re-point loses it",
+      "why": "Anchored at S + 1009, after the window: ignored without a read. The spend has 2000 confirmations, past dir_repoint_blocks + 6, so the claim is ended and the next one holds.",
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
+        {
+          "kind": "listing",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
+          "claim_id": "33f3e0041582c521b85619b402ce73835ad4ce9b4a6e3e1b6aebb6cb3b1138d3",
+          "anchor": 925000,
+          "coin": {
+            "confirmed_at": 924700,
+            "value": 50000,
+            "spend": {
+              "confirmations": 2000
+            }
+          },
+          "source": "directory",
+          "outpoint": "7bc963dab16a658ad69ce51d480176c55ca949f321f662727e335b0cb53eb16c:0",
+          "repoints": [
+            {
+              "repoint_id": "a7c76c10d312be27e84f23e4894a1b035bc03429dff3731d44dc20e789dd0afe",
+              "prev": "7bc963dab16a658ad69ce51d480176c55ca949f321f662727e335b0cb53eb16c:0",
+              "outpoint": "3c7b77821c97d8e6ac0c209cc2126b4feec8a1033c518b3806a8b15fdfbce6fe:0",
+              "nonce": "73a06785c8f30bca948275034c23befa0fcd2e9c61df491beb50bc0f52597193",
+              "anchor": 929010,
+              "coin": {
+                "confirmed_at": 928001,
+                "value": 50000,
+                "spend": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
+          "claim_id": "cd8ad2bae2238af867a6e2826c8cb2ebf26d6d0125c12e87f164212661a8b644",
+          "anchor": 925005,
+          "coin": {
+            "confirmed_at": 924000,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory",
+          "outpoint": "a20baa6ae03e8ca777d87f4223dd21a7b11102fb58f23fa4902360afd9e95c94:0"
+        }
+      ],
+      "expected": {
+        "result": "holds",
+        "holder": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+        "reads": [
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "coin 33f3e0041582",
+          "binding bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "coin cd8ad2bae223"
+        ]
+      }
+    },
+    {
+      "name": "a re-point under a key not bound to the address is ignored",
+      "why": "The only listing carrying the re-point is signed by a key the address does not bind; the address's state is its bound listing, which carries none. The claim is ended and the next one holds.",
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
+        {
+          "kind": "listing",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
+          "claim_id": "b91d059fc6d628887c5d6db08f6011c9886fe4d670799e0892b6daa9e3041d10",
+          "anchor": 925000,
+          "coin": {
+            "confirmed_at": 924700,
+            "value": 50000,
+            "spend": {
+              "confirmations": 2000
+            }
+          },
+          "source": "directory",
+          "outpoint": "4467fa9bae46e61b7fc22316c67816c87b005f19b9a9bc52bbad0010097979e8:0",
+          "repoints": []
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "kx",
+          "created_at": 1790000500,
+          "claim_id": "b91d059fc6d628887c5d6db08f6011c9886fe4d670799e0892b6daa9e3041d10",
+          "anchor": 925000,
+          "coin": {
+            "confirmed_at": 924700,
+            "value": 50000,
+            "spend": {
+              "confirmations": 2000
+            }
+          },
+          "source": "public",
+          "outpoint": "4467fa9bae46e61b7fc22316c67816c87b005f19b9a9bc52bbad0010097979e8:0",
+          "repoints": [
+            {
+              "repoint_id": "159eebd7153fbbe0c4eb227d862cb7effa5e1970cc5dc2bcf51e1a2565a3b04f",
+              "prev": "4467fa9bae46e61b7fc22316c67816c87b005f19b9a9bc52bbad0010097979e8:0",
+              "outpoint": "c542b116fcce0de365faf904a2c274ba757ec67ff93a54b0696b2daa3fe85c48:0",
+              "nonce": "85da7f66d795e30c2aad3b0d5fab236f72788379119851a2561179b34f8c578f",
+              "anchor": 928301,
+              "coin": {
+                "confirmed_at": 928001,
+                "value": 50000,
+                "spend": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
+          "claim_id": "4060b3213bec6bd03a5ff77cdc807b8c3a69e4fb778cc88683472a9e7925c29a",
+          "anchor": 925005,
+          "coin": {
+            "confirmed_at": 924000,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory",
+          "outpoint": "524d15e2e14dbd05220dfb9791c696c24558d24cf3a6b892f76dccfd0f820a2f:0"
+        }
+      ],
+      "expected": {
+        "result": "holds",
+        "holder": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+        "reads": [
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "coin b91d059fc6d6",
+          "binding bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "coin 4060b3213bec"
+        ]
+      }
+    },
+    {
+      "name": "a re-point too early for its coin is passed over; a later one to the same coin counts",
+      "why": "At S + 10 the new coin has 11 confirmations, short of dir_floor_confs: that re-point is invalid. A second one with a new nonce, anchored at S + 200, is valid. Each costs a coin read.",
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
+        {
+          "kind": "listing",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
+          "claim_id": "38bc8f2226ad5452c384f5ca603f0910e932c6bd7a044fb6087d415ac027cc2f",
+          "anchor": 925000,
+          "coin": {
+            "confirmed_at": 924700,
+            "value": 50000,
+            "spend": {
+              "confirmations": 2000
+            }
+          },
+          "source": "directory",
+          "outpoint": "e9036d76e53b49b9af09729c520e4171ece657b639146e09a35cc7a9d0951357:0",
+          "repoints": [
+            {
+              "repoint_id": "27373bba729351003833cc93fb79d231e9114cc5d4dddf3195a68fb5cdaf9934",
+              "prev": "e9036d76e53b49b9af09729c520e4171ece657b639146e09a35cc7a9d0951357:0",
+              "outpoint": "65685db5d5732bd64bfe8c04019e8e08759cebf3524b84d45d2d89e57ed960e5:0",
+              "nonce": "64b66a1531b1ba6648a17e89de62e912e4e42ce695cc866c828130dab9505a4c",
+              "anchor": 928011,
+              "coin": {
+                "confirmed_at": 928001,
+                "value": 50000,
+                "spend": null
+              }
+            },
+            {
+              "repoint_id": "3f351c2d437ae61ce2c330d43f5be8f6b48ac6219dacbc00e73deffc10b387ae",
+              "prev": "e9036d76e53b49b9af09729c520e4171ece657b639146e09a35cc7a9d0951357:0",
+              "outpoint": "65685db5d5732bd64bfe8c04019e8e08759cebf3524b84d45d2d89e57ed960e5:0",
+              "nonce": "fbe00a6c64821e39b67e6a58ef113b0da458b394c3dbb884f3dd3ea2850d2289",
+              "anchor": 928201,
+              "coin": {
+                "confirmed_at": 928001,
+                "value": 50000,
+                "spend": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
+          "claim_id": "b681ae2c9c9557b373a665ef3e7f757d0d9c46dbdef851b3c68cf47d5b73930c",
+          "anchor": 925005,
+          "coin": {
+            "confirmed_at": 924000,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory",
+          "outpoint": "a8908a2bf6c5e56a79dc69bb5b25507d14c6e65451958e7bc482cef9ea85233f:0"
+        }
+      ],
+      "expected": {
+        "result": "holds",
+        "holder": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+        "reads": [
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "coin 38bc8f2226ad",
+          "repoint 27373bba7293",
+          "repoint 3f351c2d437a"
+        ]
+      }
+    },
+    {
+      "name": "inside the window the claim stands with no re-point yet",
+      "why": "The spend has 500 confirmations, fewer than dir_repoint_blocks + 6: the holder can still re-point, so the claim holds.",
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
+        {
+          "kind": "listing",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
+          "claim_id": "a0a76370c325a637abbf009edcf598d0dde0dfbdc0b0ace1ebd4ea11b9cb6e37",
+          "anchor": 925000,
+          "coin": {
+            "confirmed_at": 924700,
+            "value": 50000,
+            "spend": {
+              "confirmations": 500
+            }
+          },
+          "source": "directory",
+          "outpoint": "3acca27c21203a806fe3b2caec241347aa05b6b9a6599c24d662108189eefd7b:0",
+          "repoints": []
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
+          "claim_id": "50bdcdfc30e5e847b21aefe089091883feb6986a6ea69a42a193c86a04b166aa",
+          "anchor": 925005,
+          "coin": {
+            "confirmed_at": 924000,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory",
+          "outpoint": "8657ed12728cc01eef7355e42a219d3cfc43f1c7418eb3ac5714dbdd418ef9e2:0"
+        }
+      ],
+      "expected": {
+        "result": "holds",
+        "holder": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+        "reads": [
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "coin a0a76370c325"
+        ]
+      }
+    },
+    {
+      "name": "a chain of two re-points",
+      "why": "Each re-point is in time for the spend of its prev and its coin clears the floor at its own anchor. The second is read from the coin the first moved to.",
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
+        {
+          "kind": "listing",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
+          "claim_id": "c3a3366ece1f11984b96984b88fbe9b7a25d82dd323c5480481ebb70d1253f89",
+          "anchor": 925000,
+          "coin": {
+            "confirmed_at": 924700,
+            "value": 50000,
+            "spend": {
+              "confirmations": 3000
+            }
+          },
+          "source": "directory",
+          "outpoint": "334081c3240baa58b61cd47fca1ea6660806d677c0c784560002dc2cca8a83e2:0",
+          "repoints": [
+            {
+              "repoint_id": "43cd60de6c320a29ef7b1073d3e7b7ac7299ddc24ef5756a2e5372b7b633028f",
+              "prev": "334081c3240baa58b61cd47fca1ea6660806d677c0c784560002dc2cca8a83e2:0",
+              "outpoint": "fec22bc0ac39a723dbeec89e017e4569547d734e91c42677ef386999432bbf05:0",
+              "nonce": "18771086d979a0df5ea7e11683d8cd1e0475888f18b008d915ec212ca77d9622",
+              "anchor": 927201,
+              "coin": {
+                "confirmed_at": 927001,
+                "value": 50000,
+                "spend": {
+                  "confirmations": 1500
+                }
+              }
+            },
+            {
+              "repoint_id": "28185b6482e6c59a06b2932e7170f5699c14e6d484489dc264c272a1818e5f69",
+              "prev": "fec22bc0ac39a723dbeec89e017e4569547d734e91c42677ef386999432bbf05:0",
+              "outpoint": "efb71b13d81eae7c01229a00fc8738c745faeda584c996f7c7a3e0b6fdf4d98a:0",
+              "nonce": "b50259ded46f29b17671f24069e95248ea3593c82cec459d2d55a4169ace7a58",
+              "anchor": 928651,
+              "coin": {
+                "confirmed_at": 928501,
+                "value": 50000,
+                "spend": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
+          "claim_id": "4314dc67dbcfedf2b4f3a44fea9c4b814efcda3a64b58cc8e80c0e933d523f27",
+          "anchor": 925005,
+          "coin": {
+            "confirmed_at": 924000,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory",
+          "outpoint": "7affa1d9794a0a36b4e89fbf5a9f143cc21b507f8c08df8a2a7d5b825d2ad930:0"
+        }
+      ],
+      "expected": {
+        "result": "holds",
+        "holder": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+        "reads": [
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "coin c3a3366ece1f",
+          "repoint 43cd60de6c32",
+          "repoint 28185b6482e6"
+        ]
+      }
+    },
+    {
+      "name": "a re-point cannot rescue a coin that failed the floor at the claim's anchor",
+      "why": "The claim's own coin confirmed 100 blocks before its anchor: the claim fails for good, and its re-point is never read.",
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
+        {
+          "kind": "listing",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
+          "claim_id": "8fdac286478269a42e7d451de4a088ef27c3d2e785b0f7b0281e760bddd99c76",
+          "anchor": 925000,
+          "coin": {
+            "confirmed_at": 924900,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory",
+          "outpoint": "4bb6a260f1269ea9a80994057db8e5087650082d85e1e20ff31c0f135633bcd4:0",
+          "repoints": [
+            {
+              "repoint_id": "24a14612ccd72ac3210ab66d7fcee84a60d73512bbecaf05007810468355e4d1",
+              "prev": "4bb6a260f1269ea9a80994057db8e5087650082d85e1e20ff31c0f135633bcd4:0",
+              "outpoint": "ac2b16abd8b672f5704e98857ad7a7b80e700b3694184bedb0d198327b0f3e4b:0",
+              "nonce": "4224ab050d35fd840ce08bf8c747f00f282930fc91e45bf4b808e7666bd65cd5",
+              "anchor": 925050,
+              "coin": {
+                "confirmed_at": 920000,
+                "value": 50000,
+                "spend": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
+          "claim_id": "76f1303e8432e9d22a6ffe31e76cbc4e82d160a415be5e917a32324c1c703400",
+          "anchor": 925005,
+          "coin": {
+            "confirmed_at": 924000,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory",
+          "outpoint": "33c29db530da3890c09919f7d361ff6706553076fb413c6843a9064e189ab1d5:0"
+        }
+      ],
+      "expected": {
+        "result": "holds",
+        "holder": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+        "reads": [
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "coin 8fdac2864782",
+          "binding bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "coin 76f1303e8432"
+        ]
+      }
+    },
+    {
+      "name": "a re-point made before the spend",
+      "why": "Anchored at 925100, before the old coin's spend at 926000, to a coin already aged then: the claim moved before the spend and stands on the new coin.",
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
+        {
+          "kind": "listing",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
+          "claim_id": "8e1891acfa4d23074efb4d1d7b8c48ded6393a4833e15579749e14690f0bf666",
+          "anchor": 925000,
+          "coin": {
+            "confirmed_at": 924700,
+            "value": 50000,
+            "spend": {
+              "confirmations": 4001
+            }
+          },
+          "source": "directory",
+          "outpoint": "6c47894d541da9bdee2c46283443dfd415f7691c698ae2aeea308edfa27c6051:0",
+          "repoints": [
+            {
+              "repoint_id": "ad039d1cc48176dcc2e2a144fb8c4fd2b6255cc32ae1ac21dd19d5fd58e8ca21",
+              "prev": "6c47894d541da9bdee2c46283443dfd415f7691c698ae2aeea308edfa27c6051:0",
+              "outpoint": "d2690ab5fb5c23f398a95ed4565c740b130ce6a0d38dcc500e5ace0149e10b9f:0",
+              "nonce": "48f64e560ccdd2fc6d9f73ec2926cb81e4875c8508e69a4ace519ac33d7ff4a6",
+              "anchor": 925100,
+              "coin": {
+                "confirmed_at": 924500,
+                "value": 50000,
+                "spend": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
+          "claim_id": "b7a560a59bf90ead4f6aaf2fb6ae51de922f9b377dafc1527f70c91470b5ae45",
+          "anchor": 925005,
+          "coin": {
+            "confirmed_at": 924000,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory",
+          "outpoint": "56d28d7a838ccb393264939b34d007753c2851cd7e194aca8c4b5533b448d0e0:0"
+        }
+      ],
+      "expected": {
+        "result": "holds",
+        "holder": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+        "reads": [
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "coin 8e1891acfa4d",
+          "repoint ad039d1cc481"
+        ]
+      }
+    },
+    {
+      "name": "no answer for a re-point's coin before the holder",
+      "why": "§8.2.5 (4): the walk cannot tell whether the claim moved, so it stops with E_DIR_UNRESOLVED rather than hand the handle on.",
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
+        {
+          "kind": "listing",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
+          "claim_id": "31817c1d6fcf035626f032d94714c413f58658288cad06cf550267601672067f",
+          "anchor": 925000,
+          "coin": {
+            "confirmed_at": 924700,
+            "value": 50000,
+            "spend": {
+              "confirmations": 2000
+            }
+          },
+          "source": "directory",
+          "outpoint": "d167c47ef18a4282909ad0fd9e0529bb521ca36c5acc1a67031866a4eb9d8b86:0",
+          "repoints": [
+            {
+              "repoint_id": "b5f3975501db59dc9a418d85ce9866358bae262f2bac4fcd5e681c1a3068052b",
+              "prev": "d167c47ef18a4282909ad0fd9e0529bb521ca36c5acc1a67031866a4eb9d8b86:0",
+              "outpoint": "3cf33b6ae7141467b7bd76709a12458a73e5c0c03aebe4ab6880b8547c5bec64:0",
+              "nonce": "4b057686c33df89127978029bba68929abf7752a0a04dad7be48cf62504d3d3f",
+              "anchor": 928301,
+              "coin": "no-answer"
+            }
+          ]
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
+          "claim_id": "d8537993429589445fb4b90d18b4b6ad4aa3c268777efb4b12814aae21dd0749",
+          "anchor": 925005,
+          "coin": {
+            "confirmed_at": 924000,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory",
+          "outpoint": "2fa532eea9eb85f7ee3d167c674f454827c2b60e17250ce6a57b9560b34ec267:0"
+        }
+      ],
+      "expected": {
+        "result": "E_DIR_UNRESOLVED",
+        "holder": null,
+        "reads": [
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "coin 31817c1d6fcf",
+          "repoint b5f3975501db"
+        ]
+      }
+    },
+    {
+      "name": "a re-point to a coin of another address is invalid",
+      "why": "The new coin pays to another address. With no valid re-point and the window passed, the claim is ended.",
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
+        {
+          "kind": "listing",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
+          "claim_id": "8e63775ff9c3e2b9968309f1cf300b6ba5e5efb3934843a6eb27d11dcc07d28d",
+          "anchor": 925000,
+          "coin": {
+            "confirmed_at": 924700,
+            "value": 50000,
+            "spend": {
+              "confirmations": 2000
+            }
+          },
+          "source": "directory",
+          "outpoint": "ffcd7ea9c8ce9ad3d2c78973736f33759802a39e75373aca779e8ae85010c164:0",
+          "repoints": [
+            {
+              "repoint_id": "84189b9feecfa505ba1210df06143bbfafc71b29c8b60332982c824eb1a2a0a4",
+              "prev": "ffcd7ea9c8ce9ad3d2c78973736f33759802a39e75373aca779e8ae85010c164:0",
+              "outpoint": "b0d3152da36cd318e88a2b7b4e433af3af784c3c8a64fe65f4052eea8ea57f44:0",
+              "nonce": "9db582fe7f41ff371a05ad81ace6e867ef231c30674ad2a6e489cb3183bf5cf9",
+              "anchor": 928301,
+              "coin": {
+                "confirmed_at": 928001,
+                "value": 50000,
+                "spend": null,
+                "pays_to": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
+          "claim_id": "f92cbbc191ff51da3d1cfff403116236cb626b3eb7ed035427a66080297dc942",
+          "anchor": 925005,
+          "coin": {
+            "confirmed_at": 924000,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory",
+          "outpoint": "7ccda597076e24416197d1ee12ce5df6b17d5ec9f1f6144bacf34d9996287421:0"
+        }
+      ],
+      "expected": {
+        "result": "holds",
+        "holder": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+        "reads": [
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "coin 8e63775ff9c3",
+          "repoint 84189b9feecf",
+          "binding bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "coin f92cbbc191ff"
+        ]
+      }
+    },
+    {
+      "name": "the chain takes the first valid re-point and does not go back",
+      "why": "Both re-points from the first coin are valid; the earlier-anchored one moves the claim. Its coin was spent 1500 confirmations ago with no re-point from it, so the claim is ended; the other branch is never read.",
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
+        {
+          "kind": "listing",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
+          "claim_id": "8cfdfca4b63df8b397bc2aa53b8582ee25a2f935cd872a29263028cc25736104",
+          "anchor": 925000,
+          "coin": {
+            "confirmed_at": 924700,
+            "value": 50000,
+            "spend": {
+              "confirmations": 3000
+            }
+          },
+          "source": "directory",
+          "outpoint": "4dce7452c169f92b520feecbc7c52765631bdec589efd6770a0d0add62e7caa5:0",
+          "repoints": [
+            {
+              "repoint_id": "a2d532cafb0de3fe9b5da1ccb053ff5f4e5e1b2c3fd6097df37bd4e64676ab45",
+              "prev": "4dce7452c169f92b520feecbc7c52765631bdec589efd6770a0d0add62e7caa5:0",
+              "outpoint": "af71f6123acb135f140fc886c0391075eb9eb8b4bcf90340ce9ad714d9368550:0",
+              "nonce": "3df6517844929bb5d1ca15ef6f468cc932658da6089cfcbdffbe024c19bf0574",
+              "anchor": 927201,
+              "coin": {
+                "confirmed_at": 927001,
+                "value": 50000,
+                "spend": {
+                  "confirmations": 1500
+                }
+              }
+            },
+            {
+              "repoint_id": "f5826ca956bd4888375b99b12c0daae640c93005767c45d8b621111f23e1fc89",
+              "prev": "4dce7452c169f92b520feecbc7c52765631bdec589efd6770a0d0add62e7caa5:0",
+              "outpoint": "547c686dedbd1fafe179b9175a7e3003d50ad3224368572a0cf037881e8647d9:0",
+              "nonce": "e0cee21f15485ef3515ddf21f86671d6b96457f2bee69d5f4f90ac161c144af8",
+              "anchor": 927301,
+              "coin": {
+                "confirmed_at": 927001,
+                "value": 50000,
+                "spend": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
+          "claim_id": "f0c7a70fd3c09880afec9a2f56e09c6bd3aa6bc1d083659d59ce434132c26bf7",
+          "anchor": 925005,
+          "coin": {
+            "confirmed_at": 924000,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory",
+          "outpoint": "d6f84342b28a69db57d9bc5de97f529b354e4be3ef9d78804815ff52029c45bd:0"
+        }
+      ],
+      "expected": {
+        "result": "holds",
+        "holder": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+        "reads": [
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "coin 8cfdfca4b63d",
+          "repoint a2d532cafb0d",
+          "binding bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "coin f0c7a70fd3c0"
+        ]
+      }
+    }
+  ],
+  "notes": "Outpoints are synthetic txids; anchors are heights (vc23 shows how a proof gives one). A listing whose claim carries more than 16 re-points, or one not of the §8.2.9 shape, is dropped before the walk (§8.2.5 (1))."
+}

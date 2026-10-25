@@ -10,7 +10,7 @@ Directory listings change shape: a handle is ordered by a claim anchored in Bitc
 
 ### Changed
 - **§8.2.1 listing `v: 2`.** A listing carries a `claim`: the coin that backs it (`outpoint`), a 32-byte `nonce`, and an OpenTimestamps proof over `claim_id` = SHA-256 of the canonical `{v, handle, address, outpoint, nonce}`. A claim is anchored at the lowest verified Bitcoin attestation with 6 confirmations. A `v: 1` listing holds no handle (§8.2.8).
-- **§8.2.2 (3) floor at the anchor.** The claim's coin pays to the address, carries the floor, confirmed at least `dir_floor_confs` (RECOMMENDED 144) before the anchor, and is not spent by a transaction with 6 or more confirmations. A claim that fails with an answered read fails for good.
+- **§8.2.2 (3) floor at the anchor.** The claim's coin pays to the address, carries the floor, and confirmed at least `dir_floor_confs` (RECOMMENDED 144) before the anchor. A claim whose own coin fails that with an answered read fails for good. The claim's current coin (§8.2.9) is not spent by a transaction with `dir_repoint_blocks + 6` or more confirmations (RECOMMENDED `dir_repoint_blocks` 1008).
 - **§8.2.4.** A tombstone names the `claim_id` it ends; an ended claim never counts again. Edits and other devices of the same address keep the claim.
 - **§8.2.5 resolution.** Unanchored claims are dropped before any read. Live listings are walked in anchor order (then `claim_id`). The binding comes first: the first time the walk meets an address it reads the keys bound to it, once, and the address's state is its freshest record signed by a bound key. A claim is ended only by a tombstone signed by a bound key. The first listing that is its address's live state, with its claim not ended and its coin passing, holds the handle. A read without an answer before the holder ends `E_DIR_UNRESOLVED`, as does reaching a bound (256 binding reads, 64 coin reads). Records found only on public relays are walked in the same order as the audit (§8.2.6), with bounds of their own.
 - **§8.3.6.** Channel listings take the same claim, backed by a coin of `founder_address`.
@@ -18,9 +18,11 @@ Directory listings change shape: a handle is ordered by a claim anchored in Bitc
 
 ### Added
 - **§8.2.6 directory relays and the public audit.** A deployment names relays that admit only claims passing §8.2.2 (the reference deployment: `wss://relay.ochk.io`). They order nothing and a reader re-verifies everything. A reader reads them completely and also audits 2 or more public relays with a budget of its own; an earlier fully valid claim the audit finds holds, and the audit never turns a directory answer into `E_DIR_UNRESOLVED`.
-- **§8.2.7 making a claim.** Anchor before publishing, publish at 6 confirmations, resolve first, and name the coin that backs the handle.
+- **§8.2.7 making a claim.** Anchor before publishing, publish at 6 confirmations, resolve first, name the coin that backs the handle, and re-point when it is spent.
 - **§8.2.8** listings from before claims.
-- **SECURITY S17a.** What one aged coin buys, and what bounds it.
+- **§8.2.9 re-points.** A claim moves to another coin of its address and keeps its place. A re-point names `prev`, `outpoint` and a `nonce`, is anchored over `repoint_id`, counts only in the address's state (signed by a bound key), must be anchored within `dir_repoint_blocks` of `prev`'s spend, and its coin must clear the floor at the re-point's own anchor. At most 16 per claim; each coin checked is one coin read. Vector **`vc25`**.
+- **§8.2.5 per-contact pin.** A client pins the address a handle resolved to for each contact and never follows the handle to another address on its own.
+- **SECURITY S17a.** What one aged coin buys, and what bounds it. S17 says why there is no freshness rule.
 
 ## [0.3.5] — 2026-10-25
 
