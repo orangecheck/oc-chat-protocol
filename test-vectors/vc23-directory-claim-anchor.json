@@ -31,6 +31,16 @@
         "confirmations": 6,
         "anchored": true
       }
+    },
+    "anchored_at_tip_when_low_header_mismatches": {
+      "920010": {
+        "confirmations": 5,
+        "anchored": false
+      },
+      "920011": {
+        "confirmations": 6,
+        "anchored": true
+      }
     }
   },
   "notes": "A claim whose only verifying attestation has 5 confirmations is unanchored and holds nothing (§8.2.5 (1)). A proof over another digest anchors nothing."
