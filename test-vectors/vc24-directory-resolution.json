@@ -1114,6 +1114,122 @@
       }
     },
     {
+      "name": "no header answer for an anchor before the holder",
+      "why": "§8.2.5 (4): the header for the claim's lowest attestation could not be read, so the claim can be neither placed nor passed over.",
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
+        {
+          "kind": "listing",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
+          "claim_id": "f5ca964757f8650cac9e897e4cf78a19f24ea56219e7de60d17a7b4745ff2122",
+          "anchor": {
+            "unread": 925000
+          },
+          "coin": {
+            "confirmed_at": 924700,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
+          "claim_id": "bf2cfb15b4f3d3615ee6a360ba89659c1f38aa9973f161c53de21ec8f8c6d5cc",
+          "anchor": 925005,
+          "coin": {
+            "confirmed_at": 924000,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        }
+      ],
+      "expected": {
+        "result": "E_DIR_UNRESOLVED",
+        "holder": null,
+        "reads": [
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8"
+        ]
+      }
+    },
+    {
+      "name": "no header answer for an audit claim leaves the directory answer",
+      "why": "§8.2.6: the audit claim cannot be finished, so the audit ends and the directory answer stands.",
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
+        {
+          "kind": "listing",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
+          "claim_id": "333ebfcf26bb8658497dd047807aacb84d06b1840c743c45cb025c80e6ce501e",
+          "anchor": {
+            "unread": 924990
+          },
+          "coin": {
+            "confirmed_at": 924500,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
+          "claim_id": "0b53e372af7bca9f4fc96450f2f369be242a12e27cd240f639af8c21d271e3ac",
+          "anchor": 925000,
+          "coin": {
+            "confirmed_at": 924000,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        }
+      ],
+      "expected": {
+        "result": "holds",
+        "holder": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+        "reads": [
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "binding bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "coin 0b53e372af7b"
+        ]
+      }
+    },
+    {
       "name": "65 failing claims before the holder reach the bound",
       "why": "§8.2.5 (5): 64 coin reads, then E_DIR_UNRESOLVED, never contested.",
       "addresses": {
@@ -10768,5 +10884,5 @@
       }
     }
   ],
-  "notes": "coin.confirmed_at is the height the claim's outpoint confirmed at; spend.confirmations is the spending transaction's depth (0 = mempool); a spend ends a claim at dir_repoint_blocks + 6 confirmations (§8.2.2 (3)). Keys and the addresses in the padding cases are labels. Re-points are in vc25."
+  "notes": "An anchor is a height, or {unread: h} when the header for its lowest attestation could not be read. coin.confirmed_at is the height the claim's outpoint confirmed at; spend.confirmations is the spending transaction's depth (0 = mempool); a spend ends a claim at dir_repoint_blocks + 6 confirmations (§8.2.2 (3)). Keys and the addresses in the padding cases are labels. Re-points are in vc25."
 }

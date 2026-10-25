@@ -1418,6 +1418,82 @@
           "coin 4686342022c1"
         ]
       }
+    },
+    {
+      "name": "no header answer for a re-point's anchor before the holder",
+      "why": "§8.2.5 (4): whether the claim moved cannot be told, so the walk stops with E_DIR_UNRESOLVED rather than end the claim.",
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
+        {
+          "kind": "listing",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
+          "claim_id": "a3df652921445a500f5a591e4a3a9a06f8da35ec6408c84ca78103ff3b0d15fd",
+          "anchor": 925000,
+          "coin": {
+            "confirmed_at": 924700,
+            "value": 50000,
+            "spend": {
+              "confirmations": 2000
+            }
+          },
+          "source": "directory",
+          "outpoint": "8b00e3c59ef1f23f0625f66d4961d57991e557b33e3b6803fa2a88ac0b22e163:0",
+          "repoints": [
+            {
+              "repoint_id": "6a88d706af4ef21ca04fff0a87862476286fce669768c868f61851d84ce1ec92",
+              "prev": "8b00e3c59ef1f23f0625f66d4961d57991e557b33e3b6803fa2a88ac0b22e163:0",
+              "outpoint": "e80b7cbe825a6eb318eb4cfe251f809f62a1855eeb41c56b9f86ebeeac0877f1:0",
+              "nonce": "1111e8a6c5a52e812e17a0a30db8397ff5c77cb14b4c906f5d8adc2b986aa28d",
+              "anchor": {
+                "unread": 928301
+              },
+              "coin": {
+                "confirmed_at": 928001,
+                "value": 50000,
+                "spend": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
+          "claim_id": "cf282fc4921212aff8d44c91bd4b5c6e167b9710e0b25194f49ec427ab06d5b6",
+          "anchor": 925005,
+          "coin": {
+            "confirmed_at": 924000,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory",
+          "outpoint": "5736192a22ac45a21fab2f744bf9647c504ad207d230e1809bef58c336cf16cf:0"
+        }
+      ],
+      "expected": {
+        "result": "E_DIR_UNRESOLVED",
+        "holder": null,
+        "reads": [
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "coin a3df65292144"
+        ]
+      }
     }
   ],
   "notes": "Outpoints are synthetic txids; anchors are heights (vc23 shows how a proof gives one)."
