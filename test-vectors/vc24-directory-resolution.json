@@ -16036,6 +16036,77 @@
           "coin f73a32aef815"
         ]
       }
+    },
+    {
+      "name": "a newer unanchored listing from another of the address's keys does not end its anchored claim",
+      "why": "§8.2.5 (3): the state is read only from records step 1 kept; the unanchored listing is dropped there, so the anchored claim is still its address's state and holds.",
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka",
+            "kb2"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
+        {
+          "kind": "listing",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
+          "claim_id": "15e2779c7532314fb6db6bb42dfbf393aa7bda86a13c49e6f1f2cb1bd93872cd",
+          "anchor": 925000,
+          "coin": {
+            "confirmed_at": 924700,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "kb2",
+          "created_at": 1790000500,
+          "claim_id": "27cad9189f7641e063bdc3d6db4f13b3f40b273829aee067a6bebda7f1757357",
+          "anchor": null,
+          "coin": {
+            "confirmed_at": 924700,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
+          "claim_id": "5bce694a72216ff6391234dbc391a9704ed8587ad8e11d6458c7ba05add90c8b",
+          "anchor": 925005,
+          "coin": {
+            "confirmed_at": 924000,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        }
+      ],
+      "expected": {
+        "result": "holds",
+        "holder": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+        "reads": [
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "coin 15e2779c7532"
+        ]
+      }
     }
   ],
   "notes": "An anchor is a height, or {unread: h} when the header for its lowest attestation could not be read. coin.confirmed_at is the height the claim's outpoint confirmed at; spend.confirmations is the spending transaction's depth (0 = mempool); a spend ends a claim at dir_repoint_blocks + 6 confirmations (§8.2.2 (3)). Keys and the addresses in the padding cases are labels. Re-points are in vc25."

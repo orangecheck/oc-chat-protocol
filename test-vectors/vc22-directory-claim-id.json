@@ -1,5 +1,5 @@
 {
-  "description": "Directory claim id (SPEC §8.2.1, 0.4.0): claim_id = SHA-256(canonical({v:1, handle: lower(handle), address, outpoint, nonce})), canonical per §0 (RFC 8785, LF-terminated). A reader recomputes it from the listing's own handle and address and the claim's outpoint and nonce, so the same outpoint, nonce and proof inside a listing for another address give another id, which the proof does not anchor. The legacy form (§8.2.8) takes nonce = the v1 listing's listing_id (vc08). A channel listing (§8.3.6) computes its claim_id the same way with address = founder_address, and its channel_id recomputes from founder_address and slug (§8.3.1, vc14).",
+  "description": "Directory claim id (SPEC §8.2.1, 0.4.0): claim_id = SHA-256(canonical({v:1, handle: lower(handle), address, outpoint, nonce})), canonical per §0 (RFC 8785, LF-terminated). A reader recomputes it from the listing's own handle and address and the claim's outpoint and nonce, so the same outpoint, nonce and proof inside a listing for another address give another id, which the proof does not anchor. The legacy form (§8.2.8) takes nonce = the v1 listing's listing_id (vc08). A channel listing (§8.3.6) computes its claim_id over {v:1, ns:\"channel\", handle, address: founder_address, outpoint, nonce}, so it differs from a person's claim with the same fields, and its channel_id recomputes from founder_address and slug (§8.3.1, vc14).",
   "inputs": {
     "claim": {
       "handle": "Alice",
@@ -33,7 +33,9 @@
     "claim_id_differs_for_other_address": true,
     "legacy_claim_id": "96cd82be386a99a512586898a8348145f6075a390a84e0181314ca062079bb3a",
     "channel_id": "96199b4355ca664a461d1e7bd466e58ae9697309ebc876970dd648475ea84639",
-    "channel_claim_id": "29fe68f4138998917311fee11b90c320cac2bc06c085376048564a908ef3d646"
+    "channel_claim_canonical": "{\"address\":\"bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8\",\"handle\":\"builders\",\"nonce\":\"48e6798f0656e06ca9c0203aecaec3e16377bd92eaa59c07f85ecee56244187e\",\"ns\":\"channel\",\"outpoint\":\"4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b:0\",\"v\":1}\n",
+    "channel_claim_id": "42de19365904f56de9f7a00b4b93b529518fbdbc5a261938eb6b77929d92a18e",
+    "person_claim_id_with_the_same_fields": "29fe68f4138998917311fee11b90c320cac2bc06c085376048564a908ef3d646"
   },
   "notes": "handle is lowercased inside the claim. nonce is 32 bytes as 64 lowercase hex. outpoint is \"<txid hex>:<vout decimal>\"."
 }
