@@ -16107,6 +16107,5706 @@
           "coin 15e2779c7532"
         ]
       }
+    },
+    {
+      "name": "audit binding reads never spend the directory binding bound",
+      "why": "§8.2.5 (5): 64 audit binding reads count against the audit alone, so the 201 directory binding reads stay under 256 and the holder holds; shared counters would make 265.",
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        },
+        "bc1qpe000": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq0"
+          ]
+        },
+        "bc1qpe001": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq1"
+          ]
+        },
+        "bc1qpe002": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq2"
+          ]
+        },
+        "bc1qpe003": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq3"
+          ]
+        },
+        "bc1qpe004": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq4"
+          ]
+        },
+        "bc1qpe005": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq5"
+          ]
+        },
+        "bc1qpe006": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq6"
+          ]
+        },
+        "bc1qpe007": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq7"
+          ]
+        },
+        "bc1qpe008": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq8"
+          ]
+        },
+        "bc1qpe009": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq9"
+          ]
+        },
+        "bc1qpe010": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq10"
+          ]
+        },
+        "bc1qpe011": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq11"
+          ]
+        },
+        "bc1qpe012": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq12"
+          ]
+        },
+        "bc1qpe013": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq13"
+          ]
+        },
+        "bc1qpe014": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq14"
+          ]
+        },
+        "bc1qpe015": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq15"
+          ]
+        },
+        "bc1qpe016": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq16"
+          ]
+        },
+        "bc1qpe017": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq17"
+          ]
+        },
+        "bc1qpe018": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq18"
+          ]
+        },
+        "bc1qpe019": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq19"
+          ]
+        },
+        "bc1qpe020": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq20"
+          ]
+        },
+        "bc1qpe021": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq21"
+          ]
+        },
+        "bc1qpe022": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq22"
+          ]
+        },
+        "bc1qpe023": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq23"
+          ]
+        },
+        "bc1qpe024": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq24"
+          ]
+        },
+        "bc1qpe025": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq25"
+          ]
+        },
+        "bc1qpe026": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq26"
+          ]
+        },
+        "bc1qpe027": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq27"
+          ]
+        },
+        "bc1qpe028": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq28"
+          ]
+        },
+        "bc1qpe029": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq29"
+          ]
+        },
+        "bc1qpe030": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq30"
+          ]
+        },
+        "bc1qpe031": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq31"
+          ]
+        },
+        "bc1qpe032": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq32"
+          ]
+        },
+        "bc1qpe033": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq33"
+          ]
+        },
+        "bc1qpe034": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq34"
+          ]
+        },
+        "bc1qpe035": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq35"
+          ]
+        },
+        "bc1qpe036": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq36"
+          ]
+        },
+        "bc1qpe037": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq37"
+          ]
+        },
+        "bc1qpe038": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq38"
+          ]
+        },
+        "bc1qpe039": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq39"
+          ]
+        },
+        "bc1qpe040": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq40"
+          ]
+        },
+        "bc1qpe041": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq41"
+          ]
+        },
+        "bc1qpe042": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq42"
+          ]
+        },
+        "bc1qpe043": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq43"
+          ]
+        },
+        "bc1qpe044": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq44"
+          ]
+        },
+        "bc1qpe045": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq45"
+          ]
+        },
+        "bc1qpe046": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq46"
+          ]
+        },
+        "bc1qpe047": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq47"
+          ]
+        },
+        "bc1qpe048": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq48"
+          ]
+        },
+        "bc1qpe049": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq49"
+          ]
+        },
+        "bc1qpe050": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq50"
+          ]
+        },
+        "bc1qpe051": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq51"
+          ]
+        },
+        "bc1qpe052": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq52"
+          ]
+        },
+        "bc1qpe053": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq53"
+          ]
+        },
+        "bc1qpe054": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq54"
+          ]
+        },
+        "bc1qpe055": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq55"
+          ]
+        },
+        "bc1qpe056": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq56"
+          ]
+        },
+        "bc1qpe057": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq57"
+          ]
+        },
+        "bc1qpe058": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq58"
+          ]
+        },
+        "bc1qpe059": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq59"
+          ]
+        },
+        "bc1qpe060": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq60"
+          ]
+        },
+        "bc1qpe061": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq61"
+          ]
+        },
+        "bc1qpe062": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq62"
+          ]
+        },
+        "bc1qpe063": {
+          "binding": "answered",
+          "bound_keys": [
+            "kq63"
+          ]
+        },
+        "bc1qpf000": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky0"
+          ]
+        },
+        "bc1qpf001": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky1"
+          ]
+        },
+        "bc1qpf002": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky2"
+          ]
+        },
+        "bc1qpf003": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky3"
+          ]
+        },
+        "bc1qpf004": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky4"
+          ]
+        },
+        "bc1qpf005": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky5"
+          ]
+        },
+        "bc1qpf006": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky6"
+          ]
+        },
+        "bc1qpf007": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky7"
+          ]
+        },
+        "bc1qpf008": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky8"
+          ]
+        },
+        "bc1qpf009": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky9"
+          ]
+        },
+        "bc1qpf010": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky10"
+          ]
+        },
+        "bc1qpf011": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky11"
+          ]
+        },
+        "bc1qpf012": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky12"
+          ]
+        },
+        "bc1qpf013": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky13"
+          ]
+        },
+        "bc1qpf014": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky14"
+          ]
+        },
+        "bc1qpf015": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky15"
+          ]
+        },
+        "bc1qpf016": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky16"
+          ]
+        },
+        "bc1qpf017": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky17"
+          ]
+        },
+        "bc1qpf018": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky18"
+          ]
+        },
+        "bc1qpf019": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky19"
+          ]
+        },
+        "bc1qpf020": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky20"
+          ]
+        },
+        "bc1qpf021": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky21"
+          ]
+        },
+        "bc1qpf022": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky22"
+          ]
+        },
+        "bc1qpf023": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky23"
+          ]
+        },
+        "bc1qpf024": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky24"
+          ]
+        },
+        "bc1qpf025": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky25"
+          ]
+        },
+        "bc1qpf026": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky26"
+          ]
+        },
+        "bc1qpf027": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky27"
+          ]
+        },
+        "bc1qpf028": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky28"
+          ]
+        },
+        "bc1qpf029": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky29"
+          ]
+        },
+        "bc1qpf030": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky30"
+          ]
+        },
+        "bc1qpf031": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky31"
+          ]
+        },
+        "bc1qpf032": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky32"
+          ]
+        },
+        "bc1qpf033": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky33"
+          ]
+        },
+        "bc1qpf034": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky34"
+          ]
+        },
+        "bc1qpf035": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky35"
+          ]
+        },
+        "bc1qpf036": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky36"
+          ]
+        },
+        "bc1qpf037": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky37"
+          ]
+        },
+        "bc1qpf038": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky38"
+          ]
+        },
+        "bc1qpf039": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky39"
+          ]
+        },
+        "bc1qpf040": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky40"
+          ]
+        },
+        "bc1qpf041": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky41"
+          ]
+        },
+        "bc1qpf042": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky42"
+          ]
+        },
+        "bc1qpf043": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky43"
+          ]
+        },
+        "bc1qpf044": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky44"
+          ]
+        },
+        "bc1qpf045": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky45"
+          ]
+        },
+        "bc1qpf046": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky46"
+          ]
+        },
+        "bc1qpf047": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky47"
+          ]
+        },
+        "bc1qpf048": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky48"
+          ]
+        },
+        "bc1qpf049": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky49"
+          ]
+        },
+        "bc1qpf050": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky50"
+          ]
+        },
+        "bc1qpf051": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky51"
+          ]
+        },
+        "bc1qpf052": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky52"
+          ]
+        },
+        "bc1qpf053": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky53"
+          ]
+        },
+        "bc1qpf054": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky54"
+          ]
+        },
+        "bc1qpf055": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky55"
+          ]
+        },
+        "bc1qpf056": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky56"
+          ]
+        },
+        "bc1qpf057": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky57"
+          ]
+        },
+        "bc1qpf058": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky58"
+          ]
+        },
+        "bc1qpf059": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky59"
+          ]
+        },
+        "bc1qpf060": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky60"
+          ]
+        },
+        "bc1qpf061": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky61"
+          ]
+        },
+        "bc1qpf062": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky62"
+          ]
+        },
+        "bc1qpf063": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky63"
+          ]
+        },
+        "bc1qpf064": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky64"
+          ]
+        },
+        "bc1qpf065": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky65"
+          ]
+        },
+        "bc1qpf066": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky66"
+          ]
+        },
+        "bc1qpf067": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky67"
+          ]
+        },
+        "bc1qpf068": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky68"
+          ]
+        },
+        "bc1qpf069": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky69"
+          ]
+        },
+        "bc1qpf070": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky70"
+          ]
+        },
+        "bc1qpf071": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky71"
+          ]
+        },
+        "bc1qpf072": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky72"
+          ]
+        },
+        "bc1qpf073": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky73"
+          ]
+        },
+        "bc1qpf074": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky74"
+          ]
+        },
+        "bc1qpf075": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky75"
+          ]
+        },
+        "bc1qpf076": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky76"
+          ]
+        },
+        "bc1qpf077": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky77"
+          ]
+        },
+        "bc1qpf078": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky78"
+          ]
+        },
+        "bc1qpf079": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky79"
+          ]
+        },
+        "bc1qpf080": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky80"
+          ]
+        },
+        "bc1qpf081": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky81"
+          ]
+        },
+        "bc1qpf082": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky82"
+          ]
+        },
+        "bc1qpf083": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky83"
+          ]
+        },
+        "bc1qpf084": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky84"
+          ]
+        },
+        "bc1qpf085": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky85"
+          ]
+        },
+        "bc1qpf086": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky86"
+          ]
+        },
+        "bc1qpf087": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky87"
+          ]
+        },
+        "bc1qpf088": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky88"
+          ]
+        },
+        "bc1qpf089": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky89"
+          ]
+        },
+        "bc1qpf090": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky90"
+          ]
+        },
+        "bc1qpf091": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky91"
+          ]
+        },
+        "bc1qpf092": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky92"
+          ]
+        },
+        "bc1qpf093": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky93"
+          ]
+        },
+        "bc1qpf094": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky94"
+          ]
+        },
+        "bc1qpf095": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky95"
+          ]
+        },
+        "bc1qpf096": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky96"
+          ]
+        },
+        "bc1qpf097": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky97"
+          ]
+        },
+        "bc1qpf098": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky98"
+          ]
+        },
+        "bc1qpf099": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky99"
+          ]
+        },
+        "bc1qpf100": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky100"
+          ]
+        },
+        "bc1qpf101": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky101"
+          ]
+        },
+        "bc1qpf102": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky102"
+          ]
+        },
+        "bc1qpf103": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky103"
+          ]
+        },
+        "bc1qpf104": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky104"
+          ]
+        },
+        "bc1qpf105": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky105"
+          ]
+        },
+        "bc1qpf106": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky106"
+          ]
+        },
+        "bc1qpf107": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky107"
+          ]
+        },
+        "bc1qpf108": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky108"
+          ]
+        },
+        "bc1qpf109": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky109"
+          ]
+        },
+        "bc1qpf110": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky110"
+          ]
+        },
+        "bc1qpf111": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky111"
+          ]
+        },
+        "bc1qpf112": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky112"
+          ]
+        },
+        "bc1qpf113": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky113"
+          ]
+        },
+        "bc1qpf114": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky114"
+          ]
+        },
+        "bc1qpf115": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky115"
+          ]
+        },
+        "bc1qpf116": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky116"
+          ]
+        },
+        "bc1qpf117": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky117"
+          ]
+        },
+        "bc1qpf118": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky118"
+          ]
+        },
+        "bc1qpf119": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky119"
+          ]
+        },
+        "bc1qpf120": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky120"
+          ]
+        },
+        "bc1qpf121": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky121"
+          ]
+        },
+        "bc1qpf122": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky122"
+          ]
+        },
+        "bc1qpf123": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky123"
+          ]
+        },
+        "bc1qpf124": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky124"
+          ]
+        },
+        "bc1qpf125": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky125"
+          ]
+        },
+        "bc1qpf126": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky126"
+          ]
+        },
+        "bc1qpf127": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky127"
+          ]
+        },
+        "bc1qpf128": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky128"
+          ]
+        },
+        "bc1qpf129": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky129"
+          ]
+        },
+        "bc1qpf130": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky130"
+          ]
+        },
+        "bc1qpf131": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky131"
+          ]
+        },
+        "bc1qpf132": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky132"
+          ]
+        },
+        "bc1qpf133": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky133"
+          ]
+        },
+        "bc1qpf134": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky134"
+          ]
+        },
+        "bc1qpf135": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky135"
+          ]
+        },
+        "bc1qpf136": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky136"
+          ]
+        },
+        "bc1qpf137": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky137"
+          ]
+        },
+        "bc1qpf138": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky138"
+          ]
+        },
+        "bc1qpf139": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky139"
+          ]
+        },
+        "bc1qpf140": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky140"
+          ]
+        },
+        "bc1qpf141": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky141"
+          ]
+        },
+        "bc1qpf142": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky142"
+          ]
+        },
+        "bc1qpf143": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky143"
+          ]
+        },
+        "bc1qpf144": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky144"
+          ]
+        },
+        "bc1qpf145": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky145"
+          ]
+        },
+        "bc1qpf146": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky146"
+          ]
+        },
+        "bc1qpf147": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky147"
+          ]
+        },
+        "bc1qpf148": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky148"
+          ]
+        },
+        "bc1qpf149": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky149"
+          ]
+        },
+        "bc1qpf150": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky150"
+          ]
+        },
+        "bc1qpf151": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky151"
+          ]
+        },
+        "bc1qpf152": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky152"
+          ]
+        },
+        "bc1qpf153": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky153"
+          ]
+        },
+        "bc1qpf154": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky154"
+          ]
+        },
+        "bc1qpf155": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky155"
+          ]
+        },
+        "bc1qpf156": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky156"
+          ]
+        },
+        "bc1qpf157": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky157"
+          ]
+        },
+        "bc1qpf158": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky158"
+          ]
+        },
+        "bc1qpf159": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky159"
+          ]
+        },
+        "bc1qpf160": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky160"
+          ]
+        },
+        "bc1qpf161": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky161"
+          ]
+        },
+        "bc1qpf162": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky162"
+          ]
+        },
+        "bc1qpf163": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky163"
+          ]
+        },
+        "bc1qpf164": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky164"
+          ]
+        },
+        "bc1qpf165": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky165"
+          ]
+        },
+        "bc1qpf166": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky166"
+          ]
+        },
+        "bc1qpf167": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky167"
+          ]
+        },
+        "bc1qpf168": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky168"
+          ]
+        },
+        "bc1qpf169": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky169"
+          ]
+        },
+        "bc1qpf170": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky170"
+          ]
+        },
+        "bc1qpf171": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky171"
+          ]
+        },
+        "bc1qpf172": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky172"
+          ]
+        },
+        "bc1qpf173": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky173"
+          ]
+        },
+        "bc1qpf174": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky174"
+          ]
+        },
+        "bc1qpf175": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky175"
+          ]
+        },
+        "bc1qpf176": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky176"
+          ]
+        },
+        "bc1qpf177": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky177"
+          ]
+        },
+        "bc1qpf178": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky178"
+          ]
+        },
+        "bc1qpf179": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky179"
+          ]
+        },
+        "bc1qpf180": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky180"
+          ]
+        },
+        "bc1qpf181": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky181"
+          ]
+        },
+        "bc1qpf182": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky182"
+          ]
+        },
+        "bc1qpf183": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky183"
+          ]
+        },
+        "bc1qpf184": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky184"
+          ]
+        },
+        "bc1qpf185": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky185"
+          ]
+        },
+        "bc1qpf186": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky186"
+          ]
+        },
+        "bc1qpf187": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky187"
+          ]
+        },
+        "bc1qpf188": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky188"
+          ]
+        },
+        "bc1qpf189": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky189"
+          ]
+        },
+        "bc1qpf190": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky190"
+          ]
+        },
+        "bc1qpf191": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky191"
+          ]
+        },
+        "bc1qpf192": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky192"
+          ]
+        },
+        "bc1qpf193": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky193"
+          ]
+        },
+        "bc1qpf194": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky194"
+          ]
+        },
+        "bc1qpf195": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky195"
+          ]
+        },
+        "bc1qpf196": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky196"
+          ]
+        },
+        "bc1qpf197": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky197"
+          ]
+        },
+        "bc1qpf198": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky198"
+          ]
+        },
+        "bc1qpf199": {
+          "binding": "answered",
+          "bound_keys": [
+            "ky199"
+          ]
+        }
+      },
+      "records": [
+        {
+          "kind": "listing",
+          "address": "bc1qpe000",
+          "key": "kz0",
+          "created_at": 1790000000,
+          "claim_id": "9b905055e512eb20246536fbf26b68069022900b30adf0cc5f0a5a5b958a997e",
+          "anchor": 924400,
+          "coin": {
+            "confirmed_at": 923400,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe001",
+          "key": "kz1",
+          "created_at": 1790000000,
+          "claim_id": "4ba0b53c4fc0c42edbebade833b0d381d1cb15b54f2e0f96124d0b559772f6d5",
+          "anchor": 924401,
+          "coin": {
+            "confirmed_at": 923401,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe002",
+          "key": "kz2",
+          "created_at": 1790000000,
+          "claim_id": "ecc61fa1955a329976b9703b06a47bf2d4e772aaba4d561340132fb413a12746",
+          "anchor": 924402,
+          "coin": {
+            "confirmed_at": 923402,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe003",
+          "key": "kz3",
+          "created_at": 1790000000,
+          "claim_id": "eee08467e813a66c13dc7e2f4db4f0f5462f179e9ec987ec7d0d992d03d895e6",
+          "anchor": 924403,
+          "coin": {
+            "confirmed_at": 923403,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe004",
+          "key": "kz4",
+          "created_at": 1790000000,
+          "claim_id": "20a08dad53d035b4c8dd25442ac69d2b2100d531d976acaa1f174403d9f2c275",
+          "anchor": 924404,
+          "coin": {
+            "confirmed_at": 923404,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe005",
+          "key": "kz5",
+          "created_at": 1790000000,
+          "claim_id": "0955da40cca706ec4140700992d9da77af5fac21725b5c39f8701cb25cdc35b8",
+          "anchor": 924405,
+          "coin": {
+            "confirmed_at": 923405,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe006",
+          "key": "kz6",
+          "created_at": 1790000000,
+          "claim_id": "66ddca54a366c0d14c06632ec22e05baeb04d719bdb662075e3bcc6a6420b1ff",
+          "anchor": 924406,
+          "coin": {
+            "confirmed_at": 923406,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe007",
+          "key": "kz7",
+          "created_at": 1790000000,
+          "claim_id": "4467d76a8cf7b146c864cefd5630d3ce63399692ec18630f777fd425c6993aeb",
+          "anchor": 924407,
+          "coin": {
+            "confirmed_at": 923407,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe008",
+          "key": "kz8",
+          "created_at": 1790000000,
+          "claim_id": "2ee60bd046b0340fbebb4ddea4d3681235d23e46da70c01f3c08bc310b8cc283",
+          "anchor": 924408,
+          "coin": {
+            "confirmed_at": 923408,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe009",
+          "key": "kz9",
+          "created_at": 1790000000,
+          "claim_id": "cd2328b9f04a96f4962655e71a5d552820c5c0fec7a1da518512360f5b2e4938",
+          "anchor": 924409,
+          "coin": {
+            "confirmed_at": 923409,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe010",
+          "key": "kz10",
+          "created_at": 1790000000,
+          "claim_id": "74a19985f693df46121829f85ddb5a4561a263614dda79fceee77c3ee6a2225f",
+          "anchor": 924410,
+          "coin": {
+            "confirmed_at": 923410,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe011",
+          "key": "kz11",
+          "created_at": 1790000000,
+          "claim_id": "c3582b984580e75b09d7f6d0261aa80f8055e3b73a7ab344ee3ba92bba68c8d4",
+          "anchor": 924411,
+          "coin": {
+            "confirmed_at": 923411,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe012",
+          "key": "kz12",
+          "created_at": 1790000000,
+          "claim_id": "1ac9ce591ba5664785d3744ceff2ec3354d104616e6d618e3f711f41ef33390a",
+          "anchor": 924412,
+          "coin": {
+            "confirmed_at": 923412,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe013",
+          "key": "kz13",
+          "created_at": 1790000000,
+          "claim_id": "0c78292d088ff2d7c8706c70ab011fb58387d36ac6ca24c8b7d1b9512489be8b",
+          "anchor": 924413,
+          "coin": {
+            "confirmed_at": 923413,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe014",
+          "key": "kz14",
+          "created_at": 1790000000,
+          "claim_id": "777a307763653eca0d34279171acd396a673f5d3c8bb1714db31b69d1050d279",
+          "anchor": 924414,
+          "coin": {
+            "confirmed_at": 923414,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe015",
+          "key": "kz15",
+          "created_at": 1790000000,
+          "claim_id": "e1a44e990063c806773e06a9fbbbbad935deba7a4843875ef5dfc6475f60cec3",
+          "anchor": 924415,
+          "coin": {
+            "confirmed_at": 923415,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe016",
+          "key": "kz16",
+          "created_at": 1790000000,
+          "claim_id": "b5aafcc9088a8c8b2a3e4752eb1fc60067bdb31f1742b52f566e9a0e3081d3dc",
+          "anchor": 924416,
+          "coin": {
+            "confirmed_at": 923416,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe017",
+          "key": "kz17",
+          "created_at": 1790000000,
+          "claim_id": "c96acb8e6446d9f1bc0ddedb3f1b947caffee2bf1bf02c9090907fcbad426cd9",
+          "anchor": 924417,
+          "coin": {
+            "confirmed_at": 923417,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe018",
+          "key": "kz18",
+          "created_at": 1790000000,
+          "claim_id": "00fa87343dcec80597ed5b8585359accbb05daed29fce5359ec2a580f0b8e377",
+          "anchor": 924418,
+          "coin": {
+            "confirmed_at": 923418,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe019",
+          "key": "kz19",
+          "created_at": 1790000000,
+          "claim_id": "4b9b3e23bef5b7891eb2fea064fca940117f6f12c43d0fdd860344e17ad1f0ed",
+          "anchor": 924419,
+          "coin": {
+            "confirmed_at": 923419,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe020",
+          "key": "kz20",
+          "created_at": 1790000000,
+          "claim_id": "669b5d84139900ffd96ef5eaeb2047aad9088f45e019e9eeedb82c87a038c294",
+          "anchor": 924420,
+          "coin": {
+            "confirmed_at": 923420,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe021",
+          "key": "kz21",
+          "created_at": 1790000000,
+          "claim_id": "7b75bd872920e7f46eb0b18b9baa318470d76a557a3887358aa2aae223db0af7",
+          "anchor": 924421,
+          "coin": {
+            "confirmed_at": 923421,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe022",
+          "key": "kz22",
+          "created_at": 1790000000,
+          "claim_id": "4e8ddf4b6fbda514f3b3477ddde8a1119f6309993c8b2703607d83856bad7020",
+          "anchor": 924422,
+          "coin": {
+            "confirmed_at": 923422,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe023",
+          "key": "kz23",
+          "created_at": 1790000000,
+          "claim_id": "340d7c6927ab959199c19c0265db36d8ec5e47015593d03657b338b9bd91fa20",
+          "anchor": 924423,
+          "coin": {
+            "confirmed_at": 923423,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe024",
+          "key": "kz24",
+          "created_at": 1790000000,
+          "claim_id": "f40948530e929c8edb3f15ca8fe9916d65717245c489e9b1e67090da9cd14923",
+          "anchor": 924424,
+          "coin": {
+            "confirmed_at": 923424,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe025",
+          "key": "kz25",
+          "created_at": 1790000000,
+          "claim_id": "7e269b4eadfef6bf6bdc9abb68370a84b14e0fdf59560a554e260eeaaccfcde9",
+          "anchor": 924425,
+          "coin": {
+            "confirmed_at": 923425,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe026",
+          "key": "kz26",
+          "created_at": 1790000000,
+          "claim_id": "3b3d3d4142a18f0e74e6659763196c3d890300056d2abfb136368195f4cc08a3",
+          "anchor": 924426,
+          "coin": {
+            "confirmed_at": 923426,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe027",
+          "key": "kz27",
+          "created_at": 1790000000,
+          "claim_id": "023219b425b56e4d547df4b5cc94d02e1d24b6799c47eda16315f7eb2c1155aa",
+          "anchor": 924427,
+          "coin": {
+            "confirmed_at": 923427,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe028",
+          "key": "kz28",
+          "created_at": 1790000000,
+          "claim_id": "cb1de3976dec842cad271e29061a0018f96bf2e10500faafa6de63961689c7be",
+          "anchor": 924428,
+          "coin": {
+            "confirmed_at": 923428,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe029",
+          "key": "kz29",
+          "created_at": 1790000000,
+          "claim_id": "ee2a48890d49c3c55e94d8759d9f6e0e2e780105344eee6d102f2ba952a54581",
+          "anchor": 924429,
+          "coin": {
+            "confirmed_at": 923429,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe030",
+          "key": "kz30",
+          "created_at": 1790000000,
+          "claim_id": "c047a70db611bd686cb087b1d6d8b5253a680111a7135f64f0b4966fc3aa29b2",
+          "anchor": 924430,
+          "coin": {
+            "confirmed_at": 923430,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe031",
+          "key": "kz31",
+          "created_at": 1790000000,
+          "claim_id": "aacd399d39debd15a2f685450c22ae1258b1164eba2c22ca0d665063caa37d1f",
+          "anchor": 924431,
+          "coin": {
+            "confirmed_at": 923431,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe032",
+          "key": "kz32",
+          "created_at": 1790000000,
+          "claim_id": "8927c74d4f264609b43f0128a852fc6620703482a902b17f379c6e62f3d17468",
+          "anchor": 924432,
+          "coin": {
+            "confirmed_at": 923432,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe033",
+          "key": "kz33",
+          "created_at": 1790000000,
+          "claim_id": "7a707f2b046d18104c2d570a273e8e2541ba0c1bd46918f5f9f1bdb3e32e44ac",
+          "anchor": 924433,
+          "coin": {
+            "confirmed_at": 923433,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe034",
+          "key": "kz34",
+          "created_at": 1790000000,
+          "claim_id": "9b664ca6a44b6e8fc4ea08155e2b9928a7a113c2eeba5ec91232dde155a93289",
+          "anchor": 924434,
+          "coin": {
+            "confirmed_at": 923434,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe035",
+          "key": "kz35",
+          "created_at": 1790000000,
+          "claim_id": "cb54ffc5f2260e1e963423e7b0469ea4f63390143249237a678139475f2df985",
+          "anchor": 924435,
+          "coin": {
+            "confirmed_at": 923435,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe036",
+          "key": "kz36",
+          "created_at": 1790000000,
+          "claim_id": "69aca9a19982fa672b75ec81831dc3591c7691007b906a17c9e9362f74f5429d",
+          "anchor": 924436,
+          "coin": {
+            "confirmed_at": 923436,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe037",
+          "key": "kz37",
+          "created_at": 1790000000,
+          "claim_id": "4cbd31353fec1626f36990dfd73781da915a26821bd882c22f6a66a2a86e4280",
+          "anchor": 924437,
+          "coin": {
+            "confirmed_at": 923437,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe038",
+          "key": "kz38",
+          "created_at": 1790000000,
+          "claim_id": "8eaf517a1a97aeb6bc36401e8e1fde124d51e72a4bcefb6767091a34f13612de",
+          "anchor": 924438,
+          "coin": {
+            "confirmed_at": 923438,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe039",
+          "key": "kz39",
+          "created_at": 1790000000,
+          "claim_id": "4ecf0359aaeb1c3c0c402573f81f08db91d4e7bff91534d60462b3f8cef11da7",
+          "anchor": 924439,
+          "coin": {
+            "confirmed_at": 923439,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe040",
+          "key": "kz40",
+          "created_at": 1790000000,
+          "claim_id": "7115b861c9665a356c13d731fb09843a0f502d0318de9ac17e31d260c804d14e",
+          "anchor": 924440,
+          "coin": {
+            "confirmed_at": 923440,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe041",
+          "key": "kz41",
+          "created_at": 1790000000,
+          "claim_id": "c196284ed6f41716fe227cfc46938949d229762475deb71a8ff4c0cbac539df8",
+          "anchor": 924441,
+          "coin": {
+            "confirmed_at": 923441,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe042",
+          "key": "kz42",
+          "created_at": 1790000000,
+          "claim_id": "e3cfbe6680914b21e63e688c40ab7dfc961b8cb203692933b7bfca12994c62f5",
+          "anchor": 924442,
+          "coin": {
+            "confirmed_at": 923442,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe043",
+          "key": "kz43",
+          "created_at": 1790000000,
+          "claim_id": "150a898895c1b258d8adeee19a42bbf5724d28ea0d1e0ca03ea7b487a90d2cf1",
+          "anchor": 924443,
+          "coin": {
+            "confirmed_at": 923443,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe044",
+          "key": "kz44",
+          "created_at": 1790000000,
+          "claim_id": "4f02c3929f20fdd84a62c393ac644839b54ed746817f4460132e9fc2b1de68d9",
+          "anchor": 924444,
+          "coin": {
+            "confirmed_at": 923444,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe045",
+          "key": "kz45",
+          "created_at": 1790000000,
+          "claim_id": "2642ccd553bb313b331d1e1f642d33bf75477b37da69a18316870da53ac74c6c",
+          "anchor": 924445,
+          "coin": {
+            "confirmed_at": 923445,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe046",
+          "key": "kz46",
+          "created_at": 1790000000,
+          "claim_id": "8e50134bfb6ce9df8e161b6c1b44c3a757b842ad084bc43a7f07b46589ace17a",
+          "anchor": 924446,
+          "coin": {
+            "confirmed_at": 923446,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe047",
+          "key": "kz47",
+          "created_at": 1790000000,
+          "claim_id": "9bf95f72aea5250155652fde6e02ab39532dbb29e8863d8390e7f0dc51866bd6",
+          "anchor": 924447,
+          "coin": {
+            "confirmed_at": 923447,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe048",
+          "key": "kz48",
+          "created_at": 1790000000,
+          "claim_id": "954ecbe271a3e063680c83c2798b02c9cfa918f148335bcaccd9fa1533b3e95f",
+          "anchor": 924448,
+          "coin": {
+            "confirmed_at": 923448,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe049",
+          "key": "kz49",
+          "created_at": 1790000000,
+          "claim_id": "b15745f21422c50cbdc5df274583df38b60df6d96a5c9e85c3e3a84b0d797835",
+          "anchor": 924449,
+          "coin": {
+            "confirmed_at": 923449,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe050",
+          "key": "kz50",
+          "created_at": 1790000000,
+          "claim_id": "b8f8d7b221bc44dfb951d49c3341b3f06ac4b8e4537f428c3d93a9938be53640",
+          "anchor": 924450,
+          "coin": {
+            "confirmed_at": 923450,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe051",
+          "key": "kz51",
+          "created_at": 1790000000,
+          "claim_id": "376cac290308fe54111da25c07e6a174e54d1990a7f9316a370ed64048b269a9",
+          "anchor": 924451,
+          "coin": {
+            "confirmed_at": 923451,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe052",
+          "key": "kz52",
+          "created_at": 1790000000,
+          "claim_id": "a5efc8f1a5a244ec708aaf357eb893755dd36561bf2084db7a6be71034a48a22",
+          "anchor": 924452,
+          "coin": {
+            "confirmed_at": 923452,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe053",
+          "key": "kz53",
+          "created_at": 1790000000,
+          "claim_id": "53d9c5e6b6466da7c4f3b407b1565bd1933a2b9f51d259d1bd37d51b1e7fcc27",
+          "anchor": 924453,
+          "coin": {
+            "confirmed_at": 923453,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe054",
+          "key": "kz54",
+          "created_at": 1790000000,
+          "claim_id": "fa9c9dc37c802615101c5f6caad6f9dfd30259d29937ba50726f8e4a137fefae",
+          "anchor": 924454,
+          "coin": {
+            "confirmed_at": 923454,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe055",
+          "key": "kz55",
+          "created_at": 1790000000,
+          "claim_id": "66d1fca6da8b205022dcc1a27dde0b6255417ca672f4e236df7524dd24f992ab",
+          "anchor": 924455,
+          "coin": {
+            "confirmed_at": 923455,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe056",
+          "key": "kz56",
+          "created_at": 1790000000,
+          "claim_id": "0b4595e3c2ac072a374402965cb9348c161ec3eb4e60ec7659d0e5af022f5b36",
+          "anchor": 924456,
+          "coin": {
+            "confirmed_at": 923456,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe057",
+          "key": "kz57",
+          "created_at": 1790000000,
+          "claim_id": "aee79345101818d7e66ce6a42cecca33cb4abbeb4777d7f0035757cb2f9cdc40",
+          "anchor": 924457,
+          "coin": {
+            "confirmed_at": 923457,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe058",
+          "key": "kz58",
+          "created_at": 1790000000,
+          "claim_id": "67ca23866cb80a1682d88077d4fe1327c855a95e5022b968b3a770fc9e646074",
+          "anchor": 924458,
+          "coin": {
+            "confirmed_at": 923458,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe059",
+          "key": "kz59",
+          "created_at": 1790000000,
+          "claim_id": "ed2fee49c309b628a089525c2b9bcdc7daab923640300608a7eeeaed815e8ff1",
+          "anchor": 924459,
+          "coin": {
+            "confirmed_at": 923459,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe060",
+          "key": "kz60",
+          "created_at": 1790000000,
+          "claim_id": "93b259903c9c317742cc455400ec8236a46a26e1d396c3ecfb80beb8daf30a7d",
+          "anchor": 924460,
+          "coin": {
+            "confirmed_at": 923460,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe061",
+          "key": "kz61",
+          "created_at": 1790000000,
+          "claim_id": "c91ae878132b626c772b8ac3624dd82901cd1434f5125fea47de82a6fd3273cf",
+          "anchor": 924461,
+          "coin": {
+            "confirmed_at": 923461,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe062",
+          "key": "kz62",
+          "created_at": 1790000000,
+          "claim_id": "19d1e1203a9faeefb610033caaab76161828874e0ef00d611e3b7cfa374abab4",
+          "anchor": 924462,
+          "coin": {
+            "confirmed_at": 923462,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpe063",
+          "key": "kz63",
+          "created_at": 1790000000,
+          "claim_id": "b2be7fe6be532327bd7c14c92156a3497bdcd454b7705a8318a4b83d0d712eec",
+          "anchor": 924463,
+          "coin": {
+            "confirmed_at": 923463,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "public"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf000",
+          "key": "kx0",
+          "created_at": 1790000000,
+          "claim_id": "afa90fe11c898d432051bc1a4ee99fd49fe5732c50823ae092b452478cbff343",
+          "anchor": 924700,
+          "coin": {
+            "confirmed_at": 923700,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf001",
+          "key": "kx1",
+          "created_at": 1790000000,
+          "claim_id": "b09f68d9ba39e182cb6961311b11a9372ff1dd0741a5c4311369bc000a3ea2ab",
+          "anchor": 924701,
+          "coin": {
+            "confirmed_at": 923701,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf002",
+          "key": "kx2",
+          "created_at": 1790000000,
+          "claim_id": "2907a008c66e6b52f9955b3f659b931b06e59dcb907f560b12c6abea8abedd23",
+          "anchor": 924702,
+          "coin": {
+            "confirmed_at": 923702,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf003",
+          "key": "kx3",
+          "created_at": 1790000000,
+          "claim_id": "0122fa5a59ddf0af94a0a8611793c490743e346b5281509135aeedfc89d26530",
+          "anchor": 924703,
+          "coin": {
+            "confirmed_at": 923703,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf004",
+          "key": "kx4",
+          "created_at": 1790000000,
+          "claim_id": "10d19a8d45522ac7dfbfd162c17bb0447656ac268a836e3d0efc2ca9ef9c80de",
+          "anchor": 924704,
+          "coin": {
+            "confirmed_at": 923704,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf005",
+          "key": "kx5",
+          "created_at": 1790000000,
+          "claim_id": "3463539439554dbd38e95a9943ab5c33ecae45b96665ff4b3321543917f3c2c2",
+          "anchor": 924705,
+          "coin": {
+            "confirmed_at": 923705,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf006",
+          "key": "kx6",
+          "created_at": 1790000000,
+          "claim_id": "75928c2464ac7fb24c890ebb5b0b70cba3c91520d9f41957387855c9367ba8d1",
+          "anchor": 924706,
+          "coin": {
+            "confirmed_at": 923706,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf007",
+          "key": "kx7",
+          "created_at": 1790000000,
+          "claim_id": "5475841b9ead4b83719850c61b45d8e11c6d5f8c80b4477191a4b8d02e1a6684",
+          "anchor": 924707,
+          "coin": {
+            "confirmed_at": 923707,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf008",
+          "key": "kx8",
+          "created_at": 1790000000,
+          "claim_id": "680db5bb18ea4af8a4039bfa69dbeba221a70fd5963e9884d27a44d78ce7edae",
+          "anchor": 924708,
+          "coin": {
+            "confirmed_at": 923708,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf009",
+          "key": "kx9",
+          "created_at": 1790000000,
+          "claim_id": "f8bbf0905b87f703d6f25de9cdd0cc78584ee00cec0e1852ec2da984467e8f8c",
+          "anchor": 924709,
+          "coin": {
+            "confirmed_at": 923709,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf010",
+          "key": "kx10",
+          "created_at": 1790000000,
+          "claim_id": "e4ba30e261221de8463fa3279ed5d43525f44da5ef7850f412c32e47c91a5c60",
+          "anchor": 924710,
+          "coin": {
+            "confirmed_at": 923710,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf011",
+          "key": "kx11",
+          "created_at": 1790000000,
+          "claim_id": "b63e96af197443dbd01ea3f611ee6a2f0784d812cf36c176787b3077bc8384ff",
+          "anchor": 924711,
+          "coin": {
+            "confirmed_at": 923711,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf012",
+          "key": "kx12",
+          "created_at": 1790000000,
+          "claim_id": "eb3fc28b6f046c7223ae937f1f56d241b045dbf41f04c2e270e53f01f9e0f81f",
+          "anchor": 924712,
+          "coin": {
+            "confirmed_at": 923712,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf013",
+          "key": "kx13",
+          "created_at": 1790000000,
+          "claim_id": "ed828e30d6e6e395d9acb10dc45855a5cba13f07518409d3ea6cdf74129fc4d9",
+          "anchor": 924713,
+          "coin": {
+            "confirmed_at": 923713,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf014",
+          "key": "kx14",
+          "created_at": 1790000000,
+          "claim_id": "ed0e4aa9575e5773034a041554df0e203e1bf8b361e2efad3373c127edc291c1",
+          "anchor": 924714,
+          "coin": {
+            "confirmed_at": 923714,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf015",
+          "key": "kx15",
+          "created_at": 1790000000,
+          "claim_id": "7b5317874565e37c78573e5fde10c57744b0453c3ebe729f6d49154902659520",
+          "anchor": 924715,
+          "coin": {
+            "confirmed_at": 923715,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf016",
+          "key": "kx16",
+          "created_at": 1790000000,
+          "claim_id": "4609d85ca5f1c5d5d4ce9b09136036be51006ce2520083ec86c94334cd6113ed",
+          "anchor": 924716,
+          "coin": {
+            "confirmed_at": 923716,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf017",
+          "key": "kx17",
+          "created_at": 1790000000,
+          "claim_id": "f4db4f1bcc091368fd16901d9d1f2c34fc8a956b72aab28eb06a7fdcbf849bce",
+          "anchor": 924717,
+          "coin": {
+            "confirmed_at": 923717,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf018",
+          "key": "kx18",
+          "created_at": 1790000000,
+          "claim_id": "908a65a24c9137a4e4b7a0a0de01ac50089f1a6e63819283e2272f33b4285d57",
+          "anchor": 924718,
+          "coin": {
+            "confirmed_at": 923718,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf019",
+          "key": "kx19",
+          "created_at": 1790000000,
+          "claim_id": "b27afd057896e7f52dce894eafa3d81a9de95e7981beaf7dfa1a5705ffaf4019",
+          "anchor": 924719,
+          "coin": {
+            "confirmed_at": 923719,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf020",
+          "key": "kx20",
+          "created_at": 1790000000,
+          "claim_id": "5cf6c323169f3116f0bf32d201b52d1c02514d00f08f34640388d0c695c98412",
+          "anchor": 924720,
+          "coin": {
+            "confirmed_at": 923720,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf021",
+          "key": "kx21",
+          "created_at": 1790000000,
+          "claim_id": "2952a623d3042344ec7eccfeef679ac7325850ce0b82db5fb59844d834e2d759",
+          "anchor": 924721,
+          "coin": {
+            "confirmed_at": 923721,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf022",
+          "key": "kx22",
+          "created_at": 1790000000,
+          "claim_id": "62ec7574932f254737fbebb398a6a70aa71f4019154aa45f99354632eec2280b",
+          "anchor": 924722,
+          "coin": {
+            "confirmed_at": 923722,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf023",
+          "key": "kx23",
+          "created_at": 1790000000,
+          "claim_id": "02772126a75f5d1e15c4d8a715413737bd96c2e6141b2a3d53afeeade143b1b0",
+          "anchor": 924723,
+          "coin": {
+            "confirmed_at": 923723,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf024",
+          "key": "kx24",
+          "created_at": 1790000000,
+          "claim_id": "a673885c878b7988153516a53431cdb219649c580a5fe60fd54d3da28ca66586",
+          "anchor": 924724,
+          "coin": {
+            "confirmed_at": 923724,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf025",
+          "key": "kx25",
+          "created_at": 1790000000,
+          "claim_id": "1f24cda519b47d57210e751d3fb4b3e03dcc22ec1d8eb9c753b399579889ad9a",
+          "anchor": 924725,
+          "coin": {
+            "confirmed_at": 923725,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf026",
+          "key": "kx26",
+          "created_at": 1790000000,
+          "claim_id": "5fc0d6e888da4ab98d2bc81af2a737cdf0d6c8d7d24579d953eccb23cf633d71",
+          "anchor": 924726,
+          "coin": {
+            "confirmed_at": 923726,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf027",
+          "key": "kx27",
+          "created_at": 1790000000,
+          "claim_id": "34388fd4bf31fcd4dc4bb07f17123a6b554109de17b7ea77d0c21fa60aa37489",
+          "anchor": 924727,
+          "coin": {
+            "confirmed_at": 923727,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf028",
+          "key": "kx28",
+          "created_at": 1790000000,
+          "claim_id": "3f3fd9148771f3723ce2d7fbb72cbfa539cac4aa450984dae1e9a9d199f4cb3b",
+          "anchor": 924728,
+          "coin": {
+            "confirmed_at": 923728,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf029",
+          "key": "kx29",
+          "created_at": 1790000000,
+          "claim_id": "c444a7e86976c2f1d19f6092bcb9eb2d3f53cacd094fa88005967b405ffa889b",
+          "anchor": 924729,
+          "coin": {
+            "confirmed_at": 923729,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf030",
+          "key": "kx30",
+          "created_at": 1790000000,
+          "claim_id": "0fa7d90a603283e2819a69117ef3c249698d72f81df1d26b1140bd81e28e285e",
+          "anchor": 924730,
+          "coin": {
+            "confirmed_at": 923730,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf031",
+          "key": "kx31",
+          "created_at": 1790000000,
+          "claim_id": "b13cac394ad8e2e14e17eeea896245fa81bbfdbce7a047a37b2720408db29dd8",
+          "anchor": 924731,
+          "coin": {
+            "confirmed_at": 923731,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf032",
+          "key": "kx32",
+          "created_at": 1790000000,
+          "claim_id": "a3b24f6a76d88bc8895c63d4598cf9e188e8422e9c208f3b0c9159ce4099bead",
+          "anchor": 924732,
+          "coin": {
+            "confirmed_at": 923732,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf033",
+          "key": "kx33",
+          "created_at": 1790000000,
+          "claim_id": "9b81c072e577f178f2d97df5d09071dfffe8d1dd784e22e7dab9284d2a77306f",
+          "anchor": 924733,
+          "coin": {
+            "confirmed_at": 923733,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf034",
+          "key": "kx34",
+          "created_at": 1790000000,
+          "claim_id": "316a954e2e480f1120991887f4bd0274278abcb715414ba57be184913a83a563",
+          "anchor": 924734,
+          "coin": {
+            "confirmed_at": 923734,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf035",
+          "key": "kx35",
+          "created_at": 1790000000,
+          "claim_id": "9078f3f83e8205279127b6f90c47287b32c7830dad5733baad0d9aa97be8f4fa",
+          "anchor": 924735,
+          "coin": {
+            "confirmed_at": 923735,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf036",
+          "key": "kx36",
+          "created_at": 1790000000,
+          "claim_id": "7858206560ed16663804e2639cf58404f6ddb62f1ca96e3a332d95cfa15c739d",
+          "anchor": 924736,
+          "coin": {
+            "confirmed_at": 923736,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf037",
+          "key": "kx37",
+          "created_at": 1790000000,
+          "claim_id": "5d8775f00c7c92f88cfa200829a5c12a56a6167e6079eee82d85905ecbc7cc1a",
+          "anchor": 924737,
+          "coin": {
+            "confirmed_at": 923737,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf038",
+          "key": "kx38",
+          "created_at": 1790000000,
+          "claim_id": "267ff130262473846c9e2845206516da3dab2e44eb30af974e1ba0bbf1f51198",
+          "anchor": 924738,
+          "coin": {
+            "confirmed_at": 923738,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf039",
+          "key": "kx39",
+          "created_at": 1790000000,
+          "claim_id": "9d4458036abb10ff76ec1a54e9f8060f0feeb318e6fffc9e436e8cc4d274a088",
+          "anchor": 924739,
+          "coin": {
+            "confirmed_at": 923739,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf040",
+          "key": "kx40",
+          "created_at": 1790000000,
+          "claim_id": "7ad53f49ec1d81f9768c3e7267af41d4fc21dea662c8582213d1c22986fe3bfc",
+          "anchor": 924740,
+          "coin": {
+            "confirmed_at": 923740,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf041",
+          "key": "kx41",
+          "created_at": 1790000000,
+          "claim_id": "b393caacdd40da56a8890c077e29b9970b95afa83e1a7d53824e2a2220c750f9",
+          "anchor": 924741,
+          "coin": {
+            "confirmed_at": 923741,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf042",
+          "key": "kx42",
+          "created_at": 1790000000,
+          "claim_id": "3f9b9b855256d9f49aea77c38648357d8e298d58258c9e1d77efbbf37c335007",
+          "anchor": 924742,
+          "coin": {
+            "confirmed_at": 923742,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf043",
+          "key": "kx43",
+          "created_at": 1790000000,
+          "claim_id": "e589bd35c05126f59de5186f136d80ab058b0fefcd8e6e00a14476cb1cf24418",
+          "anchor": 924743,
+          "coin": {
+            "confirmed_at": 923743,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf044",
+          "key": "kx44",
+          "created_at": 1790000000,
+          "claim_id": "c541d6c146c1bca54e312ddbadc96156063c6eb3032f3b8228c1b9c79587712a",
+          "anchor": 924744,
+          "coin": {
+            "confirmed_at": 923744,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf045",
+          "key": "kx45",
+          "created_at": 1790000000,
+          "claim_id": "c34e80d48cc6ac72ce2b3a0365949b79261464de201e1513a8a99e0a86b5e843",
+          "anchor": 924745,
+          "coin": {
+            "confirmed_at": 923745,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf046",
+          "key": "kx46",
+          "created_at": 1790000000,
+          "claim_id": "067475f1f64776516f3eeb73b5d9b91c2fbdcdb2d04a5289671066d5740864ec",
+          "anchor": 924746,
+          "coin": {
+            "confirmed_at": 923746,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf047",
+          "key": "kx47",
+          "created_at": 1790000000,
+          "claim_id": "913be9d729b7f0c4ba0b0f0f522fed81e271e3737fa705dda467280fc8ec26e7",
+          "anchor": 924747,
+          "coin": {
+            "confirmed_at": 923747,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf048",
+          "key": "kx48",
+          "created_at": 1790000000,
+          "claim_id": "6d42a1f59546198e0453936a07a816ed37f42a13d53b06f020e26562c724bc0b",
+          "anchor": 924748,
+          "coin": {
+            "confirmed_at": 923748,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf049",
+          "key": "kx49",
+          "created_at": 1790000000,
+          "claim_id": "92e0252b933c3bd1280c1803ff43cc47883f830f08b865190e56b11cfdef178f",
+          "anchor": 924749,
+          "coin": {
+            "confirmed_at": 923749,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf050",
+          "key": "kx50",
+          "created_at": 1790000000,
+          "claim_id": "2025995eaa62173fae06b5eef300b1894be5280d5ec6669b6432abd1d0a96d0d",
+          "anchor": 924750,
+          "coin": {
+            "confirmed_at": 923750,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf051",
+          "key": "kx51",
+          "created_at": 1790000000,
+          "claim_id": "43193bddee25f9142edc7fe97ea86b3a3c681b82c6bc3058de9573629ab78328",
+          "anchor": 924751,
+          "coin": {
+            "confirmed_at": 923751,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf052",
+          "key": "kx52",
+          "created_at": 1790000000,
+          "claim_id": "27f4452816b49b3884adcb7a4d2018ef5f6011ca4dac6a5ea2fefe628c275a31",
+          "anchor": 924752,
+          "coin": {
+            "confirmed_at": 923752,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf053",
+          "key": "kx53",
+          "created_at": 1790000000,
+          "claim_id": "916c1057c1aa76e804531300170f4e158670f1b6fd3e40979f577f143aedf023",
+          "anchor": 924753,
+          "coin": {
+            "confirmed_at": 923753,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf054",
+          "key": "kx54",
+          "created_at": 1790000000,
+          "claim_id": "8199d609f95c1f6389f689f757a9dd08962289a3d75903ad103ec6d6d5b71df2",
+          "anchor": 924754,
+          "coin": {
+            "confirmed_at": 923754,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf055",
+          "key": "kx55",
+          "created_at": 1790000000,
+          "claim_id": "cbca1513433823f8685ffd12e81e50dd8bc5b8a0f88e132aa6096596dc229133",
+          "anchor": 924755,
+          "coin": {
+            "confirmed_at": 923755,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf056",
+          "key": "kx56",
+          "created_at": 1790000000,
+          "claim_id": "da1747b63f00bf71caa3907b0a3987fd8a9a63507e6cfedc4f2465bc83a2377b",
+          "anchor": 924756,
+          "coin": {
+            "confirmed_at": 923756,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf057",
+          "key": "kx57",
+          "created_at": 1790000000,
+          "claim_id": "2550951f51f0804c12d669ed118a32a201d324621b080c956571b1ca314367ce",
+          "anchor": 924757,
+          "coin": {
+            "confirmed_at": 923757,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf058",
+          "key": "kx58",
+          "created_at": 1790000000,
+          "claim_id": "18871ef383547e0916460071c9453d55dbf3cd80b02278d16ef08d2140b58db2",
+          "anchor": 924758,
+          "coin": {
+            "confirmed_at": 923758,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf059",
+          "key": "kx59",
+          "created_at": 1790000000,
+          "claim_id": "41c4ee50ec0b7751300b473eb68d27d531a63addf5a832589dc0302bb69a7de1",
+          "anchor": 924759,
+          "coin": {
+            "confirmed_at": 923759,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf060",
+          "key": "kx60",
+          "created_at": 1790000000,
+          "claim_id": "e9585b1489070f0420ea3e63b858680ff5c1e3d7054702bb914c664696a68af0",
+          "anchor": 924760,
+          "coin": {
+            "confirmed_at": 923760,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf061",
+          "key": "kx61",
+          "created_at": 1790000000,
+          "claim_id": "70c5b524f1d3238939c8b40728bdde788a9fb171561e528ca5265c6882388d95",
+          "anchor": 924761,
+          "coin": {
+            "confirmed_at": 923761,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf062",
+          "key": "kx62",
+          "created_at": 1790000000,
+          "claim_id": "d11c97597d3ae1e32110cef7adb4041fb1269537761488d2a6fa0fded67dab99",
+          "anchor": 924762,
+          "coin": {
+            "confirmed_at": 923762,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf063",
+          "key": "kx63",
+          "created_at": 1790000000,
+          "claim_id": "2d42bdd560c0e878e8eaf09e5cc558566540a16f465b088827e4b55f7ad8a4d3",
+          "anchor": 924763,
+          "coin": {
+            "confirmed_at": 923763,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf064",
+          "key": "kx64",
+          "created_at": 1790000000,
+          "claim_id": "fafc4e2dfac6d53c2e51c52f4c319b4080300796309d6b72d01889c55de351af",
+          "anchor": 924764,
+          "coin": {
+            "confirmed_at": 923764,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf065",
+          "key": "kx65",
+          "created_at": 1790000000,
+          "claim_id": "e51901729f6b391df88542ebad0b62ee0b23958f97be71dfe40d8b3c8889da20",
+          "anchor": 924765,
+          "coin": {
+            "confirmed_at": 923765,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf066",
+          "key": "kx66",
+          "created_at": 1790000000,
+          "claim_id": "172ff6391b7e407c84a17fc5cccfa4829b689286fd8a56eb652579f9f9961599",
+          "anchor": 924766,
+          "coin": {
+            "confirmed_at": 923766,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf067",
+          "key": "kx67",
+          "created_at": 1790000000,
+          "claim_id": "d42c1da8ed8bfeecba1b79395f3215b78ea8644a66662afb11db0a584585fa52",
+          "anchor": 924767,
+          "coin": {
+            "confirmed_at": 923767,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf068",
+          "key": "kx68",
+          "created_at": 1790000000,
+          "claim_id": "02e22d6bdadf564ebb1ce2954c398be4e4c59ed615603ea945929ce9b6d30167",
+          "anchor": 924768,
+          "coin": {
+            "confirmed_at": 923768,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf069",
+          "key": "kx69",
+          "created_at": 1790000000,
+          "claim_id": "9e5bdc1fae7d1e0a951f5ca33914a8a957910533f13f4a1077da5cb0c1470313",
+          "anchor": 924769,
+          "coin": {
+            "confirmed_at": 923769,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf070",
+          "key": "kx70",
+          "created_at": 1790000000,
+          "claim_id": "dbef4b284474a32da905edd790616f5c70492b264a3008ee5d21ee26e35cf0a4",
+          "anchor": 924770,
+          "coin": {
+            "confirmed_at": 923770,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf071",
+          "key": "kx71",
+          "created_at": 1790000000,
+          "claim_id": "040090e118efac117cc91ef92240f92b7cdd2c04337dfe670650dfc289db6a3b",
+          "anchor": 924771,
+          "coin": {
+            "confirmed_at": 923771,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf072",
+          "key": "kx72",
+          "created_at": 1790000000,
+          "claim_id": "7bbf25f120a27460d5c27e5d8ecdeca9419095019226da9648f18b2c965e67dc",
+          "anchor": 924772,
+          "coin": {
+            "confirmed_at": 923772,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf073",
+          "key": "kx73",
+          "created_at": 1790000000,
+          "claim_id": "0e2f4379dbc6280c5985ee6aae8f9dbc4f90bc1dc9b361ae80aa8a174fd89d01",
+          "anchor": 924773,
+          "coin": {
+            "confirmed_at": 923773,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf074",
+          "key": "kx74",
+          "created_at": 1790000000,
+          "claim_id": "81c61809c455432b70c77bf06ede8a466756d4cf497cefa0e509ae55851a89be",
+          "anchor": 924774,
+          "coin": {
+            "confirmed_at": 923774,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf075",
+          "key": "kx75",
+          "created_at": 1790000000,
+          "claim_id": "ddc6247772d19e423be876457840e717bcf3a43c2398b247b9f80fdf12a9a275",
+          "anchor": 924775,
+          "coin": {
+            "confirmed_at": 923775,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf076",
+          "key": "kx76",
+          "created_at": 1790000000,
+          "claim_id": "aee1edde7aad7cf4d0c121262b15b60810d35f4fa83dbad0cd6a54a3d2910a40",
+          "anchor": 924776,
+          "coin": {
+            "confirmed_at": 923776,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf077",
+          "key": "kx77",
+          "created_at": 1790000000,
+          "claim_id": "a2395aba0ca93c98e952955c2cc9c24a274ffa1cfcd933acb546fb3852219771",
+          "anchor": 924777,
+          "coin": {
+            "confirmed_at": 923777,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf078",
+          "key": "kx78",
+          "created_at": 1790000000,
+          "claim_id": "f19ccc76cd8c4e4cc5d8d120a799035db0f8f3ab3a8deea5768bd28d4785e123",
+          "anchor": 924778,
+          "coin": {
+            "confirmed_at": 923778,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf079",
+          "key": "kx79",
+          "created_at": 1790000000,
+          "claim_id": "7b03aee89f17aca5543d236617ec91b5cc780eb4a3ce437a2954add3dddab79f",
+          "anchor": 924779,
+          "coin": {
+            "confirmed_at": 923779,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf080",
+          "key": "kx80",
+          "created_at": 1790000000,
+          "claim_id": "14ae5b546a8e0568f8da7a7cf5e691bd9635641139ff385c5e395b8371369d77",
+          "anchor": 924780,
+          "coin": {
+            "confirmed_at": 923780,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf081",
+          "key": "kx81",
+          "created_at": 1790000000,
+          "claim_id": "c92d3ae72f8e2b84c8b0765134c0234e039c1770f0a41929b771ae1a460027d6",
+          "anchor": 924781,
+          "coin": {
+            "confirmed_at": 923781,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf082",
+          "key": "kx82",
+          "created_at": 1790000000,
+          "claim_id": "d04628659634cf1d1057f51a6c8e3fb461fec9f5a060981424561925afb71acf",
+          "anchor": 924782,
+          "coin": {
+            "confirmed_at": 923782,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf083",
+          "key": "kx83",
+          "created_at": 1790000000,
+          "claim_id": "30ca992359e8c60c8a357debf4b552805b691d0555946ee87f9e072faffeeba7",
+          "anchor": 924783,
+          "coin": {
+            "confirmed_at": 923783,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf084",
+          "key": "kx84",
+          "created_at": 1790000000,
+          "claim_id": "b262719cb1c294c8a7bcd3c6a54f70a429172732a63f0a317d250b9b07ef0a4e",
+          "anchor": 924784,
+          "coin": {
+            "confirmed_at": 923784,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf085",
+          "key": "kx85",
+          "created_at": 1790000000,
+          "claim_id": "4b94c3d7d485e01e40ed2ecc4f8a3fce3c37802fad54c71f682c072b40744113",
+          "anchor": 924785,
+          "coin": {
+            "confirmed_at": 923785,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf086",
+          "key": "kx86",
+          "created_at": 1790000000,
+          "claim_id": "29451c4bb3e4efed950d5a50fabad626abe4806b0ce858b27e38549972f704e1",
+          "anchor": 924786,
+          "coin": {
+            "confirmed_at": 923786,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf087",
+          "key": "kx87",
+          "created_at": 1790000000,
+          "claim_id": "8217065d87cf4eb8a77411ec70ba60ff89d1b056fb35bd343ddb8694efaf6cf0",
+          "anchor": 924787,
+          "coin": {
+            "confirmed_at": 923787,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf088",
+          "key": "kx88",
+          "created_at": 1790000000,
+          "claim_id": "1ff30a6db2dd8a48a59422c505003057e07d244124f60f89e3206fafe9269376",
+          "anchor": 924788,
+          "coin": {
+            "confirmed_at": 923788,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf089",
+          "key": "kx89",
+          "created_at": 1790000000,
+          "claim_id": "d84bde66de2306c5c5e0de0bb4476a7d079832d07531e973ebb5d5036e9dd062",
+          "anchor": 924789,
+          "coin": {
+            "confirmed_at": 923789,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf090",
+          "key": "kx90",
+          "created_at": 1790000000,
+          "claim_id": "053c4c8b04988add514dce983a1e35c338ce087d2628de2b53fceae68316b22e",
+          "anchor": 924790,
+          "coin": {
+            "confirmed_at": 923790,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf091",
+          "key": "kx91",
+          "created_at": 1790000000,
+          "claim_id": "0a719c6bfc6548792ffce42341a3c29eb8c6d25658c346c9afa29957a18c17f0",
+          "anchor": 924791,
+          "coin": {
+            "confirmed_at": 923791,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf092",
+          "key": "kx92",
+          "created_at": 1790000000,
+          "claim_id": "8a001ec4934365d28283d8bc028aaeabe2d1a9233c280d70cf1f303d22abe0d9",
+          "anchor": 924792,
+          "coin": {
+            "confirmed_at": 923792,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf093",
+          "key": "kx93",
+          "created_at": 1790000000,
+          "claim_id": "5097a98155ff9ce311cf805db19f60f8a9fc9d4f838292fbd45061231f8506fd",
+          "anchor": 924793,
+          "coin": {
+            "confirmed_at": 923793,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf094",
+          "key": "kx94",
+          "created_at": 1790000000,
+          "claim_id": "ebad0d65ae6e593f138f3ac69e5d3ce9016aeb96600d42207c4eab789154175d",
+          "anchor": 924794,
+          "coin": {
+            "confirmed_at": 923794,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf095",
+          "key": "kx95",
+          "created_at": 1790000000,
+          "claim_id": "703545e0ff537f6fec7756e6f69ae91c3435171ccf8abc86c820293c42f14ba8",
+          "anchor": 924795,
+          "coin": {
+            "confirmed_at": 923795,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf096",
+          "key": "kx96",
+          "created_at": 1790000000,
+          "claim_id": "4c240b1af625b1b118f5e7f34f4e9163fdba047907115246fed69bcd451b5598",
+          "anchor": 924796,
+          "coin": {
+            "confirmed_at": 923796,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf097",
+          "key": "kx97",
+          "created_at": 1790000000,
+          "claim_id": "4a8441d11caaec10f19345d98ac3999eef51c988e00d1827a18b506f355be686",
+          "anchor": 924797,
+          "coin": {
+            "confirmed_at": 923797,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf098",
+          "key": "kx98",
+          "created_at": 1790000000,
+          "claim_id": "5ca6ee23d96661204be24ad8e898ac9e74f25e4d7a740cdb3987555815c7bd67",
+          "anchor": 924798,
+          "coin": {
+            "confirmed_at": 923798,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf099",
+          "key": "kx99",
+          "created_at": 1790000000,
+          "claim_id": "3a925214d25590ac61167f5fb6149760f8d5a01239ddc65e8b70f49b5041815b",
+          "anchor": 924799,
+          "coin": {
+            "confirmed_at": 923799,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf100",
+          "key": "kx100",
+          "created_at": 1790000000,
+          "claim_id": "3437c6c4956e338134e6b41434a96c6a1e65dd393e71101c224a35ecb5fe53e1",
+          "anchor": 924800,
+          "coin": {
+            "confirmed_at": 923800,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf101",
+          "key": "kx101",
+          "created_at": 1790000000,
+          "claim_id": "d4042fed9bc533d7d2160f735d0f8fcc10935d108db213b764e0241f402dad78",
+          "anchor": 924801,
+          "coin": {
+            "confirmed_at": 923801,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf102",
+          "key": "kx102",
+          "created_at": 1790000000,
+          "claim_id": "684b1929f1c849daff85222695b5877a51e7857c6fb69043cdd137e8bb6d4880",
+          "anchor": 924802,
+          "coin": {
+            "confirmed_at": 923802,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf103",
+          "key": "kx103",
+          "created_at": 1790000000,
+          "claim_id": "0692e0b5f893d505d8ee9513471a233d101ca141abb9a1afef6f006fb2fefcc4",
+          "anchor": 924803,
+          "coin": {
+            "confirmed_at": 923803,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf104",
+          "key": "kx104",
+          "created_at": 1790000000,
+          "claim_id": "82d3281e470848003b8600b76bbe28b838d1e91d14cb2729ddb882a56485743d",
+          "anchor": 924804,
+          "coin": {
+            "confirmed_at": 923804,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf105",
+          "key": "kx105",
+          "created_at": 1790000000,
+          "claim_id": "aca3f7f0ec279ef756910677af1ef0340bc2bb66e82be5373ba331abb89e9e14",
+          "anchor": 924805,
+          "coin": {
+            "confirmed_at": 923805,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf106",
+          "key": "kx106",
+          "created_at": 1790000000,
+          "claim_id": "7de2dacfa8cca1ddea3136414c39a5516e7bde70616aeea23fb28f5668021980",
+          "anchor": 924806,
+          "coin": {
+            "confirmed_at": 923806,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf107",
+          "key": "kx107",
+          "created_at": 1790000000,
+          "claim_id": "039019ee88144221e64fb20c04e23f20b2a51268dc6bdbdcbb927dd3b7cb58c3",
+          "anchor": 924807,
+          "coin": {
+            "confirmed_at": 923807,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf108",
+          "key": "kx108",
+          "created_at": 1790000000,
+          "claim_id": "00d76ec9a540907dc9d188eb9abbdb2a88b890f08fffb93dbf5f9a0866997740",
+          "anchor": 924808,
+          "coin": {
+            "confirmed_at": 923808,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf109",
+          "key": "kx109",
+          "created_at": 1790000000,
+          "claim_id": "26085f44b68d25f9ce96ba19a0d97b9055b22b0888b35dda970d460735285561",
+          "anchor": 924809,
+          "coin": {
+            "confirmed_at": 923809,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf110",
+          "key": "kx110",
+          "created_at": 1790000000,
+          "claim_id": "9c42947a1da0caeb58143ca6b1e453c3fe44022e784cac457d4cb219d16cd3db",
+          "anchor": 924810,
+          "coin": {
+            "confirmed_at": 923810,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf111",
+          "key": "kx111",
+          "created_at": 1790000000,
+          "claim_id": "d6d3e9f78ea26bf88bc9672fdb2a44d199319a6ec6e67a3dd8811746831d5d47",
+          "anchor": 924811,
+          "coin": {
+            "confirmed_at": 923811,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf112",
+          "key": "kx112",
+          "created_at": 1790000000,
+          "claim_id": "16a815525d1984169919b82ad8956eac86f0fa90ae199cf9b6af38d5fce94861",
+          "anchor": 924812,
+          "coin": {
+            "confirmed_at": 923812,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf113",
+          "key": "kx113",
+          "created_at": 1790000000,
+          "claim_id": "2a31215d7c7308ead130ba84196be04e4d0c1f0089c4100e11b00d4380cbf2bd",
+          "anchor": 924813,
+          "coin": {
+            "confirmed_at": 923813,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf114",
+          "key": "kx114",
+          "created_at": 1790000000,
+          "claim_id": "52b8aae8841bd11194d395b679ed4861a7cee53945eea8e145591ffac1ec312c",
+          "anchor": 924814,
+          "coin": {
+            "confirmed_at": 923814,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf115",
+          "key": "kx115",
+          "created_at": 1790000000,
+          "claim_id": "8d7cc649b09c9628e53dfc9f04911d18f7bdfeb2e53ffa57b4c7376a9e603e93",
+          "anchor": 924815,
+          "coin": {
+            "confirmed_at": 923815,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf116",
+          "key": "kx116",
+          "created_at": 1790000000,
+          "claim_id": "de2e2cf909704397171b5cc175fd45ceed3132ee0317a8ded97ca6086dce0da6",
+          "anchor": 924816,
+          "coin": {
+            "confirmed_at": 923816,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf117",
+          "key": "kx117",
+          "created_at": 1790000000,
+          "claim_id": "c9a344aabab642017db9143dee928c37154babdefe640cb254d67ae701c3034f",
+          "anchor": 924817,
+          "coin": {
+            "confirmed_at": 923817,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf118",
+          "key": "kx118",
+          "created_at": 1790000000,
+          "claim_id": "80bd539aa28e7651aaf7ee8e0239095b7cd7bd0759ae94c91dacffe58463d46f",
+          "anchor": 924818,
+          "coin": {
+            "confirmed_at": 923818,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf119",
+          "key": "kx119",
+          "created_at": 1790000000,
+          "claim_id": "7c41d8cd19d79d6cfe64452a8199b053e0e0c9490f35009a1a35f6201259aa01",
+          "anchor": 924819,
+          "coin": {
+            "confirmed_at": 923819,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf120",
+          "key": "kx120",
+          "created_at": 1790000000,
+          "claim_id": "56418c6366281b497a80e9f4c8cf2d43f132b69b840a8a03f870bea84c4c0ce4",
+          "anchor": 924820,
+          "coin": {
+            "confirmed_at": 923820,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf121",
+          "key": "kx121",
+          "created_at": 1790000000,
+          "claim_id": "c6354dadce4bbb99cc90e455397e27a10bb199bea14e38e9b14e2e1454b408fc",
+          "anchor": 924821,
+          "coin": {
+            "confirmed_at": 923821,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf122",
+          "key": "kx122",
+          "created_at": 1790000000,
+          "claim_id": "71fca826d9bd61ac97a9a62d95ece3ca48f91026ce7dea49f5d986d53da39825",
+          "anchor": 924822,
+          "coin": {
+            "confirmed_at": 923822,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf123",
+          "key": "kx123",
+          "created_at": 1790000000,
+          "claim_id": "d982df33de8ab632f23d2c37ea622afd8ff70500a9fd043847ae22f9155c48c5",
+          "anchor": 924823,
+          "coin": {
+            "confirmed_at": 923823,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf124",
+          "key": "kx124",
+          "created_at": 1790000000,
+          "claim_id": "4c687fc02e32d0f2f9818708c293ba409d6ab2be4738b523488cc6a6e04afcc1",
+          "anchor": 924824,
+          "coin": {
+            "confirmed_at": 923824,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf125",
+          "key": "kx125",
+          "created_at": 1790000000,
+          "claim_id": "1486dc38a4f5097faf192575d959a4f2bcb6ec4e17ec024858f6415ce0f7d1ab",
+          "anchor": 924825,
+          "coin": {
+            "confirmed_at": 923825,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf126",
+          "key": "kx126",
+          "created_at": 1790000000,
+          "claim_id": "92077c86f9c009532ac51db8036b1f2cd27dd6b5de078da8b5abaa9716793e6f",
+          "anchor": 924826,
+          "coin": {
+            "confirmed_at": 923826,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf127",
+          "key": "kx127",
+          "created_at": 1790000000,
+          "claim_id": "60a7b49d12a57a56a387e66126dea8083e0e764cf545b91e3ff4d865a435da4f",
+          "anchor": 924827,
+          "coin": {
+            "confirmed_at": 923827,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf128",
+          "key": "kx128",
+          "created_at": 1790000000,
+          "claim_id": "9d480a7bb44de5477a105a0718282d771f8023b9da054e58096447825c039482",
+          "anchor": 924828,
+          "coin": {
+            "confirmed_at": 923828,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf129",
+          "key": "kx129",
+          "created_at": 1790000000,
+          "claim_id": "c46b829061cfac475a925a60380e465907530f0b28cbaeb408d645dd341f176a",
+          "anchor": 924829,
+          "coin": {
+            "confirmed_at": 923829,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf130",
+          "key": "kx130",
+          "created_at": 1790000000,
+          "claim_id": "2de3b02b013c105af264bce14a13dbe5d37f0163bd1f05a93b4b6f55f2b9dd19",
+          "anchor": 924830,
+          "coin": {
+            "confirmed_at": 923830,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf131",
+          "key": "kx131",
+          "created_at": 1790000000,
+          "claim_id": "0335d5ad8b9425d19779f7713d1e641577706379266702176fceac850e35d5c6",
+          "anchor": 924831,
+          "coin": {
+            "confirmed_at": 923831,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf132",
+          "key": "kx132",
+          "created_at": 1790000000,
+          "claim_id": "f03dc185bb912214ba4fcd41080566fd9c935e0d5b4c1b26caa451b68eda8356",
+          "anchor": 924832,
+          "coin": {
+            "confirmed_at": 923832,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf133",
+          "key": "kx133",
+          "created_at": 1790000000,
+          "claim_id": "fecbdc1d8dfbb7e18068a18092dff28f53e56f5b279a9c7f3fd530479b918bcd",
+          "anchor": 924833,
+          "coin": {
+            "confirmed_at": 923833,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf134",
+          "key": "kx134",
+          "created_at": 1790000000,
+          "claim_id": "61113d189fc8ba7f00c6b7ca24f2d1501fdd064f808e83d3ffec49bed2546225",
+          "anchor": 924834,
+          "coin": {
+            "confirmed_at": 923834,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf135",
+          "key": "kx135",
+          "created_at": 1790000000,
+          "claim_id": "99654eb4ffbac06cc3f47e3cfb72c16be9dcc83e42dac76b44e99ff1b481ba71",
+          "anchor": 924835,
+          "coin": {
+            "confirmed_at": 923835,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf136",
+          "key": "kx136",
+          "created_at": 1790000000,
+          "claim_id": "d52b3c78f283314336a052399e6d4f63fb7f46a4a48e4a0153899109d4e12886",
+          "anchor": 924836,
+          "coin": {
+            "confirmed_at": 923836,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf137",
+          "key": "kx137",
+          "created_at": 1790000000,
+          "claim_id": "c8eb3e082cf737dd51bb78e178eb583365de425a3a041b402e84644f90f50cfc",
+          "anchor": 924837,
+          "coin": {
+            "confirmed_at": 923837,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf138",
+          "key": "kx138",
+          "created_at": 1790000000,
+          "claim_id": "918774029b16d100a0cfd202f921aa8805362873cea9c56a32ab8759e2141cba",
+          "anchor": 924838,
+          "coin": {
+            "confirmed_at": 923838,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf139",
+          "key": "kx139",
+          "created_at": 1790000000,
+          "claim_id": "9b195f1284f5d36209381a7b89d694b259699819b37857d0a92c030cdf8222a1",
+          "anchor": 924839,
+          "coin": {
+            "confirmed_at": 923839,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf140",
+          "key": "kx140",
+          "created_at": 1790000000,
+          "claim_id": "be4cdfac99ccb2a10695e8994d388c89ea0c14589202499373bae2e2b4171c18",
+          "anchor": 924840,
+          "coin": {
+            "confirmed_at": 923840,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf141",
+          "key": "kx141",
+          "created_at": 1790000000,
+          "claim_id": "16d87a918be568f61d752e005c6790a1d7387306b0e1631c57a98247eb72f223",
+          "anchor": 924841,
+          "coin": {
+            "confirmed_at": 923841,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf142",
+          "key": "kx142",
+          "created_at": 1790000000,
+          "claim_id": "1d3371505cec346ee3e807ae6fe157af1f033e4cbbbf8f922986d790e7947e10",
+          "anchor": 924842,
+          "coin": {
+            "confirmed_at": 923842,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf143",
+          "key": "kx143",
+          "created_at": 1790000000,
+          "claim_id": "a81fc50b6c249b6fe7a89b9935f4febb876e6d1d140a12343619f6cb674898ac",
+          "anchor": 924843,
+          "coin": {
+            "confirmed_at": 923843,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf144",
+          "key": "kx144",
+          "created_at": 1790000000,
+          "claim_id": "1d7052b08bc01fd80a2df60f099a757ef66347c2d7d6157e53506d7dd922d055",
+          "anchor": 924844,
+          "coin": {
+            "confirmed_at": 923844,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf145",
+          "key": "kx145",
+          "created_at": 1790000000,
+          "claim_id": "d924abe4239c24c14ee2d8e70e55fda689ad3b21007001c1fc7b212fd12806c4",
+          "anchor": 924845,
+          "coin": {
+            "confirmed_at": 923845,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf146",
+          "key": "kx146",
+          "created_at": 1790000000,
+          "claim_id": "866306c50c0d4af5d67717a8774c5a244b6e9faf67aacc8d6b036fff6d2280c1",
+          "anchor": 924846,
+          "coin": {
+            "confirmed_at": 923846,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf147",
+          "key": "kx147",
+          "created_at": 1790000000,
+          "claim_id": "38c46f2af5ae2084b1ce53e9ec520a5d76816e18852806384692b72d9e338671",
+          "anchor": 924847,
+          "coin": {
+            "confirmed_at": 923847,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf148",
+          "key": "kx148",
+          "created_at": 1790000000,
+          "claim_id": "60827e393cf28440d7c61d594e31125f3b60aaf96f454ca6fa1e3ee1c19d4c51",
+          "anchor": 924848,
+          "coin": {
+            "confirmed_at": 923848,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf149",
+          "key": "kx149",
+          "created_at": 1790000000,
+          "claim_id": "0641089615e58518d29d3cb2a625b264e0f7c3960f355039d7853cd4edc0c9b5",
+          "anchor": 924849,
+          "coin": {
+            "confirmed_at": 923849,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf150",
+          "key": "kx150",
+          "created_at": 1790000000,
+          "claim_id": "ed95fb7a9da13b2e6ad089bd4ec423af3902257544c28f6ea1ab64fa94318621",
+          "anchor": 924850,
+          "coin": {
+            "confirmed_at": 923850,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf151",
+          "key": "kx151",
+          "created_at": 1790000000,
+          "claim_id": "a88629675b277b3210661610eb090c03ac794de43f9d7aed79052b7a78ecf67f",
+          "anchor": 924851,
+          "coin": {
+            "confirmed_at": 923851,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf152",
+          "key": "kx152",
+          "created_at": 1790000000,
+          "claim_id": "c3f49c796d01df87c825ca2299c60124b5fdacd31c20e17db57d9ffcfe11911e",
+          "anchor": 924852,
+          "coin": {
+            "confirmed_at": 923852,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf153",
+          "key": "kx153",
+          "created_at": 1790000000,
+          "claim_id": "3ca5ef6019f8d3b18b49ac29da9f7f05517cd12257aa953b4dc7bcaf8676a76d",
+          "anchor": 924853,
+          "coin": {
+            "confirmed_at": 923853,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf154",
+          "key": "kx154",
+          "created_at": 1790000000,
+          "claim_id": "c8f92f459390a60874dda02a5fce2a36151c76169ca19fcbcab6eb90ebd85cad",
+          "anchor": 924854,
+          "coin": {
+            "confirmed_at": 923854,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf155",
+          "key": "kx155",
+          "created_at": 1790000000,
+          "claim_id": "bca896de21ad62616bd37afb0c35fcd2322fd11e0a759bd9964cb1f3eb229df7",
+          "anchor": 924855,
+          "coin": {
+            "confirmed_at": 923855,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf156",
+          "key": "kx156",
+          "created_at": 1790000000,
+          "claim_id": "51183a72d264af8dc08b7091117143d9a73d720dfe9df1e2b0308fbb9e625211",
+          "anchor": 924856,
+          "coin": {
+            "confirmed_at": 923856,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf157",
+          "key": "kx157",
+          "created_at": 1790000000,
+          "claim_id": "89e9d9c9e167f004c271390092d6683be57bebd615dc987b64ee86d87ff443db",
+          "anchor": 924857,
+          "coin": {
+            "confirmed_at": 923857,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf158",
+          "key": "kx158",
+          "created_at": 1790000000,
+          "claim_id": "b5e8d136e45ec54efba2d9f2108a08c93f04b609198ebe7764246d4fbd2a9022",
+          "anchor": 924858,
+          "coin": {
+            "confirmed_at": 923858,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf159",
+          "key": "kx159",
+          "created_at": 1790000000,
+          "claim_id": "650345e54720d7cf4269eec5a47f38c343cf833cc0eccf66bb7d12076c2506db",
+          "anchor": 924859,
+          "coin": {
+            "confirmed_at": 923859,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf160",
+          "key": "kx160",
+          "created_at": 1790000000,
+          "claim_id": "5513f95599f17e4dac5c2b02c03f027ea0fcecb1f892d530ed482c69b3885393",
+          "anchor": 924860,
+          "coin": {
+            "confirmed_at": 923860,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf161",
+          "key": "kx161",
+          "created_at": 1790000000,
+          "claim_id": "385422b652aa65014dafaee3723137750b962ffbee6618dd6a370aa2d6c5cc77",
+          "anchor": 924861,
+          "coin": {
+            "confirmed_at": 923861,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf162",
+          "key": "kx162",
+          "created_at": 1790000000,
+          "claim_id": "560a7e04775446e6a06072f0716e20574e61fae5a8ac33d64245c882976f30be",
+          "anchor": 924862,
+          "coin": {
+            "confirmed_at": 923862,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf163",
+          "key": "kx163",
+          "created_at": 1790000000,
+          "claim_id": "056f5f4c8404a800b3d82959921eaecc6583d22a3d217d9174a0f4bf9b68667b",
+          "anchor": 924863,
+          "coin": {
+            "confirmed_at": 923863,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf164",
+          "key": "kx164",
+          "created_at": 1790000000,
+          "claim_id": "f0f15e349867cbb3ee94e7e451d0a962c0b9f1cd1a6bfa0754af5030e0e0389b",
+          "anchor": 924864,
+          "coin": {
+            "confirmed_at": 923864,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf165",
+          "key": "kx165",
+          "created_at": 1790000000,
+          "claim_id": "b7b8fa4dea5efe94813a841c2b8ca913347155f0f0e4eaa1338eeb20aa58419f",
+          "anchor": 924865,
+          "coin": {
+            "confirmed_at": 923865,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf166",
+          "key": "kx166",
+          "created_at": 1790000000,
+          "claim_id": "2a56df289315b500fa7a47a593df1cf88d93d5969dfd1b4c516eafaf970fcbb4",
+          "anchor": 924866,
+          "coin": {
+            "confirmed_at": 923866,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf167",
+          "key": "kx167",
+          "created_at": 1790000000,
+          "claim_id": "6baa4e23825f5e4518043c0b1c266ce757c850fda08df61bd0e55f71d456713e",
+          "anchor": 924867,
+          "coin": {
+            "confirmed_at": 923867,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf168",
+          "key": "kx168",
+          "created_at": 1790000000,
+          "claim_id": "2882d97780d8fea0dfd657043664782b52b3765fd8ad41a7e04c04ebd055670f",
+          "anchor": 924868,
+          "coin": {
+            "confirmed_at": 923868,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf169",
+          "key": "kx169",
+          "created_at": 1790000000,
+          "claim_id": "a520f629b0a8e3403b9e5a7c9c420c1b6b3b45f511ec376d4c73f41be0e8a4bf",
+          "anchor": 924869,
+          "coin": {
+            "confirmed_at": 923869,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf170",
+          "key": "kx170",
+          "created_at": 1790000000,
+          "claim_id": "ba1486f1b76ac133c239d370c81ce7bab6d78921a62018c751e6ce27a32bf382",
+          "anchor": 924870,
+          "coin": {
+            "confirmed_at": 923870,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf171",
+          "key": "kx171",
+          "created_at": 1790000000,
+          "claim_id": "2b645292028e49578cb056d2f02554bf0e174b2c023398dd35a7b501c9f8d54c",
+          "anchor": 924871,
+          "coin": {
+            "confirmed_at": 923871,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf172",
+          "key": "kx172",
+          "created_at": 1790000000,
+          "claim_id": "43dd2453aa349a2a7a7b548accbed874e6bcf5eadb8ddb263dfc33b2fd702a43",
+          "anchor": 924872,
+          "coin": {
+            "confirmed_at": 923872,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf173",
+          "key": "kx173",
+          "created_at": 1790000000,
+          "claim_id": "1dd1ee2a0d91c6bf5051d4db006c8cc50ea5fa9509307124e82bf76c381705d6",
+          "anchor": 924873,
+          "coin": {
+            "confirmed_at": 923873,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf174",
+          "key": "kx174",
+          "created_at": 1790000000,
+          "claim_id": "011aaa64ce842f10cb846bfe0c25654bb314b00055cbdec02cb32c3bef65f8a7",
+          "anchor": 924874,
+          "coin": {
+            "confirmed_at": 923874,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf175",
+          "key": "kx175",
+          "created_at": 1790000000,
+          "claim_id": "ab5e6b4352e0871d7e3bcb764022effb04bb16eda049907cf9e58558fcf869f1",
+          "anchor": 924875,
+          "coin": {
+            "confirmed_at": 923875,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf176",
+          "key": "kx176",
+          "created_at": 1790000000,
+          "claim_id": "976024c827ed0520390147ea72c0294c64f57b7c57a2f814cc4f5d5efe041a3c",
+          "anchor": 924876,
+          "coin": {
+            "confirmed_at": 923876,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf177",
+          "key": "kx177",
+          "created_at": 1790000000,
+          "claim_id": "baf313bab5c3b4cc1aeb4055433b90cbaa58211844ac8e0381727c4310fb5eb6",
+          "anchor": 924877,
+          "coin": {
+            "confirmed_at": 923877,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf178",
+          "key": "kx178",
+          "created_at": 1790000000,
+          "claim_id": "593a238c02a0f8ee25d6a5a91072ebecf36a86df78f7cc52e116d64dbcb83d68",
+          "anchor": 924878,
+          "coin": {
+            "confirmed_at": 923878,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf179",
+          "key": "kx179",
+          "created_at": 1790000000,
+          "claim_id": "22c93e99f2d62ac3f08ba96f2207fa42acbf77e576fd4f92a8bd6e64ccaa67b1",
+          "anchor": 924879,
+          "coin": {
+            "confirmed_at": 923879,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf180",
+          "key": "kx180",
+          "created_at": 1790000000,
+          "claim_id": "15beb92a8b60b8ba7bb95cfdecd22be45b5403f1782cdcea752f12f44c40eed2",
+          "anchor": 924880,
+          "coin": {
+            "confirmed_at": 923880,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf181",
+          "key": "kx181",
+          "created_at": 1790000000,
+          "claim_id": "697c5e4d6aab2b640901368de25b02b3a0fdab6c91dea072b16d7baaeb138bf9",
+          "anchor": 924881,
+          "coin": {
+            "confirmed_at": 923881,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf182",
+          "key": "kx182",
+          "created_at": 1790000000,
+          "claim_id": "e3ae84f4a4c6d467902296cdebd5a862010a4c56074f3715ea90d32e075f85e1",
+          "anchor": 924882,
+          "coin": {
+            "confirmed_at": 923882,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf183",
+          "key": "kx183",
+          "created_at": 1790000000,
+          "claim_id": "0bfc96c83c3ab2cab950f097a9f07724a6220b0d0e9e429338e18e70fa231ec1",
+          "anchor": 924883,
+          "coin": {
+            "confirmed_at": 923883,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf184",
+          "key": "kx184",
+          "created_at": 1790000000,
+          "claim_id": "6e9aff0f3ca6823139da2d855817dacc6269e49d57ff6b3e79b303c698601a82",
+          "anchor": 924884,
+          "coin": {
+            "confirmed_at": 923884,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf185",
+          "key": "kx185",
+          "created_at": 1790000000,
+          "claim_id": "97bd5702c8be70be0050deb4b656b0abd042926fbbd43b107b4f2a087e97e70d",
+          "anchor": 924885,
+          "coin": {
+            "confirmed_at": 923885,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf186",
+          "key": "kx186",
+          "created_at": 1790000000,
+          "claim_id": "eed727f013598259b31d4a60b0d31cbcb9979bd56bce4afed9a75ddb018dabb7",
+          "anchor": 924886,
+          "coin": {
+            "confirmed_at": 923886,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf187",
+          "key": "kx187",
+          "created_at": 1790000000,
+          "claim_id": "82be840638ad016f4faf73af79cf30c6744e599de00794c5ba894ecc1421b769",
+          "anchor": 924887,
+          "coin": {
+            "confirmed_at": 923887,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf188",
+          "key": "kx188",
+          "created_at": 1790000000,
+          "claim_id": "ef05c0a4bdc908a6d829005d452b0722dd6d44a9f009ee51ec248b842145bbb5",
+          "anchor": 924888,
+          "coin": {
+            "confirmed_at": 923888,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf189",
+          "key": "kx189",
+          "created_at": 1790000000,
+          "claim_id": "89f51280bda1adea61aafadb7fc0755fc1795c9a5ed3b6f710b857c16ee3dab4",
+          "anchor": 924889,
+          "coin": {
+            "confirmed_at": 923889,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf190",
+          "key": "kx190",
+          "created_at": 1790000000,
+          "claim_id": "574430cb9384c370cc18ce8ea57efbc954b104bb31a69b1e8343a0d1dac2d34a",
+          "anchor": 924890,
+          "coin": {
+            "confirmed_at": 923890,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf191",
+          "key": "kx191",
+          "created_at": 1790000000,
+          "claim_id": "8da2f02ad12ccd27f8544040e6c9dd59216caf907a03e45ccf8e8b77573cee65",
+          "anchor": 924891,
+          "coin": {
+            "confirmed_at": 923891,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf192",
+          "key": "kx192",
+          "created_at": 1790000000,
+          "claim_id": "a09d91fa6cf6ae61b4b0fd4c858b3543115021fda42f66a55b007ef7854122a6",
+          "anchor": 924892,
+          "coin": {
+            "confirmed_at": 923892,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf193",
+          "key": "kx193",
+          "created_at": 1790000000,
+          "claim_id": "8bb8a322617d4197136cd6f5dda98772b7c7386d4cfca950e6971600e3c797da",
+          "anchor": 924893,
+          "coin": {
+            "confirmed_at": 923893,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf194",
+          "key": "kx194",
+          "created_at": 1790000000,
+          "claim_id": "4e4f08bbd928e2d61e9e9b3aa472edb0265b73d97930e4f0ac90811f543e82a1",
+          "anchor": 924894,
+          "coin": {
+            "confirmed_at": 923894,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf195",
+          "key": "kx195",
+          "created_at": 1790000000,
+          "claim_id": "52389c7b3b0df7268494d97171e4d674bf96793ce92acf6cd3686690f53ababf",
+          "anchor": 924895,
+          "coin": {
+            "confirmed_at": 923895,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf196",
+          "key": "kx196",
+          "created_at": 1790000000,
+          "claim_id": "72a98a775d0ead8345a5729fd5881d8998f2bfa9e6bea5847d6ad26939081ed4",
+          "anchor": 924896,
+          "coin": {
+            "confirmed_at": 923896,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf197",
+          "key": "kx197",
+          "created_at": 1790000000,
+          "claim_id": "fe3db78c8043de7c9598f8ce171a337b05243015625f24f927f02156187ba5a1",
+          "anchor": 924897,
+          "coin": {
+            "confirmed_at": 923897,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf198",
+          "key": "kx198",
+          "created_at": 1790000000,
+          "claim_id": "881e38764985be3569f1779df8dda5f24b02a1d44f694f54f3c3396bcfeb0f02",
+          "anchor": 924898,
+          "coin": {
+            "confirmed_at": 923898,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qpf199",
+          "key": "kx199",
+          "created_at": 1790000000,
+          "claim_id": "50c84a576d035c3a467672496351adc81c6a091b759dd1183a78d647464028d8",
+          "anchor": 924899,
+          "coin": {
+            "confirmed_at": 923899,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
+          "claim_id": "367be2a7dfc8d623eef166f6b622b521463fa00740e5eeef9807ffb6cb5b1ba3",
+          "anchor": 925000,
+          "coin": {
+            "confirmed_at": 924700,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        }
+      ],
+      "expected": {
+        "result": "holds",
+        "holder": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+        "reads": [
+          "binding bc1qpe000",
+          "binding bc1qpe001",
+          "binding bc1qpe002",
+          "binding bc1qpe003",
+          "binding bc1qpe004",
+          "binding bc1qpe005",
+          "binding bc1qpe006",
+          "binding bc1qpe007",
+          "binding bc1qpe008",
+          "binding bc1qpe009",
+          "binding bc1qpe010",
+          "binding bc1qpe011",
+          "binding bc1qpe012",
+          "binding bc1qpe013",
+          "binding bc1qpe014",
+          "binding bc1qpe015",
+          "binding bc1qpe016",
+          "binding bc1qpe017",
+          "binding bc1qpe018",
+          "binding bc1qpe019",
+          "binding bc1qpe020",
+          "binding bc1qpe021",
+          "binding bc1qpe022",
+          "binding bc1qpe023",
+          "binding bc1qpe024",
+          "binding bc1qpe025",
+          "binding bc1qpe026",
+          "binding bc1qpe027",
+          "binding bc1qpe028",
+          "binding bc1qpe029",
+          "binding bc1qpe030",
+          "binding bc1qpe031",
+          "binding bc1qpe032",
+          "binding bc1qpe033",
+          "binding bc1qpe034",
+          "binding bc1qpe035",
+          "binding bc1qpe036",
+          "binding bc1qpe037",
+          "binding bc1qpe038",
+          "binding bc1qpe039",
+          "binding bc1qpe040",
+          "binding bc1qpe041",
+          "binding bc1qpe042",
+          "binding bc1qpe043",
+          "binding bc1qpe044",
+          "binding bc1qpe045",
+          "binding bc1qpe046",
+          "binding bc1qpe047",
+          "binding bc1qpe048",
+          "binding bc1qpe049",
+          "binding bc1qpe050",
+          "binding bc1qpe051",
+          "binding bc1qpe052",
+          "binding bc1qpe053",
+          "binding bc1qpe054",
+          "binding bc1qpe055",
+          "binding bc1qpe056",
+          "binding bc1qpe057",
+          "binding bc1qpe058",
+          "binding bc1qpe059",
+          "binding bc1qpe060",
+          "binding bc1qpe061",
+          "binding bc1qpe062",
+          "binding bc1qpe063",
+          "binding bc1qpf000",
+          "binding bc1qpf001",
+          "binding bc1qpf002",
+          "binding bc1qpf003",
+          "binding bc1qpf004",
+          "binding bc1qpf005",
+          "binding bc1qpf006",
+          "binding bc1qpf007",
+          "binding bc1qpf008",
+          "binding bc1qpf009",
+          "binding bc1qpf010",
+          "binding bc1qpf011",
+          "binding bc1qpf012",
+          "binding bc1qpf013",
+          "binding bc1qpf014",
+          "binding bc1qpf015",
+          "binding bc1qpf016",
+          "binding bc1qpf017",
+          "binding bc1qpf018",
+          "binding bc1qpf019",
+          "binding bc1qpf020",
+          "binding bc1qpf021",
+          "binding bc1qpf022",
+          "binding bc1qpf023",
+          "binding bc1qpf024",
+          "binding bc1qpf025",
+          "binding bc1qpf026",
+          "binding bc1qpf027",
+          "binding bc1qpf028",
+          "binding bc1qpf029",
+          "binding bc1qpf030",
+          "binding bc1qpf031",
+          "binding bc1qpf032",
+          "binding bc1qpf033",
+          "binding bc1qpf034",
+          "binding bc1qpf035",
+          "binding bc1qpf036",
+          "binding bc1qpf037",
+          "binding bc1qpf038",
+          "binding bc1qpf039",
+          "binding bc1qpf040",
+          "binding bc1qpf041",
+          "binding bc1qpf042",
+          "binding bc1qpf043",
+          "binding bc1qpf044",
+          "binding bc1qpf045",
+          "binding bc1qpf046",
+          "binding bc1qpf047",
+          "binding bc1qpf048",
+          "binding bc1qpf049",
+          "binding bc1qpf050",
+          "binding bc1qpf051",
+          "binding bc1qpf052",
+          "binding bc1qpf053",
+          "binding bc1qpf054",
+          "binding bc1qpf055",
+          "binding bc1qpf056",
+          "binding bc1qpf057",
+          "binding bc1qpf058",
+          "binding bc1qpf059",
+          "binding bc1qpf060",
+          "binding bc1qpf061",
+          "binding bc1qpf062",
+          "binding bc1qpf063",
+          "binding bc1qpf064",
+          "binding bc1qpf065",
+          "binding bc1qpf066",
+          "binding bc1qpf067",
+          "binding bc1qpf068",
+          "binding bc1qpf069",
+          "binding bc1qpf070",
+          "binding bc1qpf071",
+          "binding bc1qpf072",
+          "binding bc1qpf073",
+          "binding bc1qpf074",
+          "binding bc1qpf075",
+          "binding bc1qpf076",
+          "binding bc1qpf077",
+          "binding bc1qpf078",
+          "binding bc1qpf079",
+          "binding bc1qpf080",
+          "binding bc1qpf081",
+          "binding bc1qpf082",
+          "binding bc1qpf083",
+          "binding bc1qpf084",
+          "binding bc1qpf085",
+          "binding bc1qpf086",
+          "binding bc1qpf087",
+          "binding bc1qpf088",
+          "binding bc1qpf089",
+          "binding bc1qpf090",
+          "binding bc1qpf091",
+          "binding bc1qpf092",
+          "binding bc1qpf093",
+          "binding bc1qpf094",
+          "binding bc1qpf095",
+          "binding bc1qpf096",
+          "binding bc1qpf097",
+          "binding bc1qpf098",
+          "binding bc1qpf099",
+          "binding bc1qpf100",
+          "binding bc1qpf101",
+          "binding bc1qpf102",
+          "binding bc1qpf103",
+          "binding bc1qpf104",
+          "binding bc1qpf105",
+          "binding bc1qpf106",
+          "binding bc1qpf107",
+          "binding bc1qpf108",
+          "binding bc1qpf109",
+          "binding bc1qpf110",
+          "binding bc1qpf111",
+          "binding bc1qpf112",
+          "binding bc1qpf113",
+          "binding bc1qpf114",
+          "binding bc1qpf115",
+          "binding bc1qpf116",
+          "binding bc1qpf117",
+          "binding bc1qpf118",
+          "binding bc1qpf119",
+          "binding bc1qpf120",
+          "binding bc1qpf121",
+          "binding bc1qpf122",
+          "binding bc1qpf123",
+          "binding bc1qpf124",
+          "binding bc1qpf125",
+          "binding bc1qpf126",
+          "binding bc1qpf127",
+          "binding bc1qpf128",
+          "binding bc1qpf129",
+          "binding bc1qpf130",
+          "binding bc1qpf131",
+          "binding bc1qpf132",
+          "binding bc1qpf133",
+          "binding bc1qpf134",
+          "binding bc1qpf135",
+          "binding bc1qpf136",
+          "binding bc1qpf137",
+          "binding bc1qpf138",
+          "binding bc1qpf139",
+          "binding bc1qpf140",
+          "binding bc1qpf141",
+          "binding bc1qpf142",
+          "binding bc1qpf143",
+          "binding bc1qpf144",
+          "binding bc1qpf145",
+          "binding bc1qpf146",
+          "binding bc1qpf147",
+          "binding bc1qpf148",
+          "binding bc1qpf149",
+          "binding bc1qpf150",
+          "binding bc1qpf151",
+          "binding bc1qpf152",
+          "binding bc1qpf153",
+          "binding bc1qpf154",
+          "binding bc1qpf155",
+          "binding bc1qpf156",
+          "binding bc1qpf157",
+          "binding bc1qpf158",
+          "binding bc1qpf159",
+          "binding bc1qpf160",
+          "binding bc1qpf161",
+          "binding bc1qpf162",
+          "binding bc1qpf163",
+          "binding bc1qpf164",
+          "binding bc1qpf165",
+          "binding bc1qpf166",
+          "binding bc1qpf167",
+          "binding bc1qpf168",
+          "binding bc1qpf169",
+          "binding bc1qpf170",
+          "binding bc1qpf171",
+          "binding bc1qpf172",
+          "binding bc1qpf173",
+          "binding bc1qpf174",
+          "binding bc1qpf175",
+          "binding bc1qpf176",
+          "binding bc1qpf177",
+          "binding bc1qpf178",
+          "binding bc1qpf179",
+          "binding bc1qpf180",
+          "binding bc1qpf181",
+          "binding bc1qpf182",
+          "binding bc1qpf183",
+          "binding bc1qpf184",
+          "binding bc1qpf185",
+          "binding bc1qpf186",
+          "binding bc1qpf187",
+          "binding bc1qpf188",
+          "binding bc1qpf189",
+          "binding bc1qpf190",
+          "binding bc1qpf191",
+          "binding bc1qpf192",
+          "binding bc1qpf193",
+          "binding bc1qpf194",
+          "binding bc1qpf195",
+          "binding bc1qpf196",
+          "binding bc1qpf197",
+          "binding bc1qpf198",
+          "binding bc1qpf199",
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "coin 367be2a7dfc8"
+        ]
+      }
+    },
+    {
+      "name": "the only claim, ended by its own tombstone, is revoked",
+      "why": "§8.2.5 (6): the walk ends without a holder, and a tombstone signed by a bound key is the state of an address it read: E_DIR_REVOKED.",
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
+        {
+          "kind": "listing",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
+          "claim_id": "db8ce302d24d38913f176a9fa62bd5c2c483586661982c670fabaeae57009874",
+          "anchor": 925000,
+          "coin": {
+            "confirmed_at": 924700,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "tombstone",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000100,
+          "ends": "db8ce302d24d38913f176a9fa62bd5c2c483586661982c670fabaeae57009874",
+          "source": "directory"
+        }
+      ],
+      "expected": {
+        "result": "E_DIR_REVOKED",
+        "holder": null,
+        "reads": [
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8"
+        ]
+      }
+    },
+    {
+      "name": "a freshest tombstone ending another claim leaves the address's older listing no weight",
+      "why": "§8.2.5 (3): the address's state is its freshest record, here a tombstone, so its listing is not the state and its claim is never read; the next claim holds.",
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
+        {
+          "kind": "listing",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
+          "claim_id": "4ea2ed851b1889451f1adf6bc373cc465ce2cd8904b184769ea8feb172781d42",
+          "anchor": 925000,
+          "coin": {
+            "confirmed_at": 924700,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        },
+        {
+          "kind": "tombstone",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000100,
+          "ends": "268a3a46b23e70121ae3159987771c5cc1d4a05b4877c7a46875a276b32dda9c",
+          "source": "directory"
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
+          "claim_id": "a9748266cb92d4859984a6d815d30f8ec90f9c673622c04ab27fdbe68c253a95",
+          "anchor": 925005,
+          "coin": {
+            "confirmed_at": 924000,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory"
+        }
+      ],
+      "expected": {
+        "result": "holds",
+        "holder": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+        "reads": [
+          "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "binding bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "coin a9748266cb92"
+        ]
+      }
     }
   ],
   "notes": "An anchor is a height, or {unread: h} when the header for its lowest attestation could not be read. coin.confirmed_at is the height the claim's outpoint confirmed at; spend.confirmations is the spending transaction's depth (0 = mempool); a spend ends a claim at dir_repoint_blocks + 6 confirmations (§8.2.2 (3)). Keys and the addresses in the padding cases are labels. Re-points are in vc25."
