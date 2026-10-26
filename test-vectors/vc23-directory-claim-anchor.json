@@ -11,6 +11,9 @@
       "920000": "000000205f375d884f35a48bc9e5aa1d9f8d6de94ab0f6c1b6fcae7be4ba11e9b48b777147240e1016c810dcf48166891a385f464ad02af3f99cb3405fa00827c67153594045bf6a19420317c0090e00",
       "920006": "000000202f343b149fd39e91a03d842e5ea1c37960b712937c7c1d8027fdf903506dae7977bb3b35e7d2061c1f1e6dec88b1449755bc485ea41eb2fe4836b405cd10db444645bf6a19420317c6090e00"
     },
+    "unread_heights_with_wrong_low_root": [
+      920006
+    ],
     "other_digest": "b127ede22cc19af80c98a8c390fed4fd62d24882a31101eb3516769ef5a349cd"
   },
   "expected": {
@@ -21,6 +24,9 @@
     "anchor_height": 920000,
     "anchor_block_hash": "ee6abc46b2b7e4b2f9188821211963ba1f6ee810917212ff7810f792ad4b458e",
     "anchor_height_when_low_header_mismatches": 920006,
+    "anchor_when_low_header_mismatches_and_high_unread": {
+      "unread": 920006
+    },
     "anchor_for_other_digest": null,
     "anchored_at_tip": {
       "920004": {

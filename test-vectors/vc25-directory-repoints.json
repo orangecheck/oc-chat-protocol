@@ -1,5 +1,5 @@
 {
-  "description": "Re-points (SPEC §8.2.9, 0.4.0). repoint_id = SHA-256(canonical({v:1, claim: claim_id, prev, outpoint, nonce})). A reader takes re-points only from the address's state (a listing signed by a bound key). The list is one chain in order, at most 16: the first prev is the claim's outpoint, each later prev the outpoint before it; a list that does not chain, or has more than 16, is dropped before any read. The reader follows it from the claim's own coin; each valid link moves the claim, and the first link that is not valid ends the chain where it stands. Valid: anchored with 6 confirmations, no later than prev's spend height + dir_repoint_blocks (an unanchored or late link ends the chain without a read), and its coin pays to the address and cleared the floor at the re-point's own anchor. The claim stands while its current coin is unspent or its spend has fewer than dir_repoint_blocks + 6 confirmations. Every coin read counts toward the coin bound. The cases use the vc24 walk, which walks each claim once; `reads` lists the reads made, in order ('repoint' is the read of a re-point's coin).",
+  "description": "Re-points (SPEC §8.2.9, 0.4.0). repoint_id = SHA-256(canonical({v:1, claim: claim_id, prev, outpoint, nonce})). A reader takes re-points only from the address's state (a listing signed by a bound key). The list is one chain in order, at most 16: the first prev is the claim's outpoint, each later prev the outpoint before it; a list that does not chain, names a coin twice, or has more than 16, is dropped before any read. The reader follows it from the claim's own coin; each valid link moves the claim, and the first link that is not valid ends the chain where it stands. Valid: anchored with 6 confirmations, no later than prev's spend height + dir_repoint_blocks (an unanchored or late link ends the chain without a read), and its coin pays to the address and cleared the floor at the re-point's own anchor. The claim stands while its current coin is unspent or its spend has fewer than dir_repoint_blocks + 6 confirmations. Every coin read counts toward the coin bound, an audit claim's toward the audit's. The cases use the vc24 walk, which walks each claim once; `reads` lists the reads made, in order ('repoint' is the read of a re-point's coin).",
   "inputs": {
     "tip": 930000,
     "floor": {
@@ -1492,6 +1492,92 @@
         "reads": [
           "binding bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
           "coin a3df65292144"
+        ]
+      }
+    },
+    {
+      "name": "a re-point back to a coin already in the chain is dropped before any read",
+      "why": "No coin appears twice in the chain (§8.2.9): a re-point from a coin to itself is dropped in §8.2.5 (1) with its listing, so the next claim holds.",
+      "addresses": {
+        "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
+          "binding": "answered",
+          "bound_keys": [
+            "ka"
+          ]
+        },
+        "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh": {
+          "binding": "answered",
+          "bound_keys": [
+            "kb"
+          ]
+        }
+      },
+      "records": [
+        {
+          "kind": "listing",
+          "address": "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8",
+          "key": "ka",
+          "created_at": 1790000000,
+          "claim_id": "7237558dcdeeaa0d72ba6e8d32a29111e671f3a9b98296cab8ebde53b7a849ac",
+          "anchor": 925000,
+          "coin": {
+            "confirmed_at": 924700,
+            "value": 50000,
+            "spend": {
+              "confirmations": 2000
+            }
+          },
+          "source": "directory",
+          "outpoint": "68130ff7eb054615c3dd231a4916b3106702ca7e876ab3ab46d1eca19f44997c:0",
+          "repoints": [
+            {
+              "repoint_id": "089655df47f60592faec09410de15fcb905a2bd33c1373f954c2cf0ae53798bc",
+              "prev": "68130ff7eb054615c3dd231a4916b3106702ca7e876ab3ab46d1eca19f44997c:0",
+              "outpoint": "68130ff7eb054615c3dd231a4916b3106702ca7e876ab3ab46d1eca19f44997c:0",
+              "nonce": "4fe6e5db90aab688a7b0ffced7c41f5f8130f2133ec3c9aad17b58db3386d63d",
+              "anchor": 930001,
+              "coin": {
+                "confirmed_at": 924700,
+                "value": 50000,
+                "spend": null
+              }
+            },
+            {
+              "repoint_id": "a088344a1cbd6b5947e42aa3d09644dcd91c3c415152ec568a45a7a9cdf6b9f8",
+              "prev": "68130ff7eb054615c3dd231a4916b3106702ca7e876ab3ab46d1eca19f44997c:0",
+              "outpoint": "413a175b02cea9b703c7a934adc93c44d7bbf462a121ff14e2f8222ce226115a:0",
+              "nonce": "47fa496524c92721478ab860efff48305ea21ec1f92b6b9b857c2ddaf678c60b",
+              "anchor": 928301,
+              "coin": {
+                "confirmed_at": 928001,
+                "value": 50000,
+                "spend": null
+              }
+            }
+          ]
+        },
+        {
+          "kind": "listing",
+          "address": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "key": "kb",
+          "created_at": 1790000000,
+          "claim_id": "4a8752b25b450c584e1a6725e62bc4258feff064071f547264ac4a8539229a72",
+          "anchor": 925005,
+          "coin": {
+            "confirmed_at": 924000,
+            "value": 50000,
+            "spend": null
+          },
+          "source": "directory",
+          "outpoint": "3e068b6af87a2a53b680784566bd9586c3d67b1620e5184a831f624d5d4f8255:0"
+        }
+      ],
+      "expected": {
+        "result": "holds",
+        "holder": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+        "reads": [
+          "binding bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+          "coin 4a8752b25b45"
         ]
       }
     }
