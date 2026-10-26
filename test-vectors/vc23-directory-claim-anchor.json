@@ -1,5 +1,5 @@
 {
-  "description": "A claim's anchor (SPEC §8.2.1, 0.4.0): the lowest block height among the proof's Bitcoin attestations that verify (OC Stamp SPEC §6.3: the header at that height has the attested message as its Merkle root, header bytes 36-68) and have at least 6 confirmations at the reader's tip. The proof here is a bare OpenTimestamps timestamp over claim_id (vc22) with two Bitcoin attestations; the headers are synthetic, with the Merkle roots the proof attests.",
+  "description": "A claim's anchor (SPEC §8.2.1, 0.4.0): the height of the proof's lowest Bitcoin attestation, when it verifies (OC Stamp SPEC §6.3: the header at that height has the attested message as its Merkle root, header bytes 36-68) and has at least 6 confirmations at the reader's tip. The lowest attestation alone decides: a reader never passes over it to a higher one. The proof here is a bare OpenTimestamps timestamp over claim_id (vc22) with two Bitcoin attestations; the headers are synthetic, with the Merkle roots the proof attests.",
   "inputs": {
     "claim_id": "29b95e96b127071e0f1b31e7bc56dc52765f0dfe3e50a0280519c3ed190fdc52",
     "ots": "//AQIFvOxMXv5yqfZhS3/GjH+AgABYiWDXPXGQEDxpM48BD6nQj0IsAproBB/7SqIQcmCAAFiJYNc9cZAQPAkzg=",
@@ -36,10 +36,9 @@
     ],
     "anchor_height": 920000,
     "anchor_block_hash": "ee6abc46b2b7e4b2f9188821211963ba1f6ee810917212ff7810f792ad4b458e",
-    "anchor_height_when_low_header_mismatches": 920006,
-    "anchor_when_low_header_mismatches_and_high_unread": {
-      "unread": 920006
-    },
+    "anchor_height_when_low_header_mismatches": null,
+    "anchor_when_low_header_mismatches_and_high_unread": null,
+    "anchor_when_low_height_has_no_block": null,
     "anchor_with_8_attestations": 921000,
     "anchor_with_9_attestations": null,
     "anchor_for_other_digest": null,
@@ -54,15 +53,15 @@
       }
     },
     "anchored_at_tip_when_low_header_mismatches": {
-      "920010": {
-        "confirmations": 5,
-        "anchored": false
-      },
       "920011": {
         "confirmations": 6,
-        "anchored": true
+        "anchored": false
+      },
+      "920100": {
+        "confirmations": 95,
+        "anchored": false
       }
     }
   },
-  "notes": "A claim whose only verifying attestation has 5 confirmations is unanchored and holds nothing (§8.2.5 (1)). A proof over another digest anchors nothing."
+  "notes": "A claim whose only verifying attestation has 5 confirmations is unanchored and holds nothing (§8.2.5 (1)). A proof over another digest anchors nothing. When the lowest attestation's header has another Merkle root, or the chain has no block at its height (at or below the reader's tip), the claim is unanchored at any tip, though the higher attestation verifies, and the higher header is never read: `unread_heights_with_wrong_low_root` lists a height whose read would fail, and the answer is still null. Until 2026-10-26 the 0.4.0 draft passed over such a lowest attestation to the next."
 }
