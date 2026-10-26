@@ -16110,7 +16110,7 @@
     },
     {
       "name": "audit binding reads never spend the directory binding bound",
-      "why": "§8.2.5 (5): 64 audit binding reads count against the audit alone, so the 201 directory binding reads stay under 256 and the holder holds; shared counters would make 265.",
+      "why": "§8.2.5 (5): 64 audit binding reads count against the audit alone, so the 201 directory binding reads stay under 256 and the holder holds; one shared counter would reach the 256-read bound before the holder.",
       "addresses": {
         "bc1qmr7qn2t0ahj56ztpdswt54kn2r863ukd8wadj8": {
           "binding": "answered",
