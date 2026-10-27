@@ -1,6 +1,9 @@
-# oc chat — specification (v0.1)
+# oc chat — specification (v0.4.0)
 
-**Status:** draft. OC Chat is a **mode of OC Lock**, not a new verb. It extends the OC Lock v2 envelope ([`oc-lock-protocol/SPEC.md`](https://github.com/orangecheck/oc-lock-protocol/blob/main/SPEC.md)) with two `kind` values and a thin threading / postage / seal layer. The base cryptography (X25519 ECDH + HKDF-SHA256 + AES-256-GCM, RFC 8785 canonicalization, BIP-322 identity binding) is **unchanged and not restated here** — read the OC Lock spec first.
+**Version:** 0.4.0 (2026-10-27). Every version is in [`CHANGELOG.md`](./CHANGELOG.md).
+**Status:** before 1.0, a minor version can change the wire, and the CHANGELOG says when it does.
+
+OC Chat is a **mode of OC Lock**, not a new verb. It extends the OC Lock v2 envelope ([`oc-lock-protocol/SPEC.md`](https://github.com/orangecheck/oc-lock-protocol/blob/main/SPEC.md)) with two `kind` values and a thin threading / postage / seal layer. The base cryptography (X25519 ECDH + HKDF-SHA256 + AES-256-GCM, RFC 8785 canonicalization, BIP-322 identity binding) is **unchanged and not restated here** — read the OC Lock spec first.
 
 This document uses the key words MUST, MUST NOT, SHOULD, MAY per [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
 

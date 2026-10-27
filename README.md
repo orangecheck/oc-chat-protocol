@@ -13,10 +13,10 @@ The **normative protocol specification**. Prose + fixtures only; no code.
 | File | What it is |
 |---|---|
 | [`SPEC.md`](./SPEC.md) | Normative: the recipient-exclusion `id`/AAD rule, the three send modes, threading, postage, the seal beacon protocol, error codes, kind allocation. |
-| [`PROTOCOL.md`](./PROTOCOL.md) | Narrative walkthrough — five flows with diagrams. |
+| [`PROTOCOL.md`](./PROTOCOL.md) | Narrative walkthrough — six flows with diagrams. |
 | [`WHY.md`](./WHY.md) | Hypothesis-by-hypothesis rationale, including the Ed25519 substitution test run out loud on the seal. |
 | [`SECURITY.md`](./SECURITY.md) | Threat model and attack scenarios. |
-| [`test-vectors/`](./test-vectors/) | Five reproducible fixtures, including `vc04` proving re-wrap `id`/tag stability. |
+| [`test-vectors/`](./test-vectors/) | 25 reproducible fixtures (`vc01`–`vc25`), including `vc04` proving re-wrap `id`/tag stability. |
 | [`CHANGELOG.md`](./CHANGELOG.md) | Version history. |
 
 ## The three modes
@@ -62,12 +62,12 @@ You sign in once with BIP-322; your browser generates an X25519 device key bound
 
 - [`orangecheck/oc-lock-protocol`](https://github.com/orangecheck/oc-lock-protocol) — the confidentiality verb OC Chat extends.
 - [`orangecheck/oc-packages`](https://github.com/orangecheck/oc-packages) — the `@orangecheck/lock-*` reference crypto.
-- [chat.ochk.io](https://chat.ochk.io) — reference web client (planned).
+- [chat.ochk.io](https://chat.ochk.io) — reference web client, live and in testing.
 - [ochk.io](https://ochk.io) — OrangeCheck umbrella.
 
 ## Status
 
-v0 — draft. The web client and the `@orangecheck/chat-*` reference packages are in development.
+0.4.0 (2026-10-27). Before 1.0, a minor version can change the wire; [`CHANGELOG.md`](./CHANGELOG.md) says when it does. The reference web client at [chat.ochk.io](https://chat.ochk.io) runs 0.4.0 and is in testing. No `@orangecheck/chat-*` package is published yet.
 
 ## Acknowledgements
 

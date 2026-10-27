@@ -4,7 +4,7 @@ All notable changes to the OC Chat protocol.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [0.4.0] — unreleased
+## [0.4.0] — 2026-10-27
 
 Directory listings change shape: a handle is ordered by a claim anchored in Bitcoin. Messages, queues and channels are unchanged.
 
