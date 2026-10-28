@@ -25,15 +25,15 @@ The **normative protocol specification**. Prose + fixtures only; no code.
  speak-now      kind=chat            free 1:1 E2EE. BIP-322 identity is the account.
  pay-to-reach   kind=chat + postage  a stranger pays Lightning postage to YOU to land in
                                       your inbox. OC never touches the sats.
- seal-til-block kind=chat-seal        a named beacon releases the key only after the chain
-                                      passes block N. Beacon-enforced, NOT consensus.
+ seal-til-block kind=chat-seal        the key is timelocked to a drand round; a client opens
+                                      it only once the chain passes block N. Not consensus.
 ```
 
 Each mode adds exactly one Bitcoin-unique property: **identity** (BIP-322), **a settled-sats preimage** (Lightning), **a block-height predicate** (Bitcoin). Everything past these is a registry extension, not a new canonical surface.
 
 ## How it works (one paragraph)
 
-You sign in once, with a Bitcoin wallet or with an orangecheck account. Your browser generates an X25519 device key and publishes it to Nostr as a kind-30078 record. A wallet binds it to your Bitcoin address with a BIP-322 signature (OC Lock). An account without an address has it vouched for by the ochk.io auth host instead (SPEC §8.6): a named trust anchor, and a weaker tier that carries no Bitcoin claim. To message someone, you fetch their device keys by their Bitcoin address, or by their account's did:oc for the account tier, seal an OC Lock envelope to them, and gift-wrap it over Nostr (NIP-59) so relays learn nothing — not who, not when, not what. Threading lives inside the ciphertext as a hash-chain. A stranger attaches a Lightning preimage (paid to your own wallet) to reach you. To seal a message for the future, you wrap its key to a **named** beacon that releases it after a Bitcoin block height — and the protocol is honest that, until the CLTV-witness upgrade ships, that beacon is a trust anchor, not the chain.
+You sign in once, with a Bitcoin wallet or with an orangecheck account. Your browser generates an X25519 device key and publishes it to Nostr as a kind-30078 record. A wallet binds it to your Bitcoin address with a BIP-322 signature (OC Lock). An account without an address has it vouched for by the ochk.io auth host instead (SPEC §8.6): a named trust anchor, and a weaker tier that carries no Bitcoin claim. To message someone, you fetch their device keys by their Bitcoin address, or by their account's did:oc for the account tier, seal an OC Lock envelope to them, and gift-wrap it over Nostr (NIP-59) so relays learn nothing — not who, not when, not what. Threading lives inside the ciphertext as a hash-chain. A stranger attaches a Lightning preimage (paid to your own wallet) to reach you. To seal a message for the future, your client encrypts it under a fresh secret and timelocks that secret to the drand quicknet round expected near a target Bitcoin block height; the seal rides inside the encrypted message, so a relay sees an ordinary one (SPEC §7.6, SECURITY S5). Anyone can recover the secret once the round passes, but a conforming client shows the message only after it has itself confirmed the chain reached that height, whichever comes later. The protocol is honest that, until the CLTV-witness upgrade ships, drand holds the key and the chain does not: the height is a condition the reader checks, and reading early takes both a colluding drand threshold and a client that skips the check.
 
 ## Layers
 
