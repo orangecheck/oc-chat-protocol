@@ -4,6 +4,16 @@ All notable changes to the OC Chat protocol.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased] — 2026-10
+
+The checklist, the security notes and the walkthrough describe the v0 profile that ships (§7.6, §7.7). The wire is unchanged.
+
+### Changed
+- **§11.** A v0 message is a base OC Lock `identity` envelope with base content addressing; the recipient-exclusion rule belongs to the upgrade target. The seal line follows the §7.6 drand-tlock profile and its vectors `vc10`–`vc13`. New lines for §4.1 (no acceptance receipt) and §7.7 standing delivery.
+- **§8.1.** A paid tier may also raise the operator's abuse ceilings; basic delivery is still never the paywall.
+- **SECURITY.** S5: in v0 the seal block is inside the encrypted body, and the residual is what a drand endpoint and an explorer see when a seal opens. S11: release rests on drand and the chain, and the second check-in channel is recommended, not enforced. S12: signing in again restores the identity, and a backup restores history. Re-wrap integrity and compliance item 1 are scoped to the upgrade target.
+- **PROTOCOL.** Flows 1, 4 and 5 describe the v0 profile, with the beacon re-wrap as the upgrade target. Flow 2: a device is bound by the ochk.io auth host's vouch or by a BIP-322 statement from its address.
+
 ## [0.4.0] — 2026-10-27
 
 Directory listings change shape: a handle is ordered by a claim anchored in Bitcoin. Messages, queues and channels are unchanged.
