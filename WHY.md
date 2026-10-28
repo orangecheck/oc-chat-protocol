@@ -56,7 +56,7 @@ The old chat sorts messages by `created_at`, which is plaintext and minute-round
 
 ## H12 — We cede per-message forward secrecy, in writing
 
-Compromising a device key decrypts that device's whole history. We provide only coarse forward secrecy via 90-day key rotation. We do not implement a double ratchet in v0 (it needs relay-synchronized session state the lock model declines). This is a real gap against Signal, and we refuse to market parity. We say it plainly and we route forward-secrecy-critical users — journalists protecting sources above all — to use Signal, and we put the device-seizure caveat in bold on the tier that targets them. The double ratchet is roadmapped as a registry extension, not claimed.
+Compromising a device key decrypts that device's whole history. We provide only coarse forward secrecy: a manual key rotation the client suggests after 90 days; keys never rotate on their own. We do not implement a double ratchet in v0 (it needs relay-synchronized session state the lock model declines). This is a real gap against Signal, and we refuse to market parity. We say it plainly and we route forward-secrecy-critical users — journalists protecting sources above all — to use Signal, and we put the device-seizure caveat in bold on the tier that targets them. The double ratchet is roadmapped as a registry extension, not claimed.
 
 ## What we still don't have
 
