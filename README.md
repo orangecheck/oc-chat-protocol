@@ -4,7 +4,7 @@
 
 OC Chat is a decentralized, end-to-end-encrypted messaging protocol where the identity is a **Bitcoin address** (BIP-322), the anti-spam is **Lightning postage paid directly to the recipient**, and a message can be **sealed to open only at a future Bitcoin block height**.
 
-It is **not a new verb.** OC Chat is a *mode of [OC Lock](https://github.com/orangecheck/oc-lock-protocol)* — it reuses OC Lock's envelope crypto (X25519 ECDH + AES-256-GCM, BIP-322 identity binding, RFC 8785 canonicalization) verbatim and adds two envelope `kind` values plus a thin threading / postage / seal layer. The way `vault.ochk.io` is OC Lock Flow 4 + Lightning, `chat.ochk.io` is OC Lock + threads + postage + a block-height seal.
+It is **not a new verb.** OC Chat is a *mode of [OC Lock](https://github.com/orangecheck/oc-lock-protocol)* — it reuses OC Lock's envelope crypto (X25519 ECDH + AES-256-GCM, BIP-322 identity binding, RFC 8785 canonicalization) verbatim and adds two envelope `kind` values plus a thin threading / postage / seal layer. The way `vault.ochk.io` is OC Lock Flow 4 (self-vault), `chat.ochk.io` is OC Lock + threads + postage + a block-height seal.
 
 ## What this repo is
 
@@ -67,7 +67,7 @@ You sign in once, with a Bitcoin wallet or with an orangecheck account. Your bro
 
 ## Status
 
-0.4.0 (2026-10-27). Before 1.0, a minor version can change the wire; [`CHANGELOG.md`](./CHANGELOG.md) says when it does. The reference web client at [chat.ochk.io](https://chat.ochk.io) runs 0.4.0 and is in testing. No `@orangecheck/chat-*` package is published yet.
+0.4.0 (2026-10-27). Before 1.0, a minor version can change the wire; [`CHANGELOG.md`](./CHANGELOG.md) says when it does. The reference web client at [chat.ochk.io](https://chat.ochk.io) runs 0.4.0 and is in testing. [`@orangecheck/chat-core`](https://www.npmjs.com/package/@orangecheck/chat-core) is on npm.
 
 ## Acknowledgements
 

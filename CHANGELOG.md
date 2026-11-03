@@ -4,7 +4,7 @@ All notable changes to the OC Chat protocol.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [Unreleased] — 2026-10
+## [Unreleased]
 
 The checklist, the security notes and the walkthrough describe the v0 profile that ships (§7.6, §7.7). The wire is unchanged.
 
@@ -137,7 +137,7 @@ rendering session devices as `session`, which stays correct.
 - **`test-vectors/vc18-session-step-up.json`** — a bound key steps up; the same bind with a revocation does not.
 - **§11** — a compliance line for session devices and the step-up.
 
-## [Unreleased] — 2026-09
+## Before 0.1.0 — 2026-09
 
 ### Changed
 - **§0 device records** — an inbox key is bound to an address as OC Lock SPEC §3.4 authorizes it: v3 device records sign the Nostr pubkey; a v2 record binds only while it is the sole pubkey carrying its `(address, device_id)`. Publishers MUST emit v3.
@@ -150,7 +150,7 @@ rendering session devices as `session`, which stays correct.
 ### Added
 - **§8.6 session devices** — a `did:oc` session device record is bound only by the ochk.io auth host's vouch over `(did_oc, device_pk, nostr_pk, device_id)`, obtained with a proof of possession of the Nostr key and verified against the host's JWKS.
 
-## [Unreleased] — 2026-06
+## Before 0.1.0 — 2026-06
 
 ### Changed
 - **`SPEC.md §8.3.8` (NORMATIVE, channel lifecycle) — founders can CLOSE/RETIRE a channel, honestly.** Comprehensive research (Nostr NIP-09/NIP-01/NIP-62 deletion semantics, the family content-addressed/offline-verifiable invariants, and how Telegram/Discord/Matrix/NIP-29 handle it) concluded that a *true delete* is impossible and would overclaim: a channel is a content-addressed kind-30110 descriptor + signed public kind-30111 posts on relays OC doesn't control. So "delete" is specified as **close/retire forward, never erase**: a founder-signed supersede flips a new optional `status:"closed"` field (OMITTED when active ⇒ vc14/vc15 byte-unaffected); a closed channel renders read-only and denies new posts with new error `E_CH_CLOSED` while STILL accepting removal tombstones (moderation survives close); the `status` transition is **founder-only** (an admin-signed close/reopen is `E_CH_UNAUTHORIZED` — the §8.3.1 coup guard); reversible via a later `status:"active"`. On close a client SHOULD also fire the §8.3.6 kind-30114 directory tombstone + a best-effort NIP-09 (never shown as success). New `SECURITY.md` S-CH-8 names the honest ceiling (cannot erase the descriptor/posts, retract scraped copies, force a relay to forget, or reclaim `channel_id`); NIP-62 vanish noted as a stronger future option. Reference client (`chat.ochk.io`): founder-only Danger "Close channel" (never "Delete") with a typed-title confirm + verbatim honest copy + read-only closed banner + re-open; verifyDescriptor founder-only status rule + checkWritePolicy `E_CH_CLOSED` (tombstones exempt); 6 new tests incl. admin-close-denied. `optedIn:false` directory tombstone reused for the un-list.
