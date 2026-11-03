@@ -749,10 +749,11 @@ In addition to OC Lock SPEC §6 codes:
 
 ## 10. Nostr kind registry
 
-OC Chat claims a fresh block above OC Find's (unratified) 30094–30109 reservation. d-tags are **verb-rooted** (`oc-lock-chat-*`) because chat is a mode of the lock verb, not a brand of its own.
+OC Chat claims a fresh block above OC Find's (unratified) 30094–30109 reservation. d-tags are **verb-rooted** (`oc-lock-chat-*`) because chat is a mode of the lock verb, not a brand of its own. The one exception is the 30078 row: the `did:oc` session record sits on OC Lock's kind under `oc-chat:device:`, a name in use before this rule (§8.6).
 
 | Kind | Object | `d`-tag prefix | Notes |
 |---|---|---|---|
+| 30078 | **session device record** of a `did:oc` identity (addressable) | `oc-chat:device:` | §8.6. d-tag `oc-chat:device:` ‖ `did_oc`, `addr` = `did_oc`; the auth host's revocation is filed at the same d-tag. Shares OC Lock's kind; a Bitcoin-address device keeps OC Lock's record (below). |
 | 30110 | **channel descriptor** (addressable, one coordinate per version) | `oc-lock-chat-ch:` | §8.3.1. Governance hash-chain; d-tag `oc-lock-chat-ch:` ‖ `descriptor_id`, `t` = `channel_id`, `s` = `supersedes`. The salted legacy d-tag (`oc-lock-chat-ch/v1:`) is read, never written. |
 | 30111 | **channel post** (`chat-channel`; addressable) | `oc-lock-chat-msg:` | §8.3.2. Public, signed, recipient-less. gift-wrap (kind-1059) stays the DM transport; 30111 is the channel/public-post carrier. |
 | 30112 | seal / block-height anchor descriptor | `oc-lock-chat-seal:` | references the sealed envelope id + `unlock_block` + beacon. |
@@ -760,7 +761,7 @@ OC Chat claims a fresh block above OC Find's (unratified) 30094–30109 reservat
 | **30114** | **discoverability directory / reachability listing** (addressable, NIP-33-replaceable) | `oc-lock-chat-dir:` | §8.2. d-tag = salted handle hash; opt-in, UTXO-gated, revocable by tombstone. |
 | 30115 | reserved (postage-policy record) | `oc-lock-chat-*:` | registry extension; not canonical v0. |
 
-The transport gift-wrap remains Nostr kind-1059 (NIP-59, not an OC-allocated kind). Device records remain kind-30078 (OC Lock SPEC §11). Relay AUTH (§8.4) uses **kind-22242** — a [NIP-42](https://nips.nostr.com/42) ephemeral handshake event, signed per connection and never stored; it is a Nostr protocol kind, NOT an OC-allocated or content-addressed artifact. Allocating these widened the family range from 30099 to 30115. The family's kind registry, public at [ochk.io/docs/ecosystem/nostr-kind-30078](https://ochk.io/docs/ecosystem/nostr-kind-30078), is the rolled-up table; this section and §14 are the source for OC Chat's kinds.
+The transport gift-wrap remains Nostr kind-1059 (NIP-59, not an OC-allocated kind). A Bitcoin-address device record remains kind-30078 under OC Lock's `oc-lock:device:` namespace (OC Lock SPEC §11); the `did:oc` session record in the first row shares that kind under `oc-chat:device:`. Relay AUTH (§8.4) uses **kind-22242** — a [NIP-42](https://nips.nostr.com/42) ephemeral handshake event, signed per connection and never stored; it is a Nostr protocol kind, NOT an OC-allocated or content-addressed artifact. Allocating these widened the family range from 30099 to 30115. The family's kind registry, public at [ochk.io/docs/ecosystem/nostr-kind-30078](https://ochk.io/docs/ecosystem/nostr-kind-30078), is the rolled-up table; this section and §14 are the source for OC Chat's kinds.
 
 ## 11. Compliance checklist
 
@@ -796,7 +797,7 @@ OC Chat versions with OC Lock's `envelope.v` (currently 2). New `kind` values an
 
 ## 14. IANA / external identifiers
 
-- Nostr kinds: **30110** (channel descriptor, §8.3.1), **30111** (channel post, §8.3.2), **30112** (seal), **30114** (directory, §8.2), addressable, d-tag namespace `oc-lock-chat-*` claimed by this spec; **30113** reserved (group-key rotation, private channels §8.3.7), **30115** reserved (`pay-to-post`, §8.3.3); transport reuses kind-1059 (NIP-59).
+- Nostr kinds: **30110** (channel descriptor, §8.3.1), **30111** (channel post, §8.3.2), **30112** (seal), **30114** (directory, §8.2), addressable, d-tag namespace `oc-lock-chat-*` claimed by this spec; **30113** reserved (group-key rotation, private channels §8.3.7), **30115** reserved (`pay-to-post`, §8.3.3); transport reuses kind-1059 (NIP-59). Kind **30078** carries the `did:oc` session device record (§8.6) under the d-tag namespace `oc-chat:device:` claimed by this spec, beside OC Lock's `oc-lock:device:` (OC Lock SPEC §11).
 - Gift-wrap content tag: `ct = "oc-chat/v2"` (encrypted wrap, §8 normative). `"oc-chat/v1"` (plain base64) is legacy — accepted on receive only, never published.
 - Directory d-tag salt label: `"oc-lock-chat-dir/v1:"`. Channel descriptor d-tag: `"oc-lock-chat-ch:" || descriptor_id`; the salt label `"oc-lock-chat-ch/v1:"` derives the legacy d-tag, which readers still fetch.
 
