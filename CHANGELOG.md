@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 The checklist, the security notes and the walkthrough describe the v0 profile that ships (§7.6, §7.7). The wire is unchanged.
 
 ### Changed
+- **§10.** The roll-up of the family's kinds is the public registry page. The line pointed at a workspace file readers cannot open and at `oc-agent-protocol/SPEC.md §4`, which is OC Agent's delegation envelope, not a registry.
 - **§11 and SECURITY item 4, pay-to-reach.** Both lines list the §6.3 checks as §6.3 has them: settlement, the recipient identifier and the payee node, an explicit amount at or above the floor, the nonce and the spent-ledger. Neither lists the invoice's expiry, which §6.3 says the recipient does not enforce.
 - **§11.** A v0 message is a base OC Lock `identity` envelope with base content addressing; the recipient-exclusion rule belongs to the upgrade target. The seal line follows the §7.6 drand-tlock profile and its vectors `vc10`–`vc13`. New lines for §4.1 (no acceptance receipt) and §7.7 standing delivery.
 - **§8.1.** A paid tier may also raise the operator's abuse ceilings; basic delivery is still never the paywall.

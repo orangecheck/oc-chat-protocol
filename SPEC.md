@@ -760,7 +760,7 @@ OC Chat claims a fresh block above OC Find's (unratified) 30094–30109 reservat
 | **30114** | **discoverability directory / reachability listing** (addressable, NIP-33-replaceable) | `oc-lock-chat-dir:` | §8.2. d-tag = salted handle hash; opt-in, UTXO-gated, revocable by tombstone. |
 | 30115 | reserved (postage-policy record) | `oc-lock-chat-*:` | registry extension; not canonical v0. |
 
-The transport gift-wrap remains Nostr kind-1059 (NIP-59, not an OC-allocated kind). Device records remain kind-30078 (OC Lock SPEC §11). Relay AUTH (§8.4) uses **kind-22242** — a [NIP-42](https://nips.nostr.com/42) ephemeral handshake event, signed per connection and never stored; it is a Nostr protocol kind, NOT an OC-allocated or content-addressed artifact. Allocating these required widening the family range past 30099; the workspace `KINDS.md` and `oc-agent-protocol/SPEC.md §4` are the rolled-up source of truth.
+The transport gift-wrap remains Nostr kind-1059 (NIP-59, not an OC-allocated kind). Device records remain kind-30078 (OC Lock SPEC §11). Relay AUTH (§8.4) uses **kind-22242** — a [NIP-42](https://nips.nostr.com/42) ephemeral handshake event, signed per connection and never stored; it is a Nostr protocol kind, NOT an OC-allocated or content-addressed artifact. Allocating these widened the family range from 30099 to 30115. The family's kind registry, public at [ochk.io/docs/ecosystem/nostr-kind-30078](https://ochk.io/docs/ecosystem/nostr-kind-30078), is the rolled-up table; this section and §14 are the source for OC Chat's kinds.
 
 ## 11. Compliance checklist
 
