@@ -4,7 +4,7 @@ All notable changes to the OC Chat protocol.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [Unreleased]
+## [0.5.0] — 2026-11-21
 
 The checklist, the security notes and the walkthrough describe the v0 profile that ships (§7.6, §7.7). The wire is unchanged.
 

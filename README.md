@@ -67,7 +67,7 @@ You sign in once, with a Bitcoin wallet or with an orangecheck account. Your bro
 
 ## Status
 
-0.4.0 (2026-10-27). Before 1.0, a minor version can change the wire; [`CHANGELOG.md`](./CHANGELOG.md) says when it does. The reference web client at [chat.ochk.io](https://chat.ochk.io) runs 0.4.0 and is in testing. [`@orangecheck/chat-core`](https://www.npmjs.com/package/@orangecheck/chat-core) is on npm.
+0.5.0 (2026-11-21). Before 1.0, a minor version can change the wire; [`CHANGELOG.md`](./CHANGELOG.md) says when it does. The reference web client at [chat.ochk.io](https://chat.ochk.io) speaks this wire and is in testing. [`@orangecheck/chat-core`](https://www.npmjs.com/package/@orangecheck/chat-core) is on npm.
 
 ## Acknowledgements
 
